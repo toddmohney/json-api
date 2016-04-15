@@ -1,40 +1,46 @@
 name:                json-api
 version:             0.1.0.0
-synopsis:            Initial project template from stack
+synopsis:            Provides utilities for deriving JSON payloads conformant to the json-api specification
 description:         Please see README.md
 homepage:            https://github.com/toddmohney/json-api#readme
-license:             BSD3
+license:             MIT
 license-file:        LICENSE
 author:              Todd Mohney
 maintainer:          toddmohney@gmail.com
-copyright:           2016 Author name here
+copyright:           2016 Todd Mohney
 category:            Web
 build-type:          Simple
--- extra-source-files:
 cabal-version:       >=1.10
 
 library
-  hs-source-dirs:      src
-  exposed-modules:     Lib
   build-depends:       base >= 4.7 && < 5
   default-language:    Haskell2010
-
-executable json-api-exe
-  hs-source-dirs:      app
-  main-is:             Main.hs
-  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
-  build-depends:       base
-                     , json-api
-  default-language:    Haskell2010
+  exposed-modules:     JsonApi
+  ghc-options:        -Wall
+                      -fwarn-unused-matches
+                      -fwarn-unused-binds
+                      -fwarn-unused-imports
+                      -threaded
+                      -rtsopts
+                      -with-rtsopts=-N
+  hs-source-dirs:      src
+  other-modules:
 
 test-suite json-api-test
-  type:                exitcode-stdio-1.0
+  build-depends:       base
+                     , hspec
+                     , json-api
+  default-language:    Haskell2010
+  ghc-options:        -Wall
+                      -fwarn-unused-matches
+                      -fwarn-unused-binds
+                      -fwarn-unused-imports
+                      -threaded
+                      -rtsopts
+                      -with-rtsopts=-N
   hs-source-dirs:      test
   main-is:             Spec.hs
-  build-depends:       base
-                     , json-api
-  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
-  default-language:    Haskell2010
+  type:                exitcode-stdio-1.0
 
 source-repository head
   type:     git
