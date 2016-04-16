@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE DeriveGeneric #-}
 
-module JsonApiSpec where
+module ResourceObjectSpec where
 
 import qualified Data.Aeson as AE
 import qualified Data.ByteString.Lazy.Char8 as BS
@@ -36,11 +36,11 @@ main = hspec spec
 
 spec :: Spec
 spec = do
-  describe "JSON serialization" $ do
+  describe "ToResourceObject" $ do
     it "can be encoded and decoded from JSON" $ do
-      let encodedJson = BS.unpack . AE.encode . JsonApi . toResource $ testObject
+      let encodedJson = BS.unpack . AE.encode . toResource $ testObject
       putStrLn encodedJson
-      let decodedJson = AE.decode (BS.pack encodedJson) :: Maybe (JsonApi TestObject)
+      let decodedJson = AE.decode (BS.pack encodedJson) :: Maybe (ResourceObject TestObject)
       putStrLn $ show . fromJust $ decodedJson
       (isJust decodedJson) `shouldBe` True
 

@@ -26,7 +26,7 @@ library
                       -rtsopts
                       -with-rtsopts=-N
   hs-source-dirs:      src
-  other-modules:
+  other-modules:       ResourceObject
 
 test-suite json-api-test
   build-depends:       aeson
@@ -45,6 +45,7 @@ test-suite json-api-test
                       -with-rtsopts=-N
   hs-source-dirs:      test
   main-is:             Spec.hs
+  other-modules:       JsonApiSpec
   type:                exitcode-stdio-1.0
 
 source-repository head
