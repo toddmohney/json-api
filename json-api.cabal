@@ -46,6 +46,7 @@ test-suite json-api-test
   hs-source-dirs:      test
   main-is:             Spec.hs
   other-modules:       JsonApiSpec
+                     , ResourceObjectSpec
   type:                exitcode-stdio-1.0
 
 source-repository head
