@@ -8,31 +8,31 @@ module ResourceObject
 , ToResourceObject (..)
 ) where
 
-import Control.Monad (mzero)
-import Data.Aeson ((.=), (.:))
+import           Control.Monad (mzero)
+import           Data.Aeson (ToJSON, FromJSON, (.=), (.:))
 import qualified Data.Aeson as AE
-import Data.Text (Text)
+import           Data.Text (Text)
 
-class (AE.ToJSON a) => ToResourceObject a where
+class (ToJSON a) => ToResourceObject a where
   toResource :: a -> ResourceObject a
 
 newtype ResourceId = ResourceId Text
-  deriving (Show, Eq, Ord, AE.ToJSON, AE.FromJSON)
+  deriving (Show, Eq, Ord, ToJSON, FromJSON)
 
 newtype ResourceType = ResourceType Text
-  deriving (Show, Eq, Ord, AE.ToJSON, AE.FromJSON)
+  deriving (Show, Eq, Ord, ToJSON, FromJSON)
 
 data ResourceObject a = ResourceObject ResourceId ResourceType a
   deriving (Show, Eq, Ord)
 
-instance (AE.ToJSON a) => AE.ToJSON (ResourceObject a) where
+instance (ToJSON a) => ToJSON (ResourceObject a) where
   toJSON (ResourceObject resId resType resObj) =
     AE.object [ "id"         .= resId
               , "type"       .= resType
               , "attributes" .= resObj
               ]
 
-instance (AE.FromJSON a) => AE.FromJSON (ResourceObject a) where
+instance (FromJSON a) => FromJSON (ResourceObject a) where
   parseJSON (AE.Object v) = ResourceObject <$>
                               v .: "id" <*>
                               v .: "type" <*>

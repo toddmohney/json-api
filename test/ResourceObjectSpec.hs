@@ -5,11 +5,12 @@ module ResourceObjectSpec where
 
 import qualified Data.Aeson as AE
 import qualified Data.ByteString.Lazy.Char8 as BS
-import Data.Maybe (isJust, fromJust)
-import Data.Text (Text, pack)
-import GHC.Generics
-import JsonApi
-import Test.Hspec
+import           Data.Maybe (isJust)
+import           Data.Text (Text, pack)
+import           GHC.Generics
+import           JsonApi
+import           TestHelpers (prettyEncode)
+import           Test.Hspec
 
 data TestObject =
   TestObject { myId :: Int
@@ -38,9 +39,9 @@ spec :: Spec
 spec = do
   describe "ToResourceObject" $ do
     it "can be encoded and decoded from JSON" $ do
-      let encodedJson = BS.unpack . AE.encode . toResource $ testObject
+      let encodedJson = BS.unpack . prettyEncode . toResource $ testObject
       putStrLn encodedJson
       let decodedJson = AE.decode (BS.pack encodedJson) :: Maybe (ResourceObject TestObject)
-      putStrLn $ show . fromJust $ decodedJson
+      {- putStrLn $ show . fromJust $ decodedJson -}
       (isJust decodedJson) `shouldBe` True
 

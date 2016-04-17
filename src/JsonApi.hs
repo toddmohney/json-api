@@ -6,29 +6,32 @@ module JsonApi
 , RO.ResourceObject (..)
 , RO.ResourceType (..)
 , RO.ToResourceObject (..)
+, L.Links
+, L.toLinks
 ) where
 
 import           Control.Monad (mzero)
-import           Data.Aeson ((.=), (.:), (.:?))
+import           Data.Aeson (ToJSON, FromJSON, (.=), (.:), (.:?))
 import qualified Data.Aeson as AE
+import           Link as L
 import           ResourceObject (ResourceObject)
 import qualified ResourceObject as RO
 
-data JsonApi a b = JsonApi (ResourceObject a) (Maybe b)
-  deriving (Show, Eq, Ord)
+data JsonApi a b =
+  JsonApi (ResourceObject a) (Maybe Links) (Maybe b)
+    deriving (Show, Eq, Ord)
 
-instance (AE.ToJSON a, AE.ToJSON b) => AE.ToJSON (JsonApi a b) where
-  toJSON (JsonApi resObj (Just metaObj)) =
-    AE.object [ "data" .= resObj
-              , "meta" .= metaObj
-              ]
-  toJSON (JsonApi resObj Nothing) =
-    AE.object [ "data" .= resObj
+instance (ToJSON a, ToJSON b) => ToJSON (JsonApi a b) where
+  toJSON (JsonApi res links meta) =
+    AE.object [ "data"  .= res
+              , "links" .= links
+              , "meta"  .= meta
               ]
 
-instance (AE.FromJSON a, AE.FromJSON b) => AE.FromJSON (JsonApi a b) where
+instance (FromJSON a, FromJSON b) => FromJSON (JsonApi a b) where
   parseJSON (AE.Object v) =
     JsonApi
       <$> v .: "data"
+      <*> v .:? "links"
       <*> v .:? "meta"
   parseJSON _ = mzero
