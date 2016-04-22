@@ -5,7 +5,6 @@ module Network.JsonApi
 , RO.ResourceId (..)
 , RO.ResourceObject (..)
 , RO.ResourceType (..)
-, RO.ToResourceObject (..)
 , L.Links
 , M.Meta
 , L.toLinks
@@ -19,18 +18,18 @@ import           Network.Meta as M
 import           Network.ResourceObject (ResourceObject)
 import qualified Network.ResourceObject as RO
 
-data JsonApi a b =
-  JsonApi (ResourceObject a) (Maybe Links) (Maybe (Meta b))
+data JsonApi a b c =
+  JsonApi (ResourceObject a b) (Maybe Links) (Maybe (Meta c))
     deriving (Show, Eq, Ord)
 
-instance (ToJSON a, ToJSON b) => ToJSON (JsonApi a b) where
+instance (ToJSON a, ToJSON b, ToJSON c) => ToJSON (JsonApi a b c) where
   toJSON (JsonApi res links meta) =
     AE.object [ "data"  .= res
               , "links" .= links
               , "meta"  .= meta
               ]
 
-instance (FromJSON a, FromJSON b) => FromJSON (JsonApi a b) where
+instance (FromJSON a, FromJSON b, FromJSON c) => FromJSON (JsonApi a b c) where
   parseJSON (AE.Object v) =
     JsonApi
       <$> v .: "data"

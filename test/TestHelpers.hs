@@ -38,11 +38,24 @@ instance AE.FromJSON TestResourceObject
 instance AE.ToJSON TestMetaObject
 instance AE.FromJSON TestMetaObject
 
-toResourceObject :: ToResourceObject TestResourceObject
-toResourceObject = ToResourceObject (\a ->
+toResourceObject :: TestResourceObject -> ResourceObject TestResourceObject String
+toResourceObject obj =
   ResourceObject
-    (ResourceId . pack . show . myId $ a)
-    (ResourceType "TestResourceObject") a)
+    (ResourceId . pack . show . myId $ obj)
+    (ResourceType "TestResourceObject")
+    obj
+    resourceObjectMetaData
+
+resourceObjectMetaData :: Maybe (Meta String)
+resourceObjectMetaData = Just . Meta . Map.fromList $ [ ("extraData", "twenty") ]
+
+linksObj :: Links
+linksObj = toLinks [ ("self", toURL "/things/1")
+                   , ("related", toURL "http://some.domain.com/other/things/1")
+                   ]
+
+
+
 
 testObject :: TestResourceObject
 testObject = TestResourceObject 1 "Fred Armisen" 49 "Pizza"
@@ -53,11 +66,6 @@ testMetaObj =
 
 emptyMeta :: Maybe (Meta TestMetaObject)
 emptyMeta = Nothing
-
-linksObj :: Links
-linksObj = toLinks [ ("self", toURL "/things/1")
-                   , ("related", toURL "http://some.domain.com/other/things/1")
-                   ]
 
 toURL :: String -> URL
 toURL = fromJust . importURL
