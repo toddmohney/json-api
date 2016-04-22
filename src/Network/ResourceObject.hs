@@ -13,8 +13,8 @@ import           Data.Aeson (ToJSON, FromJSON, (.=), (.:))
 import qualified Data.Aeson as AE
 import           Data.Text (Text)
 
-class (ToJSON a) => ToResourceObject a where
-  toResource :: a -> ResourceObject a
+data ToResourceObject a =
+  ToResourceObject { unResource :: a -> ResourceObject a }
 
 data ResourceObject a = ResourceObject ResourceId ResourceType a
   deriving (Show, Eq, Ord)
@@ -33,8 +33,8 @@ instance (ToJSON a) => ToJSON (ResourceObject a) where
               ]
 
 instance (FromJSON a) => FromJSON (ResourceObject a) where
-  parseJSON (AE.Object v) = ResourceObject <$>
-                              v .: "id" <*>
-                              v .: "type" <*>
-                              v .: "attributes"
+  parseJSON (AE.Object v) = ResourceObject
+                              <$> v .: "id"
+                              <*> v .: "type"
+                              <*> v .: "attributes"
   parseJSON _          = mzero

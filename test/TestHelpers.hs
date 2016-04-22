@@ -38,12 +38,11 @@ instance AE.FromJSON TestResourceObject
 instance AE.ToJSON TestMetaObject
 instance AE.FromJSON TestMetaObject
 
-instance ToResourceObject TestResourceObject where
-  toResource a =
-    ResourceObject
-      (ResourceId . pack . show . myId $ a)
-      (ResourceType "TestResourceObject")
-      a
+toResourceObject :: ToResourceObject TestResourceObject
+toResourceObject = ToResourceObject (\a ->
+  ResourceObject
+    (ResourceId . pack . show . myId $ a)
+    (ResourceType "TestResourceObject") a)
 
 testObject :: TestResourceObject
 testObject = TestResourceObject 1 "Fred Armisen" 49 "Pizza"

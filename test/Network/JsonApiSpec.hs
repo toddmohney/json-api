@@ -21,7 +21,7 @@ spec :: Spec
 spec = do
   describe "JSON serialization" $ do
     it "can be encoded and decoded from JSON" $ do
-      let jsonApiObj = JsonApi (toResource testObject) emptyLinks emptyMeta
+      let jsonApiObj = JsonApi ((unResource toResourceObject) testObject) emptyLinks emptyMeta
       let encodedJson = encodeJsonApiObject jsonApiObj
       let decodedJson = decodeJsonApiObject encodedJson
       {- putStrLn (BS.unpack encodedJson) -}
@@ -29,7 +29,7 @@ spec = do
       (isJust decodedJson) `shouldBe` True
 
     it "contains the allowable top-level keys" $ do
-      let jsonApiObj = JsonApi (toResource testObject) emptyLinks emptyMeta
+      let jsonApiObj = JsonApi ((unResource toResourceObject) testObject) emptyLinks emptyMeta
       let encodedJson = encodeJsonApiObject jsonApiObj
       let dataObject = encodedJson ^? Lens.key "data"
       let linksObject = encodedJson ^? Lens.key "links"
@@ -40,7 +40,7 @@ spec = do
 
 
     it "allows an optional top-level links object" $ do
-      let jsonApiObj = JsonApi (toResource testObject) (Just linksObj) emptyMeta
+      let jsonApiObj = JsonApi ((unResource toResourceObject) testObject) (Just linksObj) emptyMeta
       let encodedJson = encodeJsonApiObject jsonApiObj
       let decodedJson = decodeJsonApiObject encodedJson
       {- putStrLn (BS.unpack encodedJson) -}
@@ -48,7 +48,7 @@ spec = do
       (isJust decodedJson) `shouldBe` True
 
     it "allows an optional top-level meta object" $ do
-      let jsonApiObj = JsonApi (toResource testObject) emptyLinks (Just testMetaObj)
+      let jsonApiObj = JsonApi ((unResource toResourceObject) testObject) emptyLinks (Just testMetaObj)
       let encodedJson = encodeJsonApiObject jsonApiObj
       let decodedJson = decodeJsonApiObject encodedJson
       -- putStrLn (BS.unpack encodedJson)

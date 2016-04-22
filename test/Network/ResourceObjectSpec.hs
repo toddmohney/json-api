@@ -22,12 +22,11 @@ data TestObject =
 instance AE.ToJSON TestObject
 instance AE.FromJSON TestObject
 
-instance ToResourceObject TestObject where
-  toResource a =
-    ResourceObject
-      (ResourceId . pack . show . myId $ a)
-      (ResourceType "TestObject")
-      a
+toResourceObject :: ToResourceObject TestObject
+toResourceObject = ToResourceObject (\a ->
+  ResourceObject
+    (ResourceId . pack . show . myId $ a)
+    (ResourceType "TestObject") a)
 
 testObject :: TestObject
 testObject = TestObject 1 "Fred Armisen" 49 "Pizza"
@@ -39,7 +38,7 @@ spec :: Spec
 spec = do
   describe "ToResourceObject" $ do
     it "can be encoded and decoded from JSON" $ do
-      let encodedJson = BS.unpack . prettyEncode . toResource $ testObject
+      let encodedJson = BS.unpack . prettyEncode $ (unResource toResourceObject) testObject
       let decodedJson = AE.decode (BS.pack encodedJson) :: Maybe (ResourceObject TestObject)
       (isJust decodedJson) `shouldBe` True
       -- putStrLn encodedJson
