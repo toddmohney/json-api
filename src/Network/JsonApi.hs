@@ -7,6 +7,7 @@ module Network.JsonApi
 , RO.ResourceType (..)
 , RO.ToResourceObject (..)
 , L.Links
+, M.Meta
 , L.toLinks
 ) where
 
@@ -14,11 +15,12 @@ import           Control.Monad (mzero)
 import           Data.Aeson (ToJSON, FromJSON, (.=), (.:), (.:?))
 import qualified Data.Aeson as AE
 import           Network.Link as L
+import           Network.Meta as M
 import           Network.ResourceObject (ResourceObject)
 import qualified Network.ResourceObject as RO
 
 data JsonApi a b =
-  JsonApi (ResourceObject a) (Maybe Links) (Maybe b)
+  JsonApi (ResourceObject a) (Maybe Links) (Maybe (Meta b))
     deriving (Show, Eq, Ord)
 
 instance (ToJSON a, ToJSON b) => ToJSON (JsonApi a b) where

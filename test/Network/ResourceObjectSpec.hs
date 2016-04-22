@@ -40,8 +40,8 @@ spec = do
   describe "ToResourceObject" $ do
     it "can be encoded and decoded from JSON" $ do
       let encodedJson = BS.unpack . prettyEncode . toResource $ testObject
-      putStrLn encodedJson
       let decodedJson = AE.decode (BS.pack encodedJson) :: Maybe (ResourceObject TestObject)
-      {- putStrLn $ show . fromJust $ decodedJson -}
       (isJust decodedJson) `shouldBe` True
+      -- putStrLn encodedJson
+      -- putStrLn $ show . fromJust $ decodedJson
 
