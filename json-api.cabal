@@ -8,7 +8,7 @@ license-file:        LICENSE
 author:              Todd Mohney
 maintainer:          toddmohney@gmail.com
 copyright:           2016 Todd Mohney
-category:            Web
+category:            Network
 build-type:          Simple
 cabal-version:       >=1.10
 
@@ -19,7 +19,7 @@ library
                      , text
                      , url >= 2.1.3 && < 2.2.0
   default-language:    Haskell2010
-  exposed-modules:     JsonApi
+  exposed-modules:     Network.JsonApi
   ghc-options:        -Wall
                       -fwarn-unused-matches
                       -fwarn-unused-binds
@@ -28,8 +28,8 @@ library
                       -rtsopts
                       -with-rtsopts=-N
   hs-source-dirs:      src
-  other-modules:       Link
-                     , ResourceObject
+  other-modules:       Network.Link
+                     , Network.ResourceObject
 
 test-suite json-api-test
   build-depends:       aeson
@@ -50,8 +50,8 @@ test-suite json-api-test
                       -with-rtsopts=-N
   hs-source-dirs:      test
   main-is:             Spec.hs
-  other-modules:       JsonApiSpec
-                     , ResourceObjectSpec
+  other-modules:       Network.JsonApiSpec
+                     , Network.ResourceObjectSpec
   type:                exitcode-stdio-1.0
 
 source-repository head

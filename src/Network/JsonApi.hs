@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module JsonApi
+module Network.JsonApi
 ( JsonApi (..)
 , RO.ResourceId (..)
 , RO.ResourceObject (..)
@@ -13,9 +13,9 @@ module JsonApi
 import           Control.Monad (mzero)
 import           Data.Aeson (ToJSON, FromJSON, (.=), (.:), (.:?))
 import qualified Data.Aeson as AE
-import           Link as L
-import           ResourceObject (ResourceObject)
-import qualified ResourceObject as RO
+import           Network.Link as L
+import           Network.ResourceObject (ResourceObject)
+import qualified Network.ResourceObject as RO
 
 data JsonApi a b =
   JsonApi (ResourceObject a) (Maybe Links) (Maybe b)

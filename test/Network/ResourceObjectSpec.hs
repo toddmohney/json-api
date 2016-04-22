@@ -1,14 +1,14 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE DeriveGeneric #-}
 
-module ResourceObjectSpec where
+module Network.ResourceObjectSpec where
 
 import qualified Data.Aeson as AE
 import qualified Data.ByteString.Lazy.Char8 as BS
 import           Data.Maybe (isJust)
 import           Data.Text (Text, pack)
 import           GHC.Generics
-import           JsonApi
+import           Network.JsonApi
 import           TestHelpers (prettyEncode)
 import           Test.Hspec
 

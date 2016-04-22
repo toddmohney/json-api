@@ -1,14 +1,14 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE DeriveGeneric #-}
 
-module JsonApiSpec where
+module Network.JsonApiSpec where
 
 import qualified Data.Aeson as AE
 import qualified Data.ByteString.Lazy.Char8 as BS
 import           Data.Maybe (isJust, fromJust)
 import           Data.Text (Text, pack)
 import           GHC.Generics
-import           JsonApi
+import           Network.JsonApi
 import           Network.URL (URL, importURL)
 import           TestHelpers (prettyEncode)
 import           Test.Hspec
