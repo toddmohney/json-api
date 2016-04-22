@@ -18,8 +18,12 @@ library
                      , containers >= 0.5.6.2 && < 0.5.7.1
                      , text
                      , url >= 2.1.3 && < 2.2.0
+
   default-language:    Haskell2010
+
   exposed-modules:     Network.JsonApi
+                     , Network.Meta
+
   ghc-options:        -Wall
                       -fwarn-unused-matches
                       -fwarn-unused-binds
@@ -27,7 +31,9 @@ library
                       -threaded
                       -rtsopts
                       -with-rtsopts=-N
+
   hs-source-dirs:      src
+
   other-modules:       Network.Link
                      , Network.ResourceObject
 
@@ -36,11 +42,14 @@ test-suite json-api-test
                      , aeson-pretty >= 0.7.2 && < 0.8.0
                      , base
                      , bytestring >= 0.10.6.0 && < 0.10.7.0
+                     , containers >= 0.5.6.2 && < 0.5.7.1
                      , hspec
                      , json-api
                      , text
                      , url >= 2.1.3 && < 2.2.0
+
   default-language:    Haskell2010
+
   ghc-options:        -Wall
                       -fwarn-unused-matches
                       -fwarn-unused-binds
@@ -48,10 +57,14 @@ test-suite json-api-test
                       -threaded
                       -rtsopts
                       -with-rtsopts=-N
+
   hs-source-dirs:      test
+
   main-is:             Spec.hs
+
   other-modules:       Network.JsonApiSpec
                      , Network.ResourceObjectSpec
+
   type:                exitcode-stdio-1.0
 
 source-repository head
