@@ -16,14 +16,14 @@ import           Data.Text (Text)
 class (ToJSON a) => ToResourceObject a where
   toResource :: a -> ResourceObject a
 
+data ResourceObject a = ResourceObject ResourceId ResourceType a
+  deriving (Show, Eq, Ord)
+
 newtype ResourceId = ResourceId Text
   deriving (Show, Eq, Ord, ToJSON, FromJSON)
 
 newtype ResourceType = ResourceType Text
   deriving (Show, Eq, Ord, ToJSON, FromJSON)
-
-data ResourceObject a = ResourceObject ResourceId ResourceType a
-  deriving (Show, Eq, Ord)
 
 instance (ToJSON a) => ToJSON (ResourceObject a) where
   toJSON (ResourceObject resId resType resObj) =
