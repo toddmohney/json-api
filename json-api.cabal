@@ -36,7 +36,8 @@ library
 
   hs-source-dirs:      src
 
-  other-modules:       Network.Link
+  other-modules:       Network.Error
+                     , Network.Link
                      , Network.ResourceObject
 
 test-suite json-api-test
