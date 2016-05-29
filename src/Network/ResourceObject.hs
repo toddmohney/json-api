@@ -18,7 +18,7 @@ data ResourceObject a b = ResourceObject
   { getResourceId :: ResourceId
   , getResourceType :: ResourceType
   , getResource :: a
-  , getLinks :: (Maybe Links)
+  , getLinks :: Maybe Links
   , getMetaData :: Maybe (Meta b)
   } deriving (Show, Eq, Ord)
 

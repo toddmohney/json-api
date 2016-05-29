@@ -21,7 +21,7 @@ type Rel = Text
 type Href = Text
 
 toLinks :: [(Rel, URL)] -> Links
-toLinks = Links . Map.fromList . (map buildLink)
+toLinks = Links . Map.fromList . map buildLink
 
 buildLink :: (Rel, URL) -> (Rel, Href)
 buildLink (key, url) = (key, pack (exportURL url))

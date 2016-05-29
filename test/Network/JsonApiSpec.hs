@@ -1,5 +1,4 @@
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE DeriveGeneric #-}
 
 module Network.JsonApiSpec where
 
@@ -18,14 +17,14 @@ main :: IO ()
 main = hspec spec
 
 spec :: Spec
-spec = do
+spec =
   describe "JSON serialization" $ do
     it "can be encoded and decoded from JSON" $ do
       let jsonApiObj = JsonApi (toResourceObject testObject) emptyLinks emptyMeta
       let encodedJson = encodeJsonApiObject jsonApiObj
       let decodedJson = decodeJsonApiObject encodedJson
       {- putStrLn (BS.unpack encodedJson) -}
-      (isJust decodedJson) `shouldBe` True
+      isJust decodedJson `shouldBe` True
 
     it "contains the allowable top-level keys" $ do
       let jsonApiObj = JsonApi (toResourceObject testObject) emptyLinks emptyMeta
@@ -33,9 +32,9 @@ spec = do
       let dataObject = encodedJson ^? Lens.key "data"
       let linksObject = encodedJson ^? Lens.key "links"
       let metaObject = encodedJson ^? Lens.key "meta"
-      (isJust dataObject) `shouldBe` True
-      (isJust linksObject) `shouldBe` True
-      (isJust metaObject) `shouldBe` True
+      isJust dataObject `shouldBe` True
+      isJust linksObject `shouldBe` True
+      isJust metaObject `shouldBe` True
 
 
     it "allows an optional top-level links object" $ do
@@ -44,7 +43,7 @@ spec = do
       let decodedJson = decodeJsonApiObject encodedJson
       {- putStrLn (BS.unpack encodedJson) -}
       -- putStrLn $ show . fromJust $ decodedJson
-      (isJust decodedJson) `shouldBe` True
+      isJust decodedJson `shouldBe` True
 
     it "allows an optional top-level meta object" $ do
       let jsonApiObj = JsonApi (toResourceObject testObject) emptyLinks (Just testMetaObj)
@@ -52,7 +51,7 @@ spec = do
       let decodedJson = decodeJsonApiObject encodedJson
       -- putStrLn (BS.unpack encodedJson)
       -- putStrLn $ show . fromJust $ decodedJson
-      (isJust decodedJson) `shouldBe` True
+      isJust decodedJson `shouldBe` True
 
     it "allows an optional top-level meta object" $ do
       let jsonApiObj = JsonApi (toResourceObject testObject) (Just linksObj) (Just testMetaObj)
@@ -60,11 +59,11 @@ spec = do
       let decodedJson = decodeJsonApiObject encodedJson
       {- putStrLn (BS.unpack encodedJson) -}
       -- putStrLn $ show . fromJust $ decodedJson
-      (isJust decodedJson) `shouldBe` True
+      isJust decodedJson `shouldBe` True
 
 decodeJsonApiObject :: ByteString
                     -> Maybe (JsonApi TestResourceObject (Maybe String) (Maybe TestMetaObject))
-decodeJsonApiObject jsonStr = AE.decode jsonStr
+decodeJsonApiObject = AE.decode
 
 encodeJsonApiObject :: (ToJSON a, ToJSON b, ToJSON c) => JsonApi a b c -> ByteString
 encodeJsonApiObject = prettyEncode

@@ -53,12 +53,12 @@ main :: IO ()
 main = hspec spec
 
 spec :: Spec
-spec = do
-  describe "ToResourceObject" $ do
+spec =
+  describe "ToResourceObject" $
     it "can be encoded and decoded from JSON" $ do
       let encodedJson = BS.unpack . prettyEncode $ toResourceObject testObject
       let decodedJson = AE.decode (BS.pack encodedJson) :: Maybe (ResourceObject TestObject (Maybe Int))
-      (isJust decodedJson) `shouldBe` True
+      isJust decodedJson `shouldBe` True
       {- putStrLn encodedJson -}
       -- putStrLn $ show . fromJust $ decodedJson
 
