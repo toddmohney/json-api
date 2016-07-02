@@ -1,10 +1,10 @@
-module Network.MetaSpec where
+module Network.JSONApi.MetaSpec where
 
 import qualified Data.Aeson as AE
 import qualified Data.ByteString.Lazy.Char8 as BS
 import qualified Data.Map as Map
 import           Data.Maybe (isJust)
-import           Network.Meta
+import           Network.JSONApi.Meta
 import           TestHelpers (prettyEncode)
 import           Test.Hspec
 

@@ -1,4 +1,4 @@
-module Network.JsonApi
+module Network.JSONApi.JsonApi
 ( JsonApi (..)
 , RO.ResourceId (..)
 , RO.ResourceObject (..)
@@ -11,11 +11,11 @@ module Network.JsonApi
 import           Control.Monad (mzero)
 import           Data.Aeson (ToJSON, FromJSON, (.=), (.:), (.:?))
 import qualified Data.Aeson as AE
-import           Network.Error as E
-import           Network.Link as L
-import           Network.Meta as M
-import           Network.ResourceObject (ResourceObject)
-import qualified Network.ResourceObject as RO
+import           Network.JSONApi.Error as E
+import           Network.JSONApi.Link as L
+import           Network.JSONApi.Meta as M
+import           Network.JSONApi.ResourceObject (ResourceObject)
+import qualified Network.JSONApi.ResourceObject as RO
 
 data JsonApi a b c = SuccessApi (ResourceObject a b) (Maybe Links) (Maybe (Meta c))
                    | ErrorApi (Error a) (Maybe Links) (Maybe (Meta b))

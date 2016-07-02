@@ -30,9 +30,9 @@ library
     RecordWildCards
 
   exposed-modules:
-    Network.Error
-    Network.JsonApi
-    Network.Meta
+    Network.JSONApi.Error
+    Network.JSONApi.JsonApi
+    Network.JSONApi.Meta
 
   ghc-options:
     -Wall
@@ -46,8 +46,8 @@ library
   hs-source-dirs: src
 
   other-modules:
-    Network.Link
-    Network.ResourceObject
+    Network.JSONApi.Link
+    Network.JSONApi.ResourceObject
 
 test-suite json-api-test
   build-depends:   aeson        >= 0.11.2.0 && < 0.11.3.0
@@ -85,10 +85,10 @@ test-suite json-api-test
   main-is: Spec.hs
 
   other-modules:
-    Network.ErrorSpec
-    Network.JsonApiSpec
-    Network.MetaSpec
-    Network.ResourceObjectSpec
+    Network.JSONApi.ErrorSpec
+    Network.JSONApi.JsonApiSpec
+    Network.JSONApi.MetaSpec
+    Network.JSONApi.ResourceObjectSpec
     TestHelpers
 
   type: exitcode-stdio-1.0

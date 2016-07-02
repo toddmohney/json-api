@@ -1,4 +1,4 @@
-module Network.Error
+module Network.JSONApi.Error
 ( Error (..)
 ) where
 
@@ -6,8 +6,8 @@ import Data.Aeson (ToJSON, FromJSON)
 import Data.Default
 import Data.Text
 import GHC.Generics
-import Network.Link (Links)
-import Network.Meta
+import Network.JSONApi.Link (Links)
+import Network.JSONApi.Meta
 import Prelude hiding (id)
 
 data Error a =

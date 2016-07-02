@@ -1,4 +1,4 @@
-module Network.ResourceObject
+module Network.JSONApi.ResourceObject
 ( ResourceId (..)
 , ResourceObject (..)
 , ResourceType (..)
@@ -8,8 +8,8 @@ import           Control.Monad (mzero)
 import           Data.Aeson (ToJSON, FromJSON, (.=), (.:), (.:?))
 import qualified Data.Aeson as AE
 import           Data.Text (Text)
-import           Network.Link (Links)
-import           Network.Meta (Meta)
+import           Network.JSONApi.Link (Links)
+import           Network.JSONApi.Meta (Meta)
 
 data ResourceObject a b = ResourceObject
   { getResourceId :: ResourceId

@@ -1,6 +1,4 @@
-{-# LANGUAGE DeriveGeneric #-}
-
-module Network.Meta where
+module Network.JSONApi.Meta where
 
 import           Data.Aeson (ToJSON, FromJSON)
 import           Data.Map (Map)

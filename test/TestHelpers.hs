@@ -7,8 +7,8 @@ import           Data.Maybe (fromJust)
 import qualified Data.Map as Map
 import           Data.Text (Text, pack)
 import           GHC.Generics
-import           Network.JsonApi
-import           Network.Meta
+import           Network.JSONApi.JsonApi
+import           Network.JSONApi.Meta
 import           Network.URL (URL, importURL)
 
 prettyEncode :: AE.ToJSON a => a -> BS.ByteString

@@ -1,4 +1,4 @@
-module Network.Link
+module Network.JSONApi.Link
 ( Links
 , Rel
 , Href

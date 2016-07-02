@@ -1,4 +1,4 @@
-module Network.ResourceObjectSpec where
+module Network.JSONApi.ResourceObjectSpec where
 
 import qualified Data.Aeson as AE
 import qualified Data.ByteString.Lazy.Char8 as BS
@@ -6,8 +6,8 @@ import qualified Data.Map as Map
 import           Data.Maybe (isJust, fromJust)
 import           Data.Text (Text, pack)
 import           GHC.Generics
-import           Network.JsonApi
-import           Network.Meta
+import           Network.JSONApi.JsonApi
+import           Network.JSONApi.Meta
 import           Network.URL (URL, importURL)
 import           TestHelpers (prettyEncode)
 import           Test.Hspec

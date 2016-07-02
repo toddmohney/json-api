@@ -1,4 +1,4 @@
-module Network.JsonApiSpec where
+module Network.JSONApi.JsonApiSpec where
 
 import           Data.Aeson (ToJSON)
 import qualified Data.Aeson as AE
@@ -6,7 +6,7 @@ import           Control.Lens ((^?))
 import qualified Data.Aeson.Lens as Lens
 import           Data.ByteString.Lazy.Char8 (ByteString)
 import           Data.Maybe (isJust)
-import           Network.JsonApi
+import           Network.JSONApi.JsonApi
 import           TestHelpers
 import           Test.Hspec
 
