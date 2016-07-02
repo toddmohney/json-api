@@ -1,5 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
-
 module Network.MetaSpec where
 
 import qualified Data.Aeson as AE

@@ -1,6 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE DeriveGeneric #-}
-
 module Network.ResourceObjectSpec where
 
 import qualified Data.Aeson as AE

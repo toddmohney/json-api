@@ -1,6 +1,3 @@
-{-# LANGUAGE GeneralizedNewtypeDeriving #-}
-{-# LANGUAGE OverloadedStrings #-}
-
 module Network.ResourceObject
 ( ResourceId (..)
 , ResourceObject (..)

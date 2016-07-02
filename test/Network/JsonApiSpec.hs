@@ -1,5 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
-
 module Network.JsonApiSpec where
 
 import           Data.Aeson (ToJSON)

@@ -13,64 +13,85 @@ build-type:          Simple
 cabal-version:       >=1.10
 
 library
-  build-depends:       aeson
-                     , base >= 4.7 && < 5.0
-                     , containers >= 0.5.6.2 && < 0.5.7.1
-                     , text
-                     , lens
-                     , lens-aeson >= 1.0.0.5 && < 1.0.1.0
-                     , url >= 2.1.3 && < 2.2.0
+  build-depends:   aeson        >= 0.11.2.0 && < 0.11.3.0
+                 , base         >= 4.7 && < 5.0
+                 , containers   >= 0.5.6.2 && < 0.5.7.1
+                 , data-default >= 0.5.3 && < 5.6.0
+                 , text         >= 1.2.2.1 && < 1.2.3.0
+                 , lens-aeson   >= 1.0.0.5 && < 1.0.1.0
+                 , url          >= 2.1.3 && < 2.2.0
 
   default-language:    Haskell2010
 
-  exposed-modules:     Network.JsonApi
-                     , Network.Meta
+  default-extensions:
+    DeriveGeneric
+    GeneralizedNewtypeDeriving
+    OverloadedStrings
+    RecordWildCards
 
-  ghc-options:        -Wall
-                      -fwarn-unused-matches
-                      -fwarn-unused-binds
-                      -fwarn-unused-imports
-                      -threaded
-                      -rtsopts
-                      -with-rtsopts=-N
+  exposed-modules:
+    Network.Error
+    Network.JsonApi
+    Network.Meta
 
-  hs-source-dirs:      src
+  ghc-options:
+    -Wall
+    -fwarn-unused-matches
+    -fwarn-unused-binds
+    -fwarn-unused-imports
+    -threaded
+    -rtsopts
+    -with-rtsopts=-N
 
-  other-modules:       Network.Error
-                     , Network.Link
-                     , Network.ResourceObject
+  hs-source-dirs: src
+
+  other-modules:
+    Network.Link
+    Network.ResourceObject
 
 test-suite json-api-test
-  build-depends:       aeson
-                     , aeson-pretty >= 0.7.2 && < 0.8.0
-                     , base
-                     , bytestring >= 0.10.6.0 && < 0.10.7.0
-                     , containers >= 0.5.6.2 && < 0.5.7.1
-                     , hspec
-                     , json-api
-                     , lens
-                     , lens-aeson >= 1.0.0.5 && < 1.0.1.0
-                     , text
-                     , url >= 2.1.3 && < 2.2.0
+  build-depends:   aeson        >= 0.11.2.0 && < 0.11.3.0
+                 , aeson-pretty >= 0.7.2 && < 0.8.0
+                 , base         >= 4.7 && < 5.0
+                 , bytestring   >= 0.10.6.0 && < 0.10.7.0
+                 , containers   >= 0.5.6.2 && < 0.5.7.1
+                 , data-default >= 0.5.3 && < 5.6.0
+                 , hspec        >= 2.2.3 && < 2.3.0
+                 , json-api
+                 , lens         >= 4.13 && < 5.0
+                 , lens-aeson   >= 1.0.0.5 && < 1.0.1.0
+                 , text         >= 1.2.2.1 && < 1.2.3.0
+                 , url          >= 2.1.3 && < 2.2.0
 
   default-language:    Haskell2010
 
-  ghc-options:        -Wall
-                      -fwarn-unused-matches
-                      -fwarn-unused-binds
-                      -fwarn-unused-imports
-                      -threaded
-                      -rtsopts
-                      -with-rtsopts=-N
+  default-extensions:
+    DeriveGeneric
+    GeneralizedNewtypeDeriving
+    OverloadedStrings
+    RecordWildCards
 
-  hs-source-dirs:      test
+  ghc-options:
+    -Wall
+    -fwarn-unused-matches
+    -fwarn-unused-binds
+    -fwarn-unused-imports
+    -threaded
+    -rtsopts
+    -with-rtsopts=-N
 
-  main-is:             Spec.hs
+  hs-source-dirs: test
 
-  other-modules:       Network.JsonApiSpec
-                     , Network.ResourceObjectSpec
+  main-is: Spec.hs
 
-  type:                exitcode-stdio-1.0
+  other-modules:
+    Network.ErrorSpec
+    Network.JsonApiSpec
+    Network.MetaSpec
+    Network.ResourceObjectSpec
+    TestHelpers
+
+  type: exitcode-stdio-1.0
 
 source-repository head
   type:     git
