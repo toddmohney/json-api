@@ -6,7 +6,7 @@ import qualified Data.Map as Map
 import           Data.Maybe (isJust, fromJust)
 import           Data.Text (Text, pack)
 import           GHC.Generics
-import           Network.JSONApi.JsonApi
+import           Network.JSONApi.Document
 import           Network.JSONApi.Meta
 import           Network.URL (URL, importURL)
 import           TestHelpers (prettyEncode)

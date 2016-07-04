@@ -2,7 +2,6 @@ module Network.JSONApi.Document.Error
   ( Error (..)
   ) where
 
-import Control.Monad (mzero)
 import Data.Aeson (ToJSON, FromJSON, (.=), (.:), (.:?))
 import qualified Data.Aeson as AE
 import qualified Network.JSONApi.Error as E
@@ -23,9 +22,8 @@ instance (ToJSON a, ToJSON b) => ToJSON (Error a b) where
               ]
 
 instance (FromJSON a, FromJSON b) => FromJSON (Error a b) where
-  parseJSON (AE.Object v) =
+  parseJSON = AE.withObject "error" $ \v ->
     Error
       <$> v .: "error"
       <*> v .:? "links"
       <*> v .:? "meta"
-  parseJSON _ = mzero

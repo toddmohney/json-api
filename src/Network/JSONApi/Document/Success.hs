@@ -2,7 +2,6 @@ module Network.JSONApi.Document.Success
   ( Success (..)
   ) where
 
-import Control.Monad (mzero)
 import Data.Aeson (ToJSON, FromJSON, (.=), (.:), (.:?))
 import qualified Data.Aeson as AE
 import Network.JSONApi.Link (Links)
@@ -23,9 +22,8 @@ instance (ToJSON a, ToJSON b, ToJSON c) => ToJSON (Success a b c) where
               ]
 
 instance (FromJSON a, FromJSON b, FromJSON c) => FromJSON (Success a b c) where
-  parseJSON (AE.Object v) =
+  parseJSON = AE.withObject "success" $ \v ->
     Success
       <$> v .: "data"
       <*> v .:? "links"
       <*> v .:? "meta"
-  parseJSON _ = mzero

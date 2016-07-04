@@ -34,7 +34,7 @@ library
     Network.JSONApi.Document.Error
     Network.JSONApi.Document.Success
     Network.JSONApi.Error
-    Network.JSONApi.JsonApi
+    Network.JSONApi.Document
     Network.JSONApi.Meta
 
   ghc-options:
@@ -89,7 +89,7 @@ test-suite json-api-test
 
   other-modules:
     Network.JSONApi.ErrorSpec
-    Network.JSONApi.JsonApiSpec
+    Network.JSONApi.DocumentSpec
     Network.JSONApi.MetaSpec
     Network.JSONApi.ResourceObjectSpec
     TestHelpers

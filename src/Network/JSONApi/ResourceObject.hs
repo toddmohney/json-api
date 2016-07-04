@@ -4,7 +4,6 @@ module Network.JSONApi.ResourceObject
 , ResourceType (..)
 ) where
 
-import           Control.Monad (mzero)
 import           Data.Aeson (ToJSON, FromJSON, (.=), (.:), (.:?))
 import qualified Data.Aeson as AE
 import           Data.Text (Text)
@@ -35,11 +34,10 @@ instance (ToJSON a, ToJSON b) => ToJSON (ResourceObject a b) where
               ]
 
 instance (FromJSON a, FromJSON b) => FromJSON (ResourceObject a b) where
-  parseJSON (AE.Object v) = ResourceObject
-                              <$> v .: "id"
-                              <*> v .: "type"
-                              <*> v .: "attributes"
-                              <*> v .:? "links"
-                              <*> v .:? "meta"
-  parseJSON _          = mzero
-
+  parseJSON = AE.withObject "resourceObject" $ \v ->
+                ResourceObject
+                  <$> v .: "id"
+                  <*> v .: "type"
+                  <*> v .: "attributes"
+                  <*> v .:? "links"
+                  <*> v .:? "meta"
