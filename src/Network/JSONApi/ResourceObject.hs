@@ -6,6 +6,7 @@ module Network.JSONApi.ResourceObject
 
 import           Data.Aeson (ToJSON, FromJSON, (.=), (.:), (.:?))
 import qualified Data.Aeson as AE
+import           Data.Swagger (ToSchema)
 import           Data.Text (Text)
 import           GHC.Generics
 import           Network.JSONApi.Link (Links)
@@ -20,10 +21,14 @@ data ResourceObject a b = ResourceObject
   } deriving (Show, Eq, Ord, Generic)
 
 newtype ResourceId = ResourceId Text
-  deriving (Show, Eq, Ord, ToJSON, FromJSON)
+  deriving (Show, Eq, Ord, ToJSON, FromJSON, Generic)
 
 newtype ResourceType = ResourceType Text
-  deriving (Show, Eq, Ord, ToJSON, FromJSON)
+  deriving (Show, Eq, Ord, ToJSON, FromJSON, Generic)
+
+instance (ToSchema a, ToSchema b) => ToSchema (ResourceObject a b)
+instance ToSchema ResourceId
+instance ToSchema ResourceType
 
 instance (ToJSON a, ToJSON b) => ToJSON (ResourceObject a b) where
   toJSON (ResourceObject resId resType resObj linksObj metaObj) =

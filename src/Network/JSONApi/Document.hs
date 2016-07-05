@@ -10,6 +10,7 @@ module Network.JSONApi.Document
 
 import           Data.Aeson (ToJSON, FromJSON, (.=), (.:), (.:?))
 import qualified Data.Aeson as AE
+import           Data.Swagger (ToSchema)
 import           GHC.Generics
 import qualified Network.JSONApi.Document.Success as Doc
 import           Network.JSONApi.Link as L
@@ -32,3 +33,5 @@ instance (FromJSON a, FromJSON b, FromJSON c) => FromJSON (Document a b c) where
     l <- v .:? "links"
     m <- v .:? "meta"
     return (Resource $ Doc.Success d l m)
+
+instance (ToSchema a, ToSchema b, ToSchema c) => ToSchema (Document a b c)
