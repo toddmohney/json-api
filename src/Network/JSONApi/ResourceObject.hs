@@ -7,6 +7,7 @@ module Network.JSONApi.ResourceObject
 import           Data.Aeson (ToJSON, FromJSON, (.=), (.:), (.:?))
 import qualified Data.Aeson as AE
 import           Data.Text (Text)
+import           GHC.Generics
 import           Network.JSONApi.Link (Links)
 import           Network.JSONApi.Meta (Meta)
 
@@ -16,7 +17,7 @@ data ResourceObject a b = ResourceObject
   , getResource :: a
   , getLinks :: Maybe Links
   , getMetaData :: Maybe (Meta b)
-  } deriving (Show, Eq, Ord)
+  } deriving (Show, Eq, Ord, Generic)
 
 newtype ResourceId = ResourceId Text
   deriving (Show, Eq, Ord, ToJSON, FromJSON)

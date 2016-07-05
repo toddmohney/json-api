@@ -10,13 +10,14 @@ module Network.JSONApi.Document
 
 import           Data.Aeson (ToJSON, FromJSON, (.=), (.:), (.:?))
 import qualified Data.Aeson as AE
+import           GHC.Generics
 import qualified Network.JSONApi.Document.Success as Doc
 import           Network.JSONApi.Link as L
 import           Network.JSONApi.Meta as M
 import qualified Network.JSONApi.ResourceObject as RO
 
 data Document a b c = Resource (Doc.Success a b c)
-                   deriving (Show, Eq)
+                   deriving (Show, Eq, Generic)
 
 instance (ToJSON a, ToJSON b, ToJSON c) => ToJSON (Document a b c) where
   toJSON (Resource (Doc.Success res links meta)) =
