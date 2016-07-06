@@ -17,8 +17,8 @@ import Network.JSONApi.Document
   , ResourceObject (..)
   , ResourceId (..)
   , ResourceType (..)
+  , toLinks
   )
-import qualified Network.JSONApi.Document as JSONApi
 
 -- Our resource
 data User = User
@@ -41,7 +41,7 @@ toResourceObject user =
 
 -- helper function to build links for a User resource
 userLinks :: User -> Links
-userLinks user = JSONApi.toLinks [ ("self", selfLink) ]
+userLinks user = toLinks [ ("self", selfLink) ]
   where
     selfLink = toURL selfPath
     selfPath = "/users/" <> (show $ userId user)

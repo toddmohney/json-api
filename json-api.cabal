@@ -32,7 +32,6 @@ library
     RecordWildCards
 
   exposed-modules:
-    Network.JSONApi.Document.Error
     Network.JSONApi.Error
     Network.JSONApi.Document
     Network.JSONApi.Meta

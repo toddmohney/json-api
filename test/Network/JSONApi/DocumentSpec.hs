@@ -18,7 +18,7 @@ main = hspec spec
 spec :: Spec
 spec =
   describe "JSON serialization" $ do
-    it "a singleton resource can be encoded and decoded from JSON" $ do
+    it "JSON encodes/decodes a singleton resource" $ do
       let resource = toResourceObject testObject
       let jsonApiObj = Document (Singleton resource) emptyLinks emptyMeta
       let encodedJson = encodeDocumentObject jsonApiObj
@@ -27,7 +27,7 @@ spec =
       {- putStrLn (show decodedJson) -}
       isRight decodedJson `shouldBe` True
 
-    it "a list of resources can be encoded and decoded from JSON" $ do
+    it "JSON encodes/decodes a list of resources" $ do
       let resources = [toResourceObject testObject, toResourceObject testObject2]
       let jsonApiObj = Document (List resources) emptyLinks emptyMeta
       let encodedJson = encodeDocumentObject jsonApiObj

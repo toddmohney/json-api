@@ -1,5 +1,7 @@
 module Network.JSONApi.Document
 ( Document (..)
+, ErrorDocument (..)
+, E.Error (..)
 , Resource (..)
 , RO.ResourceId (..)
 , RO.ResourceObject (..)
@@ -18,10 +20,11 @@ import Data.Aeson
   , (.:?)
   )
 import qualified Data.Aeson as AE
-import           Data.Swagger (ToSchema)
-import           GHC.Generics
-import           Network.JSONApi.Link as L
-import           Network.JSONApi.Meta as M
+import Data.Swagger (ToSchema)
+import GHC.Generics
+import qualified Network.JSONApi.Error as E
+import Network.JSONApi.Link as L
+import Network.JSONApi.Meta as M
 import Network.JSONApi.ResourceObject (ResourceObject)
 import qualified Network.JSONApi.ResourceObject as RO
 
@@ -63,6 +66,27 @@ instance (FromJSON a, FromJSON b, FromJSON c) => FromJSON (Document a b c) where
     m <- v .:? "meta"
     return (Document d l m)
 
-
 instance (ToSchema a, ToSchema b, ToSchema c) => ToSchema (Document a b c)
 instance (ToSchema a, ToSchema b) => ToSchema (Resource a b)
+
+data ErrorDocument a b = ErrorDocument
+  { _error :: E.Error a
+  , _errorLinks :: Maybe Links
+  , _errorMeta  :: Maybe (Meta b)
+  } deriving (Show, Eq, Generic)
+
+instance (ToJSON a, ToJSON b) => ToJSON (ErrorDocument a b) where
+  toJSON (ErrorDocument err links meta) =
+    AE.object [ "error" .= err
+              , "links" .= links
+              , "meta"  .= meta
+              ]
+
+instance (FromJSON a, FromJSON b) => FromJSON (ErrorDocument a b) where
+  parseJSON = AE.withObject "error" $ \v ->
+    ErrorDocument
+      <$> v .: "error"
+      <*> v .:? "links"
+      <*> v .:? "meta"
+
+instance (ToSchema a, ToSchema b) => ToSchema (ErrorDocument a b)
