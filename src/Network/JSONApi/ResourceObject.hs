@@ -1,3 +1,8 @@
+{- |
+Module representing a JSON-API resource object.
+
+Specification: <http://jsonapi.org/format/#document-resource-objects>
+-}
 module Network.JSONApi.ResourceObject
 ( ResourceId (..)
 , ResourceObject (..)
@@ -12,6 +17,14 @@ import           GHC.Generics
 import           Network.JSONApi.Link (Links)
 import           Network.JSONApi.Meta (Meta)
 
+{- |
+Type representing a JSON-API resource object.
+
+A ResourceObject supplies standardized data and metadata about a
+resource.
+
+Specification: <http://jsonapi.org/format/#document-resource-objects>
+-}
 data ResourceObject a b = ResourceObject
   { getResourceId :: ResourceId
   , getResourceType :: ResourceType

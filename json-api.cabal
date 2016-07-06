@@ -1,8 +1,6 @@
 name:                json-api
 version:             0.1.0.0
-synopsis:            Provides utilities for deriving JSON payloads conformant to the json-api specification
-description:         Please see README.md
-homepage:            https://github.com/toddmohney/json-api#readme
+homepage:            https://github.com/toddmohney/json-api
 license:             MIT
 license-file:        LICENSE
 author:              Todd Mohney
@@ -11,6 +9,27 @@ copyright:           2016 Todd Mohney
 category:            Network
 build-type:          Simple
 cabal-version:       >=1.10
+maintainer:          Todd Mohney <toddmohney@gmail.com>
+stability:           experimental
+synopsis:            Utilities for generating JSON-API payloads
+description:
+  Provides utilities for deriving JSON payloads conformant to the json-api
+  specification
+
+extra-source-files:
+  README.md
+  LICENSE
+  circle.yml
+  stack.yaml
+  example/LICENSE
+  example/README.md
+  example/example.cabal
+  example/*.hs
+  example/stack.yaml
+
+source-repository head
+  type: git
+  location: https://github.com/toddmohney/json-api.git
 
 library
   build-depends:   aeson                >= 0.11.2.0 && < 0.11.3.0
@@ -35,21 +54,18 @@ library
     Network.JSONApi.Error
     Network.JSONApi.Document
     Network.JSONApi.Meta
+    Network.JSONApi.Link
+    Network.JSONApi.ResourceObject
+
+  other-modules:
 
   ghc-options:
     -Wall
     -fwarn-unused-matches
     -fwarn-unused-binds
     -fwarn-unused-imports
-    -threaded
-    -rtsopts
-    -with-rtsopts=-N
 
   hs-source-dirs: src
-
-  other-modules:
-    Network.JSONApi.Link
-    Network.JSONApi.ResourceObject
 
 test-suite json-api-test
   build-depends:   aeson        >= 0.11.2.0 && < 0.11.3.0
@@ -78,9 +94,6 @@ test-suite json-api-test
     -fwarn-unused-matches
     -fwarn-unused-binds
     -fwarn-unused-imports
-    -threaded
-    -rtsopts
-    -with-rtsopts=-N
 
   hs-source-dirs: test
 

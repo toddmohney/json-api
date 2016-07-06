@@ -1,3 +1,8 @@
+{- |
+Entry-point module for this package.
+
+Contains representations of the top-level JSON-API document structure.
+-}
 module Network.JSONApi.Document
 ( Document (..)
 , ErrorDocument (..)
@@ -28,12 +33,28 @@ import Network.JSONApi.Meta as M
 import Network.JSONApi.ResourceObject (ResourceObject)
 import qualified Network.JSONApi.ResourceObject as RO
 
+{- |
+The @Document@ type represents the top-level JSON-API requirement.
+
+@data@ attribute - the resulting JSON may be either a singleton resource
+or a list of resources. See 'Resource' for the construction.
+
+For more information see: <http://jsonapi.org/format/#document-top-level>
+-}
 data Document a b c = Document
   { _data  ::  Resource a b
   , _links ::  Maybe Links
   , _meta  ::  Maybe (Meta c)
   } deriving (Show, Eq, Generic)
 
+{- |
+The @Resource@ type encapsulates the underlying 'ResourceObject'
+
+Included in the top-level 'Document', the @Resource@ may be either
+a singleton resource or a list.
+
+For more information see: <http://jsonapi.org/format/#document-top-level>
+-}
 data Resource a b = Singleton (ResourceObject a b)
                   | List [ResourceObject a b]
                   deriving (Show, Eq, Generic)
@@ -69,6 +90,15 @@ instance (FromJSON a, FromJSON b, FromJSON c) => FromJSON (Document a b c) where
 instance (ToSchema a, ToSchema b, ToSchema c) => ToSchema (Document a b c)
 instance (ToSchema a, ToSchema b) => ToSchema (Resource a b)
 
+{- |
+The @ErrorDocument@ type represents the alternative form of the top-level
+JSON-API requirement.
+
+@error@ attribute - a descriptive object encapsulating application-specific
+error detail.
+
+For more information see: <http://jsonapi.org/format/#errors>
+-}
 data ErrorDocument a b = ErrorDocument
   { _error :: E.Error a
   , _errorLinks :: Maybe Links

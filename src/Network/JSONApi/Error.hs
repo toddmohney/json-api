@@ -1,3 +1,11 @@
+{- |
+Module representing a JSON-API error object.
+
+Error objects are used for providing application-specific detail
+to unsuccessful API responses.
+
+Specification: <http://jsonapi.org/format/#error-objects>
+-}
 module Network.JSONApi.Error
 ( Error (..)
 ) where
@@ -11,6 +19,12 @@ import Network.JSONApi.Link (Links)
 import Network.JSONApi.Meta
 import Prelude hiding (id)
 
+{- |
+Type for providing application-specific detail to unsuccessful API
+responses.
+
+Specification: <http://jsonapi.org/format/#error-objects>
+-}
 data Error a =
   Error { id     :: Maybe Text
         , links  :: Maybe Links
