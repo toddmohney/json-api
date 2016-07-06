@@ -20,6 +20,11 @@ library
   exposed-modules:
     Lib
     Users
+    Users.Controller
+
+  other-modules:
+    Users.Actions.Index
+    Users.Actions.Show
 
   build-depends:       base >= 4.7 && < 5
                      , aeson
