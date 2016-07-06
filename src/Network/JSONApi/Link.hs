@@ -10,13 +10,12 @@ module Network.JSONApi.Link
 , toLinks
 ) where
 
-import           Data.Aeson (ToJSON, FromJSON)
-import           Data.Map (Map)
+import Data.Aeson (ToJSON, FromJSON)
+import Data.Map (Map)
 import qualified Data.Map as Map
-import           Data.Swagger (ToSchema)
-import           Data.Text (Text, pack)
-import           GHC.Generics
-import           Network.URL (URL, exportURL)
+import Data.Text (Text, pack)
+import qualified GHC.Generics as G
+import Network.URL (URL, exportURL)
 
 {- |
 Type representing a JSON-API link object.
@@ -34,9 +33,7 @@ Example JSON:
 Specification: <http://jsonapi.org/format/#document-links>
 -}
 newtype Links = Links (Map Rel Href)
-  deriving (Show, Eq, Ord, ToJSON, FromJSON, Generic)
-
-instance ToSchema Links
+  deriving (Show, Eq, Ord, ToJSON, FromJSON, G.Generic)
 
 type Rel = Text
 type Href = Text

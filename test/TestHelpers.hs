@@ -3,13 +3,13 @@ module TestHelpers where
 import qualified Data.Aeson as AE
 import qualified Data.Aeson.Encode.Pretty as AE
 import qualified Data.ByteString.Lazy.Char8 as BS
-import           Data.Maybe (fromJust)
+import Data.Maybe (fromJust)
 import qualified Data.Map as Map
-import           Data.Monoid ((<>))
-import           Data.Text (Text, pack)
-import           GHC.Generics
-import           Network.JSONApi.Document
-import           Network.URL (URL, importURL)
+import Data.Monoid ((<>))
+import Data.Text (Text, pack)
+import qualified GHC.Generics as G
+import Network.JSONApi.Document
+import Network.URL (URL, importURL)
 
 prettyEncode :: AE.ToJSON a => a -> BS.ByteString
 prettyEncode = AE.encodePretty' prettyConfig
@@ -22,12 +22,12 @@ data TestResourceObject =
                      , myName :: Text
                      , myAge :: Int
                      , myFavoriteFood :: Text
-                     } deriving (Show, Generic)
+                     } deriving (Show, G.Generic)
 
 data TestMetaObject =
   TestMetaObject { totalPages :: Int
                  , isSuperFun :: Bool
-                 } deriving (Show, Generic)
+                 } deriving (Show, G.Generic)
 
 instance AE.ToJSON TestResourceObject
 instance AE.FromJSON TestResourceObject

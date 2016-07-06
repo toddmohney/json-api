@@ -25,8 +25,7 @@ import Data.Aeson
   , (.:?)
   )
 import qualified Data.Aeson as AE
-import Data.Swagger (ToSchema)
-import GHC.Generics
+import qualified GHC.Generics as G
 import qualified Network.JSONApi.Error as E
 import Network.JSONApi.Link as L
 import Network.JSONApi.Meta as M
@@ -45,7 +44,7 @@ data Document a b c = Document
   { _data  ::  Resource a b
   , _links ::  Maybe Links
   , _meta  ::  Maybe (Meta c)
-  } deriving (Show, Eq, Generic)
+  } deriving (Show, Eq, G.Generic)
 
 {- |
 The @Resource@ type encapsulates the underlying 'ResourceObject'
@@ -57,7 +56,7 @@ For more information see: <http://jsonapi.org/format/#document-top-level>
 -}
 data Resource a b = Singleton (ResourceObject a b)
                   | List [ResourceObject a b]
-                  deriving (Show, Eq, Generic)
+                  deriving (Show, Eq, G.Generic)
 
 instance (ToJSON a, ToJSON b) => ToJSON (Resource a b) where
   toJSON (Singleton res) = AE.toJSON res
@@ -87,9 +86,6 @@ instance (FromJSON a, FromJSON b, FromJSON c) => FromJSON (Document a b c) where
     m <- v .:? "meta"
     return (Document d l m)
 
-instance (ToSchema a, ToSchema b, ToSchema c) => ToSchema (Document a b c)
-instance (ToSchema a, ToSchema b) => ToSchema (Resource a b)
-
 {- |
 The @ErrorDocument@ type represents the alternative form of the top-level
 JSON-API requirement.
@@ -103,7 +99,7 @@ data ErrorDocument a b = ErrorDocument
   { _error :: E.Error a
   , _errorLinks :: Maybe Links
   , _errorMeta  :: Maybe (Meta b)
-  } deriving (Show, Eq, Generic)
+  } deriving (Show, Eq, G.Generic)
 
 instance (ToJSON a, ToJSON b) => ToJSON (ErrorDocument a b) where
   toJSON (ErrorDocument err links meta) =
@@ -118,5 +114,3 @@ instance (FromJSON a, FromJSON b) => FromJSON (ErrorDocument a b) where
       <$> v .: "error"
       <*> v .:? "links"
       <*> v .:? "meta"
-
-instance (ToSchema a, ToSchema b) => ToSchema (ErrorDocument a b)

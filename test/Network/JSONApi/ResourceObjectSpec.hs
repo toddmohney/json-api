@@ -3,20 +3,20 @@ module Network.JSONApi.ResourceObjectSpec where
 import qualified Data.Aeson as AE
 import qualified Data.ByteString.Lazy.Char8 as BS
 import qualified Data.Map as Map
-import           Data.Maybe (isJust, fromJust)
-import           Data.Text (Text, pack)
-import           GHC.Generics
-import           Network.JSONApi.Document
-import           Network.URL (URL, importURL)
-import           TestHelpers (prettyEncode)
-import           Test.Hspec
+import Data.Maybe (isJust, fromJust)
+import Data.Text (Text, pack)
+import qualified GHC.Generics as G
+import Network.JSONApi.Document
+import Network.URL (URL, importURL)
+import TestHelpers (prettyEncode)
+import Test.Hspec
 
 data TestObject =
   TestObject { myId :: Int
              , myName :: Text
              , myAge :: Int
              , myFavoriteFood :: Text
-             } deriving (Show, Generic)
+             } deriving (Show, G.Generic)
 
 instance AE.ToJSON TestObject
 instance AE.FromJSON TestObject

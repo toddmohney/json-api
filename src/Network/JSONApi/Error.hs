@@ -12,9 +12,8 @@ module Network.JSONApi.Error
 
 import Data.Aeson (ToJSON, FromJSON)
 import Data.Default
-import Data.Swagger (ToSchema)
 import Data.Text
-import GHC.Generics
+import qualified GHC.Generics as G
 import Network.JSONApi.Link (Links)
 import Network.JSONApi.Meta
 import Prelude hiding (id)
@@ -34,11 +33,10 @@ data Error a =
         , detail :: Maybe Text
         , meta   :: Maybe (Meta a)
         }
-  deriving (Show, Eq, Generic)
+  deriving (Show, Eq, G.Generic)
 
 instance ToJSON a   => ToJSON (Error a)
 instance FromJSON a => FromJSON (Error a)
-instance ToSchema a => ToSchema (Error a)
 
 instance Default (Error a) where
   def = Error

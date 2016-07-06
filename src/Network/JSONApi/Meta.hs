@@ -5,11 +5,10 @@ Specification: <http://jsonapi.org/format/#document-meta>
 -}
 module Network.JSONApi.Meta where
 
-import           Data.Aeson (ToJSON, FromJSON)
-import           Data.Map (Map)
-import           Data.Swagger (ToSchema)
-import           Data.Text (Text)
-import           GHC.Generics
+import Data.Aeson (ToJSON, FromJSON)
+import Data.Map (Map)
+import Data.Text (Text)
+import qualified GHC.Generics as G
 
 {- |
 Type representing a JSON-API meta object.
@@ -33,10 +32,7 @@ Example JSON:
 Specification: <http://jsonapi.org/format/#document-meta>
 -}
 data Meta a = Meta (Map Text a)
-  deriving (Show, Eq, Ord, Generic)
+  deriving (Show, Eq, Ord, G.Generic)
 
 instance ToJSON a   => ToJSON (Meta a)
 instance FromJSON a => FromJSON (Meta a)
-
-instance ToSchema a => ToSchema (Meta a)
-

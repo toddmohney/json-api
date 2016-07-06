@@ -26,16 +26,17 @@ library
     Users.Actions.Index
     Users.Actions.Show
 
-  build-depends:       base >= 4.7 && < 5
-                     , aeson
-                     , containers
-                     , data-default
-                     , json-api
-                     , servant-server
-                     , text
-                     , url
-                     , wai
-                     , warp
+  build-depends: base           >= 4.7 && < 5
+               , aeson          >= 0.11.2.0 && < 0.11.3.0
+               , containers     >= 0.5.6.2 && < 0.5.7.1
+               , data-default   >= 0.5.3 && < 5.6.0
+               , json-api
+               , servant-server >= 0.7.1 && < 0.8.0
+               , text           >= 1.2.2.1 && < 1.2.3.0
+               , url            >= 2.1.3 && < 2.2.0
+               , wai            >= 3.2.1.1 && < 3.2.2.0
+               , warp
+
   default-language:    Haskell2010
 
   default-extensions:
@@ -47,9 +48,6 @@ library
     -fwarn-unused-matches
     -fwarn-unused-binds
     -fwarn-unused-imports
-    -threaded
-    -rtsopts
-    -with-rtsopts=-N
 
 executable example-exe
   hs-source-dirs:      app
@@ -58,16 +56,3 @@ executable example-exe
   build-depends:       base
                      , example
   default-language:    Haskell2010
-
-test-suite example-test
-  type:                exitcode-stdio-1.0
-  hs-source-dirs:      test
-  main-is:             Spec.hs
-  build-depends:       base
-                     , example
-  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
-  default-language:    Haskell2010
-
-source-repository head
-  type:     git
-  location: https://github.com/toddmohney/example
