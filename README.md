@@ -1,5 +1,13 @@
 [![Circle CI](https://circleci.com/gh/toddmohney/json-api.svg?style=svg)](https://circleci.com/gh/toddmohney/json-api)
 
-[![Stories in Ready](https://badge.waffle.io/toddmohney/json-api.svg?label=ready&title=Ready)](http://waffle.io/toddmohney/json-api)
+## Haskell Implementation of the JSON-API specification
 
-[![Throughput Graph](https://graphs.waffle.io/toddmohney/json-api/throughput.svg)](https://waffle.io/toddmohney/json-api/metrics/throughput)
+
+#### The specification
+
+Find the specification [here](http://jsonapi.org/)
+
+
+#### Example usage
+
+There is an [example project](example) illustrating how the library can be used.
