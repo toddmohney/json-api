@@ -4,7 +4,7 @@ module Network.JSONApi.Document
 , RO.ResourceObject (..)
 , RO.ResourceType (..)
 , L.Links
-, M.Meta
+, M.Meta (..)
 , L.toLinks
 ) where
 

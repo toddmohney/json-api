@@ -11,7 +11,7 @@ import Network.JSONApi.Meta (Meta)
 import Network.JSONApi.ResourceObject (ResourceObject)
 
 data Success a b c = Success
-  { getData  ::  ResourceObject a b
+  { getData  ::  [ResourceObject a b]
   , getLinks ::  Maybe Links
   , getMeta  ::  Maybe (Meta c)
   } deriving (Show, Eq, Generic)

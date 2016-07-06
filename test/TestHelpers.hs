@@ -5,10 +5,10 @@ import qualified Data.Aeson.Encode.Pretty as AE
 import qualified Data.ByteString.Lazy.Char8 as BS
 import           Data.Maybe (fromJust)
 import qualified Data.Map as Map
+import           Data.Monoid ((<>))
 import           Data.Text (Text, pack)
 import           GHC.Generics
 import           Network.JSONApi.Document
-import           Network.JSONApi.Meta
 import           Network.URL (URL, importURL)
 
 prettyEncode :: AE.ToJSON a => a -> BS.ByteString
@@ -35,24 +35,24 @@ instance AE.FromJSON TestResourceObject
 instance AE.ToJSON TestMetaObject
 instance AE.FromJSON TestMetaObject
 
-toResourceObject :: TestResourceObject -> ResourceObject TestResourceObject String
+toResourceObject :: TestResourceObject -> ResourceObject TestResourceObject Bool
 toResourceObject obj =
   ResourceObject
     (ResourceId . pack . show . myId $ obj)
     (ResourceType "TestResourceObject")
     obj
-    (Just resourceObjectLinks)
-    (Just resourceObjectMetaData)
+    (Just $ objectLinks obj)
+    (Just $ objectMetaData obj)
 
-resourceObjectLinks :: Links
-resourceObjectLinks =
-  toLinks [ ("self", toURL "/me")
-          , ("related", toURL "/tacos/4")
+objectLinks :: TestResourceObject -> Links
+objectLinks obj =
+  toLinks [ ("self", toURL ("/me/" <> (show $ myId obj)))
+          , ("related", toURL ("/friends/" <> (show $ myId obj)))
           ]
 
-resourceObjectMetaData :: Meta String
-resourceObjectMetaData =
-   Meta . Map.fromList $ [ ("extraData", "twenty") ]
+objectMetaData :: TestResourceObject -> Meta Bool
+objectMetaData obj =
+   Meta . Map.fromList $ [ ("isOld", myAge obj > 50) ]
 
 linksObj :: Links
 linksObj = toLinks [ ("self", toURL "/things/1")
@@ -60,7 +60,10 @@ linksObj = toLinks [ ("self", toURL "/things/1")
                    ]
 
 testObject :: TestResourceObject
-testObject = TestResourceObject 1 "Fred Armisen" 49 "Pizza"
+testObject = TestResourceObject 1 "Fred Armisen" 51 "Pizza"
+
+testObject2 :: TestResourceObject
+testObject2 = TestResourceObject 2 "Carrie Brownstein" 35 "Lunch"
 
 testMetaObj :: Meta TestMetaObject
 testMetaObj =
