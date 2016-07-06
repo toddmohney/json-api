@@ -4,7 +4,6 @@
 module Users
   ( User (..)
   , toResourceObject
-  , users
   ) where
 
 import Data.Aeson.TH
@@ -29,13 +28,6 @@ data User = User
   } deriving (Eq, Show)
 
 $(deriveJSON defaultOptions ''User)
-
--- simulate a users repository
-users :: [User]
-users =
-  [ User 1 "Isaac" "Newton"
-  , User 2 "Albert" "Einstein"
-  ]
 
 -- helper function to convert a User into a resource object
 toResourceObject :: User -> ResourceObject User Text

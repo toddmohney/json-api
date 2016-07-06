@@ -33,7 +33,6 @@ library
 
   exposed-modules:
     Network.JSONApi.Document.Error
-    Network.JSONApi.Document.Success
     Network.JSONApi.Error
     Network.JSONApi.Document
     Network.JSONApi.Meta
