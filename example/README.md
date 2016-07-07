@@ -2,7 +2,7 @@
 
 ## List Resource Example
 
-```json
+```JSON
 GET /users
 
 {
@@ -46,7 +46,7 @@ GET /users
 
 ## Singleton Resource Example
 
-```json
+```JSON
 GET /users/1
 
 {
@@ -73,7 +73,7 @@ GET /users/1
 
 ## Error Example
 
-```json
+```JSON
 GET /users/3
 
 {
