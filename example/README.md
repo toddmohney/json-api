@@ -1,4 +1,29 @@
 
+#### Running the example
+
+There's a `stack.yaml` file in this directory, so you can run and build this
+example project in a familiar manner.
+
+```bash
+# pull your GHC deps
+stack setup
+
+# build the project
+stack build
+
+# run the webserver
+stack exec example-exe
+```
+
+At this point you should have a webserver running at `http://localhost:8080`
+You'll find available endpoints at the following urls:
+- [http://localhost:8080/users](http://localhost:8080/users) - responds with a list of User resources
+- [http://localhost:8080/users/1](http://localhost:8080/users/1) - responds with a singleton resource
+- [http://localhost:8080/users/2](http://localhost:8080/users/2) - responds with a singleton resource
+- [http://localhost:8080/users/3](http://localhost:8080/users/3) - responds with a 404 and error payload
+
+
+
 
 ## List Resource Example
 
