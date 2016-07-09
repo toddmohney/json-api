@@ -7,17 +7,20 @@ module Users
   ) where
 
 import Data.Aeson.TH
+import Data.Map as Map
 import Data.Maybe (fromJust)
 import Data.Monoid ((<>))
 import Data.Text (Text, pack)
 import Network.URL
-
+import Emails (Email)
+import qualified Emails as E
 import Network.JSONApi.Document
-  ( Links
+  ( Identifier (..)
+  , Links
+  , Relationship
   , Resource (..)
-  , ResourceId (..)
-  , ResourceType (..)
   , toLinks
+  , mkRelationship
   )
 
 -- Our resource
@@ -30,14 +33,14 @@ data User = User
 $(deriveJSON defaultOptions ''User)
 
 -- helper function to convert a User into a resource object
-toResource :: User -> Resource User Text
-toResource user =
-  Resource resourceId resourceType user resourceLinks resourceMetaData
+toResource :: (User, Email) -> Resource User Text
+toResource (user, email) =
+  Resource resourceId user resourceLinks resourceMetaData relationships
   where
-    resourceId       = ResourceId . pack . show . userId $ user
-    resourceType     = ResourceType "User"
+    resourceId       = Identifier (pack . show . userId $ user) "User"
     resourceLinks    = Just $ userLinks user
     resourceMetaData = Nothing
+    relationships    = Just $ Map.fromList [ ("email", userEmailRelationship email) ]
 
 -- helper function to build links for a User resource
 userLinks :: User -> Links
@@ -45,6 +48,12 @@ userLinks user = toLinks [ ("self", selfLink) ]
   where
     selfLink = toURL selfPath
     selfPath = "/users/" <> (show $ userId user)
+
+userEmailRelationship :: Email -> Relationship
+userEmailRelationship email =
+  fromJust $ mkRelationship
+    (Just $ E.mkResourceIdentifer email)
+    (Just $ E.mkLinks email)
 
 toURL :: String -> URL
 toURL = fromJust . importURL

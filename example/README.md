@@ -31,40 +31,62 @@ You'll find available endpoints at the following urls:
 GET /users
 
 {
-  "data":[
-    {
-      "attributes":{
-        "userFirstName":"Isaac",
-        "userLastName":"Newton",
-        "userId":1
+   "data" : [
+      {
+         "type" : "User",
+         "relationships" : {
+            "email" : {
+               "links" : {
+                  "self" : "/emails/42"
+               },
+               "data" : {
+                  "type" : "Email",
+                  "id" : "42"
+               }
+            }
+         },
+         "links" : {
+            "self" : "/users/1"
+         },
+         "meta" : null,
+         "id" : "1",
+         "attributes" : {
+            "userFirstName" : "Isaac",
+            "userLastName" : "Newton",
+            "userId" : 1
+         }
       },
-      "id":"1",
-      "meta":null,
-      "type":"User",
-      "links":{
-        "self":"/users/1"
+      {
+         "relationships" : {
+            "email" : {
+               "links" : {
+                  "self" : "/emails/88"
+               },
+               "data" : {
+                  "id" : "88",
+                  "type" : "Email"
+               }
+            }
+         },
+         "type" : "User",
+         "attributes" : {
+            "userFirstName" : "Albert",
+            "userLastName" : "Einstein",
+            "userId" : 2
+         },
+         "meta" : null,
+         "links" : {
+            "self" : "/users/2"
+         },
+         "id" : "2"
       }
-    },
-    {
-      "attributes":{
-        "userFirstName":"Albert",
-        "userLastName":"Einstein",
-        "userId":2
-      },
-      "id":"2",
-      "meta":null,
-      "type":"User",
-      "links":{
-        "self":"/users/2"
-      }
-    }
-  ],
-  "meta":{
-    "user-count":2
-  },
-  "links":{
-    "self":"/users"
-  }
+   ],
+   "meta" : {
+      "user-count" : 2
+   },
+   "links" : {
+      "self" : "/users"
+   }
 }
 ```
 
@@ -75,23 +97,34 @@ GET /users
 GET /users/1
 
 {
-  "data":{
-    "attributes":{
-      "userFirstName":"Isaac",
-      "userLastName":"Newton",
-      "userId":1
-    },
-    "id":"1",
-    "meta":null,
-    "type":"User",
-    "links":{
-      "self":"/users/1"
-    }
-  },
-  "meta":null,
-  "links":{
-    "self":"/users/1"
-  }
+   "meta" : null,
+   "data" : {
+      "id" : "1",
+      "attributes" : {
+         "userFirstName" : "Isaac",
+         "userId" : 1,
+         "userLastName" : "Newton"
+      },
+      "meta" : null,
+      "links" : {
+         "self" : "/users/1"
+      },
+      "type" : "User",
+      "relationships" : {
+         "email" : {
+            "links" : {
+               "self" : "/emails/42"
+            },
+            "data" : {
+               "id" : "42",
+               "type" : "Email"
+            }
+         }
+      }
+   },
+   "links" : {
+      "self" : "/users/1"
+   }
 }
 ```
 

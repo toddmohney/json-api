@@ -1,0 +1,88 @@
+{
+   "links" : {
+      "self" : "/users"
+   },
+   "meta" : {
+      "user-count" : 2
+   },
+   "data" : [
+      {
+         "links" : {
+            "self" : "/users/1"
+         },
+         "meta" : null,
+         "id" : "1",
+         "attributes" : {
+            "userLastName" : "Newton",
+            "userId" : 1,
+            "userFirstName" : "Isaac"
+         },
+         "type" : "User",
+         "relationships" : {
+            "email" : {
+               "links" : {
+                  "self" : "/emails/42"
+               },
+               "data" : {
+                  "id" : "42",
+                  "type" : "Email"
+               }
+            }
+         }
+      },
+      {
+         "links" : {
+            "self" : "/users/2"
+         },
+         "meta" : null,
+         "id" : "2",
+         "attributes" : {
+            "userLastName" : "Einstein",
+            "userId" : 2,
+            "userFirstName" : "Albert"
+         },
+         "relationships" : {
+            "email" : {
+               "links" : {
+                  "self" : "/emails/88"
+               },
+               "data" : {
+                  "type" : "Email",
+                  "id" : "88"
+               }
+            }
+         },
+         "type" : "User"
+      }
+   ]
+}
+{
+   "links" : {
+      "self" : "/users/1"
+   },
+   "meta" : null,
+   "data" : {
+      "id" : "1",
+      "attributes" : {
+         "userFirstName" : "Isaac",
+         "userId" : 1,
+         "userLastName" : "Newton"
+      },
+      "meta" : null,
+      "type" : "User",
+      "relationships" : {
+         "email" : {
+            "data" : {
+               "id" : "42",
+               "type" : "Email"
+            },
+            "links" : {
+               "self" : "/emails/42"
+            }
+         }
+      },
+      "links" : {
+         "self" : "/users/1"
+      }
+   }
+}

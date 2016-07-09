@@ -58,6 +58,15 @@ instance (FromJSON a, FromJSON b) => FromJSON (Resource a b) where
 
 
 
+
+{- |
+A type representing the Relationship between 2 entities
+
+A Relationship provides basic information for fetching further information
+about a related resource.
+
+Specification: <http://jsonapi.org/format/#document-resource-object-relationships>
+-}
 data Relationship = Relationship
   { _data :: Maybe Identifier
   , _links :: Maybe Links
@@ -71,8 +80,25 @@ instance FromJSON Relationship where
   parseJSON = AE.genericParseJSON
     AE.defaultOptions { AE.fieldLabelModifier = drop 1 }
 
+{- |
+Constructor function for creating a Relationship record
+
+A relationship must contain either an Identifier or a Links record
+-}
+mkRelationship :: Maybe Identifier -> Maybe Links -> Maybe Relationship
+mkRelationship Nothing Nothing = Nothing
+mkRelationship resId links = Just $ Relationship resId links
 
 
+
+{- |
+Identifiers are used to encapsulate the minimum amount of information
+to uniquely identify a resource.
+
+This object will be found at multiple levels of the JSON-API structure
+
+Specification: <http://jsonapi.org/format/#document-resource-identifier-objects>
+-}
 data Identifier = Identifier
   { _id   :: Text
   , _type :: Text
@@ -85,7 +111,3 @@ instance ToJSON Identifier where
 instance FromJSON Identifier where
   parseJSON = AE.genericParseJSON
     AE.defaultOptions { AE.fieldLabelModifier = drop 1 }
-
-mkRelationship :: Maybe Identifier -> Maybe Links -> Maybe Relationship
-mkRelationship Nothing Nothing = Nothing
-mkRelationship resId links = Just $ Relationship resId links

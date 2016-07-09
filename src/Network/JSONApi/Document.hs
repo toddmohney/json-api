@@ -8,11 +8,13 @@ module Network.JSONApi.Document
 , ErrorDocument (..)
 , E.Error (..)
 , ResourceData (..)
+, R.Relationship
 , R.Resource (..)
 , R.Identifier (..)
 , L.Links
 , M.Meta (..)
 , L.toLinks
+, R.mkRelationship
 ) where
 
 import Control.Monad (mzero)

@@ -14,20 +14,23 @@ import Network.JSONApi.Document
   , ErrorDocument (..)
   , Error (..)
   , Links
-  , Resource (..)
+  , ResourceData (..)
   )
 import qualified Network.JSONApi.Document as JSONApi
 import Network.URL
+import Emails
 import Users
 
 userShow :: Int -> Handler (Document User Text Int)
 userShow 1 =
   let user = User 1 "Isaac" "Newton"
-  in return $ showDocument user (showLinks 1)
+      email = Email 42 1 "isaac@newton.com"
+  in return $ showDocument (user, email) (showLinks 1)
 
 userShow 2 =
   let user = User 2 "Albert" "Einstein"
-  in return $ showDocument user (showLinks 2)
+      email = Email 88 2 "albert@einstein.com"
+  in return $ showDocument (user, email) (showLinks 2)
 
 userShow userId = throwError (resourceNotFound userId)
 
@@ -52,10 +55,10 @@ showLinks userId = JSONApi.toLinks [ ("self", selfLink) ]
     selfLink = toURL ("/users/" <> (show userId))
 
 -- Builds the repsonse Document for the 'show' action
-showDocument :: User -> Links -> Document User Text Int
-showDocument usr links =
+showDocument :: (User, Email) -> Links -> Document User Text Int
+showDocument userWithEmail links =
   Document
-    (Singleton $ toResource usr)
+    (Singleton $ toResource userWithEmail)
     (Just links)
     Nothing
 
