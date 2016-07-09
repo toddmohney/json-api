@@ -7,10 +7,9 @@ module Network.JSONApi.Document
 ( Document (..)
 , ErrorDocument (..)
 , E.Error (..)
-, Resource (..)
-, RO.ResourceId (..)
-, RO.ResourceObject (..)
-, RO.ResourceType (..)
+, ResourceData (..)
+, R.Resource (..)
+, R.Identifier (..)
 , L.Links
 , M.Meta (..)
 , L.toLinks
@@ -29,8 +28,8 @@ import qualified GHC.Generics as G
 import qualified Network.JSONApi.Error as E
 import Network.JSONApi.Link as L
 import Network.JSONApi.Meta as M
-import Network.JSONApi.ResourceObject (ResourceObject)
-import qualified Network.JSONApi.ResourceObject as RO
+import Network.JSONApi.Resource (Resource)
+import qualified Network.JSONApi.Resource as R
 
 {- |
 The @Document@ type represents the top-level JSON-API requirement.
@@ -41,28 +40,28 @@ or a list of resources. See 'Resource' for the construction.
 For more information see: <http://jsonapi.org/format/#document-top-level>
 -}
 data Document a b c = Document
-  { _data  ::  Resource a b
+  { _data  ::  ResourceData a b
   , _links ::  Maybe Links
   , _meta  ::  Maybe (Meta c)
   } deriving (Show, Eq, G.Generic)
 
 {- |
-The @Resource@ type encapsulates the underlying 'ResourceObject'
+The @Resource@ type encapsulates the underlying 'Resource'
 
 Included in the top-level 'Document', the @Resource@ may be either
 a singleton resource or a list.
 
 For more information see: <http://jsonapi.org/format/#document-top-level>
 -}
-data Resource a b = Singleton (ResourceObject a b)
-                  | List [ResourceObject a b]
-                  deriving (Show, Eq, G.Generic)
+data ResourceData a b = Singleton (Resource a b)
+                      | List [Resource a b]
+                      deriving (Show, Eq, G.Generic)
 
-instance (ToJSON a, ToJSON b) => ToJSON (Resource a b) where
+instance (ToJSON a, ToJSON b) => ToJSON (ResourceData a b) where
   toJSON (Singleton res) = AE.toJSON res
   toJSON (List res)      = AE.toJSON res
 
-instance (FromJSON a, FromJSON b) => FromJSON (Resource a b) where
+instance (FromJSON a, FromJSON b) => FromJSON (ResourceData a b) where
   parseJSON (AE.Object v) = Singleton <$> (AE.parseJSON (AE.Object v))
   parseJSON (AE.Array v)  = List <$> (AE.parseJSON (AE.Array v))
   parseJSON _             = mzero

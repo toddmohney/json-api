@@ -51,16 +51,16 @@ to the [JSON-API specification](http://jsonapi.org/) like so:
 mkDocument :: User -> Links -> Document User Text Int
 mkDocument usr links =
   Document
-    (Singleton $ toResourceObject usr)
+    (Singleton $ toResource usr)
     (Just links)
     Nothing
 
 -- Helper function to convert a User into a resource object
 -- This could be our canonical serialization function for a User in any
 -- response payload
-toResourceObject :: User -> ResourceObject User Text
-toResourceObject user =
-  ResourceObject resourceId resourceType user resourceLinks resourceMetaData
+toResource :: User -> Resource User Text
+toResource user =
+  Resource resourceId resourceType user resourceLinks resourceMetaData
   where
     resourceId       = ResourceId . pack . show . userId $ user
     resourceType     = ResourceType "User"

@@ -3,7 +3,7 @@
 
 module Users
   ( User (..)
-  , toResourceObject
+  , toResource
   ) where
 
 import Data.Aeson.TH
@@ -14,7 +14,7 @@ import Network.URL
 
 import Network.JSONApi.Document
   ( Links
-  , ResourceObject (..)
+  , Resource (..)
   , ResourceId (..)
   , ResourceType (..)
   , toLinks
@@ -30,9 +30,9 @@ data User = User
 $(deriveJSON defaultOptions ''User)
 
 -- helper function to convert a User into a resource object
-toResourceObject :: User -> ResourceObject User Text
-toResourceObject user =
-  ResourceObject resourceId resourceType user resourceLinks resourceMetaData
+toResource :: User -> Resource User Text
+toResource user =
+  Resource resourceId resourceType user resourceLinks resourceMetaData
   where
     resourceId       = ResourceId . pack . show . userId $ user
     resourceType     = ResourceType "User"

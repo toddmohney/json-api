@@ -42,7 +42,7 @@ indexMetaData usrs =
 indexDocument :: [User] -> Links -> Meta Int -> Document User Text Int
 indexDocument usrs links meta =
   Document
-    (List (map toResourceObject usrs))
+    (List (map toResource usrs))
     (Just links)
     (Just meta)
 

@@ -17,40 +17,40 @@ prettyEncode = AE.encodePretty' prettyConfig
 prettyConfig :: AE.Config
 prettyConfig = AE.Config { AE.confIndent = 2, AE.confCompare = mempty }
 
-data TestResourceObject =
-  TestResourceObject { myId :: Int
-                     , myName :: Text
-                     , myAge :: Int
-                     , myFavoriteFood :: Text
-                     } deriving (Show, G.Generic)
+data TestResource = TestResource
+  { myId :: Int
+  , myName :: Text
+  , myAge :: Int
+  , myFavoriteFood :: Text
+  } deriving (Show, G.Generic)
 
-data TestMetaObject =
-  TestMetaObject { totalPages :: Int
-                 , isSuperFun :: Bool
-                 } deriving (Show, G.Generic)
+data TestMetaObject = TestMetaObject
+  { totalPages :: Int
+  , isSuperFun :: Bool
+  } deriving (Show, G.Generic)
 
-instance AE.ToJSON TestResourceObject
-instance AE.FromJSON TestResourceObject
+instance AE.ToJSON TestResource
+instance AE.FromJSON TestResource
 
 instance AE.ToJSON TestMetaObject
 instance AE.FromJSON TestMetaObject
 
-toResourceObject :: TestResourceObject -> ResourceObject TestResourceObject Bool
-toResourceObject obj =
-  ResourceObject
-    (ResourceId . pack . show . myId $ obj)
-    (ResourceType "TestResourceObject")
+toResource :: TestResource -> Resource TestResource Bool
+toResource obj =
+  Resource
+    (Identifier (pack . show . myId $ obj) "TestResource")
     obj
     (Just $ objectLinks obj)
     (Just $ objectMetaData obj)
+    Nothing
 
-objectLinks :: TestResourceObject -> Links
+objectLinks :: TestResource -> Links
 objectLinks obj =
   toLinks [ ("self", toURL ("/me/" <> (show $ myId obj)))
           , ("related", toURL ("/friends/" <> (show $ myId obj)))
           ]
 
-objectMetaData :: TestResourceObject -> Meta Bool
+objectMetaData :: TestResource -> Meta Bool
 objectMetaData obj =
    Meta . Map.fromList $ [ ("isOld", myAge obj > 50) ]
 
@@ -59,11 +59,11 @@ linksObj = toLinks [ ("self", toURL "/things/1")
                    , ("related", toURL "http://some.domain.com/other/things/1")
                    ]
 
-testObject :: TestResourceObject
-testObject = TestResourceObject 1 "Fred Armisen" 51 "Pizza"
+testObject :: TestResource
+testObject = TestResource 1 "Fred Armisen" 51 "Pizza"
 
-testObject2 :: TestResourceObject
-testObject2 = TestResourceObject 2 "Carrie Brownstein" 35 "Lunch"
+testObject2 :: TestResource
+testObject2 = TestResource 2 "Carrie Brownstein" 35 "Lunch"
 
 testMetaObj :: Meta TestMetaObject
 testMetaObj =

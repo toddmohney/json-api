@@ -19,7 +19,7 @@ spec :: Spec
 spec =
   describe "JSON serialization" $ do
     it "JSON encodes/decodes a singleton resource" $ do
-      let resource = toResourceObject testObject
+      let resource = toResource testObject
       let jsonApiObj = Document (Singleton resource) emptyLinks emptyMeta
       let encodedJson = encodeDocumentObject jsonApiObj
       let decodedJson = decodeDocumentObject encodedJson
@@ -28,7 +28,7 @@ spec =
       isRight decodedJson `shouldBe` True
 
     it "JSON encodes/decodes a list of resources" $ do
-      let resources = [toResourceObject testObject, toResourceObject testObject2]
+      let resources = [toResource testObject, toResource testObject2]
       let jsonApiObj = Document (List resources) emptyLinks emptyMeta
       let encodedJson = encodeDocumentObject jsonApiObj
       let decodedJson = decodeDocumentObject encodedJson
@@ -37,7 +37,7 @@ spec =
       isRight decodedJson `shouldBe` True
 
     it "contains the allowable top-level keys" $ do
-      let resource = toResourceObject testObject
+      let resource = toResource testObject
       let jsonApiObj = Document (Singleton resource) emptyLinks emptyMeta
       let encodedJson = encodeDocumentObject jsonApiObj
       let dataObject = encodedJson ^? Lens.key "data"
@@ -48,7 +48,7 @@ spec =
       isJust metaObject `shouldBe` True
 
     it "allows an optional top-level links object" $ do
-      let resource = toResourceObject testObject
+      let resource = toResource testObject
       let jsonApiObj = Document (Singleton resource) (Just linksObj) emptyMeta
       let encodedJson = encodeDocumentObject jsonApiObj
       let decodedJson = decodeDocumentObject encodedJson
@@ -57,7 +57,7 @@ spec =
       isRight decodedJson `shouldBe` True
 
     it "allows an optional top-level meta object" $ do
-      let resource = toResourceObject testObject
+      let resource = toResource testObject
       let jsonApiObj = Document (Singleton resource) emptyLinks (Just testMetaObj)
       let encodedJson = encodeDocumentObject jsonApiObj
       let decodedJson = decodeDocumentObject encodedJson
@@ -66,7 +66,7 @@ spec =
       isRight decodedJson `shouldBe` True
 
     it "allows an optional top-level meta object" $ do
-      let resource = toResourceObject testObject
+      let resource = toResource testObject
       let jsonApiObj = Document (Singleton resource) (Just linksObj) (Just testMetaObj)
       let encodedJson = encodeDocumentObject jsonApiObj
       let decodedJson = decodeDocumentObject encodedJson
@@ -75,7 +75,7 @@ spec =
       isRight decodedJson `shouldBe` True
 
 decodeDocumentObject :: ByteString
-                    -> Either String (Document TestResourceObject (Maybe Bool) (Maybe TestMetaObject))
+                    -> Either String (Document TestResource (Maybe Bool) (Maybe TestMetaObject))
 decodeDocumentObject = AE.eitherDecode
 
 encodeDocumentObject :: (ToJSON a, ToJSON b, ToJSON c) => Document a b c -> ByteString

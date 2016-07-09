@@ -55,7 +55,7 @@ showLinks userId = JSONApi.toLinks [ ("self", selfLink) ]
 showDocument :: User -> Links -> Document User Text Int
 showDocument usr links =
   Document
-    (Singleton $ toResourceObject usr)
+    (Singleton $ toResource usr)
     (Just links)
     Nothing
 
