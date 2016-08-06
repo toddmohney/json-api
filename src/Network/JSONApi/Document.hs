@@ -26,6 +26,8 @@ import Data.Aeson
   , (.:?)
   )
 import qualified Data.Aeson as AE
+import Data.Map (Map)
+import Data.Text (Text)
 import qualified GHC.Generics as G
 import qualified Network.JSONApi.Error as E
 import Network.JSONApi.Link as L
@@ -45,6 +47,7 @@ data Document a b c = Document
   { _data  ::  ResourceData a b
   , _links ::  Maybe Links
   , _meta  ::  Maybe (Meta c)
+  , _included :: [ Map Text (Resource a b) ]
   } deriving (Show, Eq, G.Generic)
 
 {- |
@@ -69,15 +72,17 @@ instance (FromJSON a, FromJSON b) => FromJSON (ResourceData a b) where
   parseJSON _             = mzero
 
 instance (ToJSON a, ToJSON b, ToJSON c) => ToJSON (Document a b c) where
-  toJSON (Document (List res) links meta) =
+  toJSON (Document (List res) links meta included) =
     AE.object [ "data"  .= res
               , "links" .= links
               , "meta"  .= meta
+              , "included" .= included
               ]
-  toJSON (Document (Singleton res) links meta) =
+  toJSON (Document (Singleton res) links meta included) =
     AE.object [ "data"  .= res
               , "links" .= links
               , "meta"  .= meta
+              , "included" .= included
               ]
 
 instance (FromJSON a, FromJSON b, FromJSON c) => FromJSON (Document a b c) where
@@ -85,7 +90,8 @@ instance (FromJSON a, FromJSON b, FromJSON c) => FromJSON (Document a b c) where
     d <- v .:  "data"
     l <- v .:? "links"
     m <- v .:? "meta"
-    return (Document d l m)
+    i <- v .: "included"
+    return (Document d l m i)
 
 {- |
 The @ErrorDocument@ type represents the alternative form of the top-level

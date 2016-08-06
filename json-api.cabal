@@ -94,7 +94,6 @@ test-suite json-api-test
     -Wall
     -fwarn-unused-matches
     -fwarn-unused-binds
-    -fwarn-unused-imports
 
   hs-source-dirs: test
 

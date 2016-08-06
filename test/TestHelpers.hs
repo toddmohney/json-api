@@ -17,11 +17,22 @@ prettyEncode = AE.encodePretty' prettyConfig
 prettyConfig :: AE.Config
 prettyConfig = AE.Config { AE.confIndent = 2, AE.confCompare = mempty }
 
+class HasIdentifiers a where
+  uniqueId :: a -> Int
+  typeDescriptor :: a -> Text
+
 data TestResource = TestResource
   { myId :: Int
   , myName :: Text
   , myAge :: Int
   , myFavoriteFood :: Text
+  } deriving (Show, G.Generic)
+
+data OtherTestResource = OtherTestResource
+  { myFavoriteNumber :: Int
+  , myJob :: Text
+  , myPay :: Int
+  , myEmployer :: Text
   } deriving (Show, G.Generic)
 
 data TestMetaObject = TestMetaObject
@@ -31,6 +42,15 @@ data TestMetaObject = TestMetaObject
 
 instance AE.ToJSON TestResource
 instance AE.FromJSON TestResource
+instance HasIdentifiers TestResource where
+  uniqueId = myId
+  typeDescriptor _ = "TestResource"
+
+instance AE.ToJSON OtherTestResource
+instance AE.FromJSON OtherTestResource
+instance HasIdentifiers OtherTestResource where
+  uniqueId = myFavoriteNumber
+  typeDescriptor _ = "OtherTestResource"
 
 instance AE.ToJSON TestMetaObject
 instance AE.FromJSON TestMetaObject
@@ -42,6 +62,18 @@ toResource obj =
     obj
     (Just $ objectLinks obj)
     (Just $ objectMetaData obj)
+    Nothing
+
+toResource' :: (HasIdentifiers a) => a
+            -> Maybe Links
+            -> Maybe (Meta Bool)
+            -> Resource a Bool
+toResource' obj links meta =
+  Resource
+    (Identifier (pack . show . uniqueId $ obj) (typeDescriptor obj))
+    obj
+    links
+    meta
     Nothing
 
 objectLinks :: TestResource -> Links
@@ -64,6 +96,9 @@ testObject = TestResource 1 "Fred Armisen" 51 "Pizza"
 
 testObject2 :: TestResource
 testObject2 = TestResource 2 "Carrie Brownstein" 35 "Lunch"
+
+otherTestObject :: OtherTestResource
+otherTestObject = OtherTestResource 999 "Atom Smasher" 100 "Atom Smashers, Inc"
 
 testMetaObj :: Meta TestMetaObject
 testMetaObj =
