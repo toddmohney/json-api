@@ -65,6 +65,9 @@ instance (FromJSON a) => FromJSON (Document a) where
     i <- v .: "included"
     return (Document d l m i)
 
+{- |
+Constructor function for the Document data type.
+-}
 mkDocument :: ResourcefulEntity a =>
               [a]
            -> Maybe Links
