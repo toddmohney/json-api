@@ -7,17 +7,15 @@ module Lib
     ( startApp
     ) where
 
-import Data.Text (Text)
 import Network.Wai
 import Network.Wai.Handler.Warp
-import Servant
-
 import Network.JSONApi.Document (Document)
+import Servant
 import Users
 import qualified Users.Controller as Controller
 
-type API = "users" :> Get '[JSON] (Document User Text Int)
-      :<|> "users" :> Capture "id" Int :> Get '[JSON] (Document User Text Int)
+type API = "users" :> Get '[JSON] (Document User)
+      :<|> "users" :> Capture "id" Int :> Get '[JSON] (Document User)
 
 startApp :: IO ()
 startApp = run 8080 app

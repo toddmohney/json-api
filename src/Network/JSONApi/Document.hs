@@ -4,7 +4,7 @@ Entry-point module for this package.
 Contains representations of the top-level JSON-API document structure.
 -}
 module Network.JSONApi.Document
-( Document (..)
+( Document
 , ErrorDocument (..)
 , ResourceData (..)
 , mkDocument
@@ -20,9 +20,6 @@ import Data.Aeson
   , (.:?)
   )
 import qualified Data.Aeson as AE
-import Data.Map (Map)
-import qualified Data.Map as Map
-import Data.Text (Text)
 import qualified GHC.Generics as G
 import qualified Network.JSONApi.Error as E
 import Network.JSONApi.Link as L
@@ -75,7 +72,12 @@ mkDocument :: ResourcefulEntity a =>
            -> [Value]
            -> Document a
 mkDocument res links meta included =
-  Document (toResourceData res) links meta included
+  Document
+    { _data = toResourceData res
+    , _links = links
+    , _meta = meta
+    , _included = included
+    }
 
 toResourceData :: ResourcefulEntity a => [a] -> ResourceData a
 toResourceData (r:[]) = Singleton (R.toResource r)

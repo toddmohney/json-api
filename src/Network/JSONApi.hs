@@ -4,7 +4,7 @@ Entry-point module for this package.
 Contains representations of the top-level JSON-API document structure.
 -}
 module Network.JSONApi
-  ( D.Document (..)
+  ( D.Document
   , D.ErrorDocument (..)
   , E.Error (..)
   , D.ResourceData (..)
@@ -14,9 +14,11 @@ module Network.JSONApi
   , R.Identifier (..)
   , L.Links
   , M.Meta (..)
+  , M.MetaObject (..)
   , L.toLinks
   , R.mkRelationship
   , D.mkDocument
+  , M.mkMeta
   ) where
 
 import qualified Network.JSONApi.Error as E

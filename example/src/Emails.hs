@@ -12,7 +12,7 @@ import Data.Maybe (fromJust)
 import Data.Monoid ((<>))
 import Data.Text (Text, pack)
 import Network.URL
-import Network.JSONApi.Document
+import Network.JSONApi
   ( Identifier (..)
   , Links
   , toLinks

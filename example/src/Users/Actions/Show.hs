@@ -6,31 +6,28 @@ import qualified Data.Aeson as AE
 import Data.Default (def)
 import Data.Maybe (fromJust)
 import Data.Monoid ((<>))
-import Data.Text (Text, pack)
+import Data.Text (pack)
 import Servant (Handler, ServantErr (..), throwError, err404)
-
-import Network.JSONApi.Document
-  ( Document (..)
+import Network.JSONApi
+  ( Document
   , ErrorDocument (..)
   , Error (..)
   , Links
-  , ResourceData (..)
   )
-import qualified Network.JSONApi.Document as JSONApi
+import qualified Network.JSONApi as JSONApi
 import Network.URL
-import Emails
 import Users
 
-userShow :: Int -> Handler (Document User Text Int)
+userShow :: Int -> Handler (Document User)
 userShow 1 =
   let user = User 1 "Isaac" "Newton"
-      email = Email 42 1 "isaac@newton.com"
-  in return $ showDocument (user, email) (showLinks 1)
+      {- email = Email 42 1 "isaac@newton.com" -}
+  in return $ showDocument user (showLinks 1)
 
 userShow 2 =
   let user = User 2 "Albert" "Einstein"
-      email = Email 88 2 "albert@einstein.com"
-  in return $ showDocument (user, email) (showLinks 2)
+      {- email = Email 88 2 "albert@einstein.com" -}
+  in return $ showDocument user (showLinks 2)
 
 userShow userId = throwError (resourceNotFound userId)
 
@@ -38,7 +35,7 @@ userShow userId = throwError (resourceNotFound userId)
 resourceNotFound :: Int -> ServantErr
 resourceNotFound resourceId = err404 { errBody = AE.encode errorDocument }
   where
-    errorDocument :: ErrorDocument Int Int
+    errorDocument :: ErrorDocument Int
     errorDocument = ErrorDocument errorObj (Just (showLinks resourceId)) Nothing
 
     errorObj :: Error Int
@@ -55,12 +52,13 @@ showLinks userId = JSONApi.toLinks [ ("self", selfLink) ]
     selfLink = toURL ("/users/" <> (show userId))
 
 -- Builds the repsonse Document for the 'show' action
-showDocument :: (User, Email) -> Links -> Document User Text Int
-showDocument userWithEmail links =
-  Document
-    (Singleton $ toResource userWithEmail)
+showDocument :: User -> Links -> Document User
+showDocument user links =
+  JSONApi.mkDocument
+    [user]
     (Just links)
     Nothing
+    []
 
 toURL :: String -> URL
 toURL = fromJust . importURL

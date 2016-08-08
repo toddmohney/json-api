@@ -3,7 +3,11 @@ Module representing a JSON-API meta object.
 
 Specification: <http://jsonapi.org/format/#document-meta>
 -}
-module Network.JSONApi.Meta where
+module Network.JSONApi.Meta
+( Meta (..)
+, MetaObject (..)
+, mkMeta
+)where
 
 import Data.Aeson (ToJSON, FromJSON, Object, toJSON)
 import Data.HashMap.Strict as HM
