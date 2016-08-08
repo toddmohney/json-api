@@ -21,7 +21,7 @@ spec :: Spec
 spec =
   describe "ToResource" $
     it "can be encoded and decoded from JSON" $ do
-      let encodedJson = BS.unpack . prettyEncode $ toResource testObject
+      let encodedJson = BS.unpack . prettyEncode $ toTestResource testObject
       let decodedJson = AE.decode (BS.pack encodedJson) :: Maybe (Resource TestObject (Maybe Int))
       isJust decodedJson `shouldBe` True
       {- putStrLn encodedJson -}
@@ -37,32 +37,32 @@ data TestObject = TestObject
 instance AE.ToJSON TestObject
 instance AE.FromJSON TestObject
 
-toResource :: TestObject -> Resource TestObject Int
-toResource obj =
+toTestResource :: TestObject -> Resource TestObject Int
+toTestResource obj =
   Resource
     (Identifier (pack . show . myId $ obj) "TestObject")
     obj
-    (Just resourceLinks)
-    (Just resourceMetaData)
-    (Just resourceRelationships)
+    (Just myResourceLinks)
+    (Just myResourceMetaData)
+    (Just myResourceRelationships)
 
-resourceRelationships :: Map Text Relationship
-resourceRelationships = Map.fromList $ [ ("friends", relationship) ]
+myResourceRelationships :: Map Text Relationship
+myResourceRelationships = Map.fromList $ [ ("friends", relationship) ]
 
 relationship :: Relationship
 relationship =
   fromJust $ mkRelationship
     (Just $ Identifier "42" "FriendOfTestObject")
-    (Just resourceLinks)
+    (Just myResourceLinks)
 
-resourceLinks :: Links
-resourceLinks =
+myResourceLinks :: Links
+myResourceLinks =
   toLinks [ ("self", toURL "/me")
           , ("related", toURL "/tacos/4")
           ]
 
-resourceMetaData :: Meta Int
-resourceMetaData = Meta . Map.fromList $ [ ("extraData", 20) ]
+myResourceMetaData :: Meta Int
+myResourceMetaData = Meta . Map.fromList $ [ ("extraData", 20) ]
 
 toURL :: String -> URL
 toURL = fromJust . importURL

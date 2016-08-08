@@ -6,6 +6,7 @@ Specification: <http://jsonapi.org/format/#document-resource-objects>
 module Network.JSONApi.Resource
 ( Identifier (..)
 , Resource (..)
+, ResourcefulEntity (..)
 , Relationship
 , mkRelationship
 ) where
@@ -19,6 +20,25 @@ import qualified GHC.Generics as G
 import Network.JSONApi.Link (Links)
 import Network.JSONApi.Meta (Meta)
 import Prelude hiding (id)
+
+class (ToJSON a, FromJSON a) => ResourcefulEntity a where
+  resourceIdentifier :: a -> Text
+  resourceType :: a -> Text
+  resourceLinks :: a -> Maybe Links
+  resourceMetaData :: a -> Maybe (Meta b)
+  resourceRelationships :: a -> Maybe (Map Text Relationship)
+
+  fromResource :: Resource a b -> a
+  fromResource = getResource
+
+  toResource :: a -> Resource a b
+  toResource a =
+    Resource
+      (Identifier (resourceIdentifier a) (resourceType a))
+      a
+      (resourceLinks a)
+      (resourceMetaData a)
+      (resourceRelationships a)
 
 {- |
 Type representing a JSON-API resource object.

@@ -96,6 +96,6 @@ encodeDocumentObject :: (ToJSON a, ToJSON b, ToJSON c) => Document a b c -> Byte
 encodeDocumentObject = prettyEncode
 
 includedResources :: [ Map Text (Resource TestResource Bool) ]
-includedResources = [ Map.singleton "TestResource" (toResource testObject)
+includedResources = [ Map.singleton "TestResource" (toResource testObject2)
                     ]
 
