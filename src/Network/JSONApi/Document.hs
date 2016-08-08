@@ -45,15 +45,15 @@ or a list of resources. See 'Resource' for the construction.
 
 For more information see: <http://jsonapi.org/format/#document-top-level>
 -}
-data Document a b c = Document
-  { _data  ::  ResourceData a b
+data Document a = Document
+  { _data  ::  ResourceData a
   , _links ::  Maybe Links
-  , _meta  ::  Maybe (Meta c)
-  , _included :: [ Map Text (Resource a b) ]
+  , _meta  ::  Maybe Meta
+  , _included :: [ Map Text (Resource a) ]
   } deriving (Show, Eq, G.Generic)
 
-instance (ToJSON a, ToJSON b, ToJSON c)
-      => ToJSON (Document a b c) where
+instance (ToJSON a)
+      => ToJSON (Document a) where
   toJSON (Document (List res) links meta included) =
     AE.object [ "data"  .= res
               , "links" .= links
@@ -67,7 +67,7 @@ instance (ToJSON a, ToJSON b, ToJSON c)
               , "included" .= included
               ]
 
-instance (FromJSON a, FromJSON b, FromJSON c) => FromJSON (Document a b c) where
+instance (FromJSON a) => FromJSON (Document a) where
   parseJSON = AE.withObject "document" $ \v -> do
     d <- v .:  "data"
     l <- v .:? "links"
@@ -78,17 +78,17 @@ instance (FromJSON a, FromJSON b, FromJSON c) => FromJSON (Document a b c) where
 mkDocument :: ResourcefulEntity a =>
               [a]
            -> Maybe Links
-           -> Maybe (Meta c)
+           -> Maybe Meta
            -> [a]
-           -> Document a b c
+           -> Document a
 mkDocument res links meta included =
   Document (toResourceData res) links meta (toIncludedResources included)
 
-toResourceData :: ResourcefulEntity a => [a] -> ResourceData a b
+toResourceData :: ResourcefulEntity a => [a] -> ResourceData a
 toResourceData (r:[]) = Singleton (R.toResource r)
 toResourceData rs      = List (map R.toResource rs)
 
-toIncludedResources :: ResourcefulEntity a => [a] -> [ Map Text (Resource a b) ]
+toIncludedResources :: ResourcefulEntity a => [a] -> [ Map Text (Resource a) ]
 toIncludedResources entities =
   foldl (\acc ent -> acc ++ [Map.singleton (R.resourceType ent) (R.toResource ent)]) [] entities
 
@@ -100,15 +100,15 @@ a singleton resource or a list.
 
 For more information see: <http://jsonapi.org/format/#document-top-level>
 -}
-data ResourceData a b = Singleton (Resource a b)
-                      | List [Resource a b]
+data ResourceData a = Singleton (Resource a)
+                      | List [ Resource a ]
                       deriving (Show, Eq, G.Generic)
 
-instance (ToJSON a, ToJSON b) => ToJSON (ResourceData a b) where
+instance (ToJSON a) => ToJSON (ResourceData a) where
   toJSON (Singleton res) = AE.toJSON res
   toJSON (List res)      = AE.toJSON res
 
-instance (FromJSON a, FromJSON b) => FromJSON (ResourceData a b) where
+instance (FromJSON a) => FromJSON (ResourceData a) where
   parseJSON (AE.Object v) = Singleton <$> (AE.parseJSON (AE.Object v))
   parseJSON (AE.Array v)  = List <$> (AE.parseJSON (AE.Array v))
   parseJSON _             = mzero
@@ -122,20 +122,20 @@ error detail.
 
 For more information see: <http://jsonapi.org/format/#errors>
 -}
-data ErrorDocument a b = ErrorDocument
+data ErrorDocument a = ErrorDocument
   { _error :: E.Error a
   , _errorLinks :: Maybe Links
-  , _errorMeta  :: Maybe (Meta b)
+  , _errorMeta  :: Maybe Meta
   } deriving (Show, Eq, G.Generic)
 
-instance (ToJSON a, ToJSON b) => ToJSON (ErrorDocument a b) where
+instance (ToJSON a) => ToJSON (ErrorDocument a) where
   toJSON (ErrorDocument err links meta) =
     AE.object [ "error" .= err
               , "links" .= links
               , "meta"  .= meta
               ]
 
-instance (FromJSON a, FromJSON b) => FromJSON (ErrorDocument a b) where
+instance (FromJSON a) => FromJSON (ErrorDocument a) where
   parseJSON = AE.withObject "error" $ \v ->
     ErrorDocument
       <$> v .: "error"

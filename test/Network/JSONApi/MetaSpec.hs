@@ -1,9 +1,13 @@
 module Network.JSONApi.MetaSpec where
 
+import           Data.Aeson (ToJSON)
 import qualified Data.Aeson as AE
 import qualified Data.ByteString.Lazy.Char8 as BS
-import qualified Data.Map as Map
+import qualified Data.HashMap.Strict as HM
 import           Data.Maybe (isJust)
+import           Data.Monoid ((<>))
+import           Data.Text (Text)
+import           GHC.Generics (Generic)
 import           Network.JSONApi.Meta
 import           TestHelpers (prettyEncode)
 import           Test.Hspec
@@ -12,22 +16,55 @@ main :: IO ()
 main = hspec spec
 
 spec :: Spec
-spec =
-  describe "serialization" $
-    -- is there a compelling reason to test this?
-    --
-    it "serializes/deserializes primitive values" $ do
-      let intTestData = Meta . Map.fromList $ [ ("numData", 5 :: Int) ]
-      let encIntJson = BS.unpack . prettyEncode $ intTestData
-      let decIntJson = AE.decode (BS.pack encIntJson) :: Maybe (Meta Int)
+spec = do
+  describe "serialization" $ do
+    it "serializes/deserializes maps simple heterogeneous values" $ do
+      let testMeta = Meta . HM.fromList $ [ ("numData", AE.toJSON (5 :: Int))
+                                          , ("strData", AE.toJSON ("hello" :: String))
+                                          ]
+      let encIntJson = BS.unpack . prettyEncode $ testMeta
+      let decIntJson = AE.decode (BS.pack encIntJson) :: Maybe Meta
       isJust decIntJson `shouldBe` True
-      -- putStrLn (keys encIntJson)
-      -- putStrLn $ show . fromJust $ decIntJson
 
-      let boolTestData = Meta . Map.fromList $ [ ("boolData", True) ]
+    it "serializes/deserializes heterogeneous maps of ToJSON types" $ do
+      let boolTestData = Meta . HM.fromList $ [ ("objData", AE.toJSON testObject)
+                                              , ("otherObjData", AE.toJSON otherTestObject)
+                                              ]
       let encBoolJson = BS.unpack . prettyEncode $ boolTestData
-      let decBoolJson = AE.decode (BS.pack encBoolJson) :: Maybe (Meta Bool)
+      let decBoolJson = AE.decode (BS.pack encBoolJson) :: Maybe Meta
       isJust decBoolJson `shouldBe` True
-      -- putStrLn (keys encBoolJson)
-      -- putStrLn $ show . fromJust $ decBoolJson
 
+  describe "monoid instance" $
+    it "combines" $ do
+      let monoidialConstruction = mkMeta testObject <> mkMeta otherTestObject
+      let manualConstruction = Meta . HM.fromList $ [ ("testObject", AE.toJSON testObject)
+                                                    , ("otherTestObject", AE.toJSON otherTestObject)
+                                                    ]
+      monoidialConstruction `shouldBe` manualConstruction
+
+data TestObject = TestObject
+  { myID :: Int
+  , myAge :: Int
+  , myName :: Text
+  } deriving (Show, Generic)
+
+instance ToJSON TestObject
+instance MetaObject TestObject where
+  typeName _ = "testObject"
+
+data OtherTestObject = OtherTestObject
+  { myFavoriteRestaurant :: Text
+  , myDogsName :: Text
+  , myDogsAge :: Int
+  , myDogsFavoriteRestarant :: Text
+  } deriving (Show, Generic)
+
+instance ToJSON OtherTestObject
+instance MetaObject OtherTestObject where
+  typeName _ = "otherTestObject"
+
+testObject :: TestObject
+testObject = TestObject 99 102 "Zapp Brannigan"
+
+otherTestObject :: OtherTestObject
+otherTestObject = OtherTestObject "Olive Garden" "Woofers" 29 "TGIFriday's"

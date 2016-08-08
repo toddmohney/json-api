@@ -31,7 +31,7 @@ data Error a =
         , code   :: Maybe Text
         , title  :: Maybe Text
         , detail :: Maybe Text
-        , meta   :: Maybe (Meta a)
+        , meta   :: Maybe Meta
         }
   deriving (Show, Eq, G.Generic)
 

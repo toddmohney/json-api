@@ -25,13 +25,13 @@ class (ToJSON a, FromJSON a) => ResourcefulEntity a where
   resourceIdentifier :: a -> Text
   resourceType :: a -> Text
   resourceLinks :: a -> Maybe Links
-  resourceMetaData :: a -> Maybe (Meta b)
+  resourceMetaData :: a -> Maybe Meta
   resourceRelationships :: a -> Maybe (Map Text Relationship)
 
-  fromResource :: Resource a b -> a
+  fromResource :: Resource a -> a
   fromResource = getResource
 
-  toResource :: a -> Resource a b
+  toResource :: a -> Resource a
   toResource a =
     Resource
       (Identifier (resourceIdentifier a) (resourceType a))
@@ -48,15 +48,15 @@ resource.
 
 Specification: <http://jsonapi.org/format/#document-resource-objects>
 -}
-data Resource a b = Resource
+data Resource a = Resource
   { getIdentifier :: Identifier
   , getResource :: a
   , getLinks :: Maybe Links
-  , getMetaData :: Maybe (Meta b)
+  , getMetaData :: Maybe Meta
   , getRelationships :: Maybe (Map Text Relationship)
   } deriving (Show, Eq, G.Generic)
 
-instance (ToJSON a, ToJSON b) => ToJSON (Resource a b) where
+instance (ToJSON a) => ToJSON (Resource a) where
   toJSON (Resource (Identifier resId resType) resObj linksObj metaObj rels) =
     AE.object [ "id"            .= resId
               , "type"          .= resType
@@ -66,7 +66,7 @@ instance (ToJSON a, ToJSON b) => ToJSON (Resource a b) where
               , "relationships" .= rels
               ]
 
-instance (FromJSON a, FromJSON b) => FromJSON (Resource a b) where
+instance (FromJSON a) => FromJSON (Resource a) where
   parseJSON = AE.withObject "resourceObject" $ \v -> do
     id    <- v .: "id"
     typ   <- v .: "type"

@@ -5,8 +5,8 @@ Specification: <http://jsonapi.org/format/#document-meta>
 -}
 module Network.JSONApi.Meta where
 
-import Data.Aeson (ToJSON, FromJSON)
-import Data.Map (Map)
+import Data.Aeson (ToJSON, FromJSON, Object, toJSON)
+import Data.HashMap.Strict as HM
 import Data.Text (Text)
 import qualified GHC.Generics as G
 
@@ -31,8 +31,41 @@ Example JSON:
 
 Specification: <http://jsonapi.org/format/#document-meta>
 -}
-data Meta a = Meta (Map Text a)
-  deriving (Show, Eq, Ord, G.Generic)
+data Meta = Meta Object
+  deriving (Show, Eq, G.Generic)
 
-instance ToJSON a   => ToJSON (Meta a)
-instance FromJSON a => FromJSON (Meta a)
+instance ToJSON Meta
+instance FromJSON Meta
+
+instance Monoid Meta where
+  mappend (Meta a) (Meta b) = Meta $ HM.union a b
+  mempty = Meta $ HM.empty
+
+{- |
+Convienience class for constructing a Meta type
+
+Example usage:
+@
+data Pagination = Pagination
+  { currentPage :: Int
+  , totalPages :: Int
+  } deriving (Show, Generic)
+
+instance ToJSON Pagination
+instance MetaObject Pagination where
+  typeName _ = "pagination"
+@
+-}
+class (ToJSON a) => MetaObject a where
+  typeName :: a -> Text
+
+{- |
+Convienience constructor function for the Meta type
+
+Useful on its own or in combination with Meta's monoid instance
+
+Example usage:
+See MetaSpec.hs for an example
+-}
+mkMeta :: (MetaObject a) => a -> Meta
+mkMeta obj = Meta $ HM.singleton (typeName obj) (toJSON obj)

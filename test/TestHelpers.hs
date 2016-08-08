@@ -4,7 +4,7 @@ import qualified Data.Aeson as AE
 import qualified Data.Aeson.Encode.Pretty as AE
 import qualified Data.ByteString.Lazy.Char8 as BS
 import Data.Maybe (fromJust)
-import qualified Data.Map as Map
+import qualified Data.HashMap.Strict as HM
 import Data.Monoid ((<>))
 import Data.Text (Text, pack)
 import qualified GHC.Generics as G
@@ -55,7 +55,7 @@ instance HasIdentifiers OtherTestResource where
 instance AE.ToJSON TestMetaObject
 instance AE.FromJSON TestMetaObject
 
-toResource :: TestResource -> Resource TestResource Bool
+toResource :: TestResource -> Resource TestResource
 toResource obj =
   Resource
     (Identifier (pack . show . myId $ obj) "TestResource")
@@ -66,8 +66,8 @@ toResource obj =
 
 toResource' :: (HasIdentifiers a) => a
             -> Maybe Links
-            -> Maybe (Meta Bool)
-            -> Resource a Bool
+            -> Maybe Meta
+            -> Resource a
 toResource' obj links meta =
   Resource
     (Identifier (pack . show . uniqueId $ obj) (typeDescriptor obj))
@@ -82,9 +82,9 @@ objectLinks obj =
           , ("related", toURL ("/friends/" <> (show $ myId obj)))
           ]
 
-objectMetaData :: TestResource -> Meta Bool
+objectMetaData :: TestResource -> Meta
 objectMetaData obj =
-   Meta . Map.fromList $ [ ("isOld", myAge obj > 50) ]
+   Meta . HM.fromList $ [ ("isOld", (AE.toJSON $ myAge obj > 50)) ]
 
 linksObj :: Links
 linksObj = toLinks [ ("self", toURL "/things/1")
@@ -100,11 +100,11 @@ testObject2 = TestResource 2 "Carrie Brownstein" 35 "Lunch"
 otherTestObject :: OtherTestResource
 otherTestObject = OtherTestResource 999 "Atom Smasher" 100 "Atom Smashers, Inc"
 
-testMetaObj :: Meta TestMetaObject
+testMetaObj :: Meta
 testMetaObj =
-  Meta . Map.fromList $ [ ("importantData", TestMetaObject 3 True) ]
+  Meta . HM.fromList $ [ ("importantData", (AE.toJSON $ TestMetaObject 3 True)) ]
 
-emptyMeta :: Maybe (Meta TestMetaObject)
+emptyMeta :: Maybe Meta
 emptyMeta = Nothing
 
 toURL :: String -> URL

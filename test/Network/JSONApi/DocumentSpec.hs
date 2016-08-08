@@ -89,13 +89,13 @@ spec =
       isRight decodedJson `shouldBe` True
 
 decodeDocumentObject :: ByteString
-                    -> Either String (Document TestResource (Maybe Bool) (Maybe TestMetaObject))
+                    -> Either String (Document TestResource)
 decodeDocumentObject = AE.eitherDecode
 
-encodeDocumentObject :: (ToJSON a, ToJSON b, ToJSON c) => Document a b c -> ByteString
+encodeDocumentObject :: (ToJSON a) => Document a -> ByteString
 encodeDocumentObject = prettyEncode
 
-includedResources :: [ Map Text (Resource TestResource Bool) ]
+includedResources :: [ Map Text (Resource TestResource) ]
 includedResources = [ Map.singleton "TestResource" (toResource testObject2)
                     ]
 
