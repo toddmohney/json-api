@@ -1,19 +1,20 @@
 module Network.JSONApi.DocumentSpec where
 
-import           Control.Lens ((^?))
-import           Data.Aeson (ToJSON)
+import Control.Lens ((^?))
+import Data.Aeson (ToJSON)
 import qualified Data.Aeson as AE
 import qualified Data.Aeson.Lens as Lens
-import           Data.ByteString.Lazy.Char8 (ByteString)
+import Data.ByteString.Lazy.Char8 (ByteString)
 {- import qualified Data.ByteString.Lazy.Char8 as BS -}
-import           Data.Either (isRight)
-import           Data.Map (Map)
+import Data.Either (isRight)
+import Data.Map (Map)
 import qualified Data.Map as Map
-import           Data.Maybe
-import           Data.Text
-import           Network.JSONApi.Document
-import           TestHelpers
-import           Test.Hspec
+import Data.Maybe
+import Data.Text
+import Network.JSONApi.Document
+import Network.JSONApi.Resource (Resource)
+import TestHelpers
+import Test.Hspec
 
 main :: IO ()
 main = hspec spec

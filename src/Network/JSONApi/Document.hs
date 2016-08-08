@@ -6,15 +6,7 @@ Contains representations of the top-level JSON-API document structure.
 module Network.JSONApi.Document
 ( Document (..)
 , ErrorDocument (..)
-, E.Error (..)
 , ResourceData (..)
-, R.Relationship
-, R.Resource (..)
-, R.Identifier (..)
-, L.Links
-, M.Meta (..)
-, L.toLinks
-, R.mkRelationship
 , mkDocument
 ) where
 

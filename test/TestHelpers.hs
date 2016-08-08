@@ -8,7 +8,7 @@ import qualified Data.HashMap.Strict as HM
 import Data.Monoid ((<>))
 import Data.Text (Text, pack)
 import qualified GHC.Generics as G
-import Network.JSONApi.Document
+import Network.JSONApi
 import Network.URL (URL, importURL)
 
 prettyEncode :: AE.ToJSON a => a -> BS.ByteString
