@@ -14,6 +14,7 @@ import Control.Monad (mzero)
 import Data.Aeson
   ( ToJSON
   , FromJSON
+  , Value
   , (.=)
   , (.:)
   , (.:?)
@@ -41,7 +42,7 @@ data Document a = Document
   { _data  ::  ResourceData a
   , _links ::  Maybe Links
   , _meta  ::  Maybe Meta
-  , _included :: [ Map Text (Resource a) ]
+  , _included :: [Value]
   } deriving (Show, Eq, G.Generic)
 
 instance (ToJSON a)
@@ -71,18 +72,14 @@ mkDocument :: ResourcefulEntity a =>
               [a]
            -> Maybe Links
            -> Maybe Meta
-           -> [a]
+           -> [Value]
            -> Document a
 mkDocument res links meta included =
-  Document (toResourceData res) links meta (toIncludedResources included)
+  Document (toResourceData res) links meta included
 
 toResourceData :: ResourcefulEntity a => [a] -> ResourceData a
 toResourceData (r:[]) = Singleton (R.toResource r)
 toResourceData rs      = List (map R.toResource rs)
-
-toIncludedResources :: ResourcefulEntity a => [a] -> [ Map Text (Resource a) ]
-toIncludedResources entities =
-  foldl (\acc ent -> acc ++ [Map.singleton (R.resourceType ent) (R.toResource ent)]) [] entities
 
 {- |
 The @Resource@ type encapsulates the underlying 'Resource'

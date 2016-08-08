@@ -7,12 +7,8 @@ import qualified Data.Aeson.Lens as Lens
 import Data.ByteString.Lazy.Char8 (ByteString)
 {- import qualified Data.ByteString.Lazy.Char8 as BS -}
 import Data.Either (isRight)
-import Data.Map (Map)
-import qualified Data.Map as Map
 import Data.Maybe
-import Data.Text
 import Network.JSONApi.Document
-import Network.JSONApi.Resource (Resource)
 import TestHelpers
 import Test.Hspec
 
@@ -23,8 +19,7 @@ spec :: Spec
 spec =
   describe "JSON serialization" $ do
     it "JSON encodes/decodes a singleton resource" $ do
-      let resource = toResource testObject
-      let jsonApiObj = Document (Singleton resource) emptyLinks emptyMeta []
+      let jsonApiObj = mkDocument [testObject] Nothing Nothing []
       let encodedJson = encodeDocumentObject jsonApiObj
       let decodedJson = decodeDocumentObject encodedJson
       {- putStrLn (BS.unpack encodedJson) -}
@@ -32,8 +27,7 @@ spec =
       isRight decodedJson `shouldBe` True
 
     it "JSON encodes/decodes a list of resources" $ do
-      let resources = [toResource testObject, toResource testObject2]
-      let jsonApiObj = Document (List resources) emptyLinks emptyMeta []
+      let jsonApiObj = mkDocument [testObject, testObject2] Nothing Nothing []
       let encodedJson = encodeDocumentObject jsonApiObj
       let decodedJson = decodeDocumentObject encodedJson
       {- putStrLn (BS.unpack encodedJson) -}
@@ -41,8 +35,7 @@ spec =
       isRight decodedJson `shouldBe` True
 
     it "contains the allowable top-level keys" $ do
-      let resource = toResource testObject
-      let jsonApiObj = Document (Singleton resource) emptyLinks emptyMeta []
+      let jsonApiObj = mkDocument [testObject] Nothing Nothing []
       let encodedJson = encodeDocumentObject jsonApiObj
       let dataObject = encodedJson ^? Lens.key "data"
       let linksObject = encodedJson ^? Lens.key "links"
@@ -54,8 +47,7 @@ spec =
       isJust includedObject `shouldBe` True
 
     it "allows an optional top-level links object" $ do
-      let resource = toResource testObject
-      let jsonApiObj = Document (Singleton resource) (Just linksObj) emptyMeta []
+      let jsonApiObj = mkDocument [testObject] (Just linksObj) Nothing []
       let encodedJson = encodeDocumentObject jsonApiObj
       let decodedJson = decodeDocumentObject encodedJson
       -- putStrLn (BS.unpack encodedJson)
@@ -63,17 +55,7 @@ spec =
       isRight decodedJson `shouldBe` True
 
     it "allows an optional top-level meta object" $ do
-      let resource = toResource testObject
-      let jsonApiObj = Document (Singleton resource) emptyLinks (Just testMetaObj) []
-      let encodedJson = encodeDocumentObject jsonApiObj
-      let decodedJson = decodeDocumentObject encodedJson
-      -- putStrLn (BS.unpack encodedJson)
-      -- putStrLn $ show decodedJson
-      isRight decodedJson `shouldBe` True
-
-    it "allows an optional top-level meta object" $ do
-      let resource = toResource testObject
-      let jsonApiObj = Document (Singleton resource) (Just linksObj) (Just testMetaObj) []
+      let jsonApiObj = mkDocument [testObject] Nothing (Just testMetaObj) []
       let encodedJson = encodeDocumentObject jsonApiObj
       let decodedJson = decodeDocumentObject encodedJson
       -- putStrLn (BS.unpack encodedJson)
@@ -81,8 +63,7 @@ spec =
       isRight decodedJson `shouldBe` True
 
     it "allows a heterogeneous list of related resources" $ do
-      let resource = toResource testObject
-      let jsonApiObj = Document (Singleton resource) emptyLinks emptyMeta includedResources
+      let jsonApiObj = mkDocument [testObject] Nothing Nothing [AE.toJSON (toResource' testObject Nothing Nothing), AE.toJSON (toResource' otherTestObject Nothing Nothing)]
       let encodedJson = encodeDocumentObject jsonApiObj
       let decodedJson = decodeDocumentObject encodedJson
       {- putStrLn (BS.unpack encodedJson) -}
@@ -95,8 +76,3 @@ decodeDocumentObject = AE.eitherDecode
 
 encodeDocumentObject :: (ToJSON a) => Document a -> ByteString
 encodeDocumentObject = prettyEncode
-
-includedResources :: [ Map Text (Resource TestResource) ]
-includedResources = [ Map.singleton "TestResource" (toResource testObject2)
-                    ]
-

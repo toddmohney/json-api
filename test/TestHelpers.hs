@@ -7,7 +7,7 @@ import Data.Maybe (fromJust)
 import qualified Data.HashMap.Strict as HM
 import Data.Monoid ((<>))
 import Data.Text (Text, pack)
-import qualified GHC.Generics as G
+import GHC.Generics (Generic)
 import Network.JSONApi
 import Network.URL (URL, importURL)
 
@@ -26,43 +26,55 @@ data TestResource = TestResource
   , myName :: Text
   , myAge :: Int
   , myFavoriteFood :: Text
-  } deriving (Show, G.Generic)
+  } deriving (Show, Generic)
+
+instance AE.ToJSON TestResource
+instance AE.FromJSON TestResource
+instance ResourcefulEntity TestResource where
+  resourceIdentifier = pack . show . myId
+  resourceType _ = "testResource"
+  resourceLinks _ = Nothing
+  resourceMetaData _ = Nothing
+  resourceRelationships _ = Nothing
+instance HasIdentifiers TestResource where
+  uniqueId = myId
+  typeDescriptor _ = "TestResource"
 
 data OtherTestResource = OtherTestResource
   { myFavoriteNumber :: Int
   , myJob :: Text
   , myPay :: Int
   , myEmployer :: Text
-  } deriving (Show, G.Generic)
-
-data TestMetaObject = TestMetaObject
-  { totalPages :: Int
-  , isSuperFun :: Bool
-  } deriving (Show, G.Generic)
-
-instance AE.ToJSON TestResource
-instance AE.FromJSON TestResource
-instance HasIdentifiers TestResource where
-  uniqueId = myId
-  typeDescriptor _ = "TestResource"
+  } deriving (Show, Generic)
 
 instance AE.ToJSON OtherTestResource
 instance AE.FromJSON OtherTestResource
+instance ResourcefulEntity OtherTestResource where
+  resourceIdentifier = pack . show . myFavoriteNumber
+  resourceType _ = "otherTestResource"
+  resourceLinks _ = Nothing
+  resourceMetaData _ = Nothing
+  resourceRelationships _ = Nothing
 instance HasIdentifiers OtherTestResource where
   uniqueId = myFavoriteNumber
   typeDescriptor _ = "OtherTestResource"
 
+data TestMetaObject = TestMetaObject
+  { totalPages :: Int
+  , isSuperFun :: Bool
+  } deriving (Show, Generic)
+
 instance AE.ToJSON TestMetaObject
 instance AE.FromJSON TestMetaObject
 
-toResource :: TestResource -> Resource TestResource
-toResource obj =
-  Resource
-    (Identifier (pack . show . myId $ obj) "TestResource")
-    obj
-    (Just $ objectLinks obj)
-    (Just $ objectMetaData obj)
-    Nothing
+{- toResource :: TestResource -> Resource TestResource -}
+{- toResource obj = -}
+  {- Resource -}
+    {- (Identifier (pack . show . myId $ obj) "TestResource") -}
+    {- obj -}
+    {- (Just $ objectLinks obj) -}
+    {- (Just $ objectMetaData obj) -}
+    {- Nothing -}
 
 toResource' :: (HasIdentifiers a) => a
             -> Maybe Links
