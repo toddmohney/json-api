@@ -17,7 +17,7 @@ main = hspec spec
 
 spec :: Spec
 spec = do
-  describe "serialization" $ do
+  describe "JSON serialization" $ do
     it "serializes/deserializes maps simple heterogeneous values" $ do
       let testMeta = Meta . HM.fromList $ [ ("numData", AE.toJSON (5 :: Int))
                                           , ("strData", AE.toJSON ("hello" :: String))
@@ -42,6 +42,12 @@ spec = do
                                                     ]
       monoidialConstruction `shouldBe` manualConstruction
 
+testObject :: TestObject
+testObject = TestObject 99 102 "Zapp Brannigan"
+
+otherTestObject :: OtherTestObject
+otherTestObject = OtherTestObject "Olive Garden" "Woofers" 29 "TGIFriday's"
+
 data TestObject = TestObject
   { myID :: Int
   , myAge :: Int
@@ -62,9 +68,3 @@ data OtherTestObject = OtherTestObject
 instance ToJSON OtherTestObject
 instance MetaObject OtherTestObject where
   typeName _ = "otherTestObject"
-
-testObject :: TestObject
-testObject = TestObject 99 102 "Zapp Brannigan"
-
-otherTestObject :: OtherTestObject
-otherTestObject = OtherTestObject "Olive Garden" "Woofers" 29 "TGIFriday's"

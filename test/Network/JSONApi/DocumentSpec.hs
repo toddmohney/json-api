@@ -19,6 +19,7 @@ spec :: Spec
 spec =
   describe "JSON serialization" $ do
     it "JSON encodes/decodes a singleton resource" $ do
+      -- TODO: test the main resource actually is a singleton
       let jsonApiObj = mkDocument [testObject] Nothing Nothing []
       let encodedJson = encodeDocumentObject jsonApiObj
       let decodedJson = decodeDocumentObject encodedJson
@@ -27,6 +28,7 @@ spec =
       isRight decodedJson `shouldBe` True
 
     it "JSON encodes/decodes a list of resources" $ do
+      -- TODO: test the main resource actually is a list
       let jsonApiObj = mkDocument [testObject, testObject2] Nothing Nothing []
       let encodedJson = encodeDocumentObject jsonApiObj
       let decodedJson = decodeDocumentObject encodedJson

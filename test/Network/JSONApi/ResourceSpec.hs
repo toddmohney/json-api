@@ -20,9 +20,9 @@ main = hspec spec
 
 spec :: Spec
 spec =
-  describe "ToResource" $
+  describe "JSON serialization" $
     it "can be encoded and decoded from JSON" $ do
-      let encodedJson = BS.unpack . prettyEncode $ toTestResource testObject
+      let encodedJson = BS.unpack . prettyEncode $ toResource testObject
       let decodedJson = AE.decode (BS.pack encodedJson) :: Maybe (Resource TestObject)
       isJust decodedJson `shouldBe` True
       {- putStrLn encodedJson -}
@@ -37,15 +37,12 @@ data TestObject = TestObject
 
 instance AE.ToJSON TestObject
 instance AE.FromJSON TestObject
-
-toTestResource :: TestObject -> Resource TestObject
-toTestResource obj =
-  Resource
-    (Identifier (pack . show . myId $ obj) "TestObject")
-    obj
-    (Just myResourceLinks)
-    (Just myResourceMetaData)
-    (Just myResourceRelationships)
+instance ResourcefulEntity TestObject where
+  resourceIdentifier = pack . show . myId
+  resourceType _ = "TestObject"
+  resourceLinks _ = Just myResourceLinks
+  resourceMetaData _ = Just myResourceMetaData
+  resourceRelationships _ = Just myResourceRelationships
 
 myResourceRelationships :: Map Text Relationship
 myResourceRelationships = Map.fromList $ [ ("friends", relationship) ]

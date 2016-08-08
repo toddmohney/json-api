@@ -21,25 +21,6 @@ import Network.JSONApi.Link (Links)
 import Network.JSONApi.Meta (Meta)
 import Prelude hiding (id)
 
-class (ToJSON a, FromJSON a) => ResourcefulEntity a where
-  resourceIdentifier :: a -> Text
-  resourceType :: a -> Text
-  resourceLinks :: a -> Maybe Links
-  resourceMetaData :: a -> Maybe Meta
-  resourceRelationships :: a -> Maybe (Map Text Relationship)
-
-  fromResource :: Resource a -> a
-  fromResource = getResource
-
-  toResource :: a -> Resource a
-  toResource a =
-    Resource
-      (Identifier (resourceIdentifier a) (resourceType a))
-      a
-      (resourceLinks a)
-      (resourceMetaData a)
-      (resourceRelationships a)
-
 {- |
 Type representing a JSON-API resource object.
 
@@ -76,8 +57,27 @@ instance (FromJSON a) => FromJSON (Resource a) where
     rels  <- v .:? "relationships"
     return $ Resource (Identifier id typ) attrs links meta rels
 
+{- |
+A typeclass for decorating an entity with JSON API properties
+-}
+class (ToJSON a, FromJSON a) => ResourcefulEntity a where
+  resourceIdentifier :: a -> Text
+  resourceType :: a -> Text
+  resourceLinks :: a -> Maybe Links
+  resourceMetaData :: a -> Maybe Meta
+  resourceRelationships :: a -> Maybe (Map Text Relationship)
 
+  fromResource :: Resource a -> a
+  fromResource = getResource
 
+  toResource :: a -> Resource a
+  toResource a =
+    Resource
+      (Identifier (resourceIdentifier a) (resourceType a))
+      a
+      (resourceLinks a)
+      (resourceMetaData a)
+      (resourceRelationships a)
 
 {- |
 A type representing the Relationship between 2 entities
@@ -108,8 +108,6 @@ A relationship must contain either an Identifier or a Links record
 mkRelationship :: Maybe Identifier -> Maybe Links -> Maybe Relationship
 mkRelationship Nothing Nothing = Nothing
 mkRelationship resId links = Just $ Relationship resId links
-
-
 
 {- |
 Identifiers are used to encapsulate the minimum amount of information

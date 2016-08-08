@@ -13,7 +13,7 @@ main :: IO ()
 main = hspec spec
 
 spec :: Spec
-spec =
+spec = do
   describe "Defaults" $ do
     it "provides defaults" $
       let expectedDefault = Error
@@ -27,6 +27,7 @@ spec =
             }
       in (def::Error Int) `shouldBe` expectedDefault
 
+  describe "JSON serialization" $
     it "provides ToJSON/FromJSON instances" $ do
       let testError = (def::Error Int)
       let encJson = BS.unpack . prettyEncode $ testError

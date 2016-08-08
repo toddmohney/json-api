@@ -5,7 +5,6 @@ import qualified Data.Aeson.Encode.Pretty as AE
 import qualified Data.ByteString.Lazy.Char8 as BS
 import Data.Maybe (fromJust)
 import qualified Data.HashMap.Strict as HM
-import Data.Monoid ((<>))
 import Data.Text (Text, pack)
 import GHC.Generics (Generic)
 import Network.JSONApi
@@ -67,15 +66,6 @@ data TestMetaObject = TestMetaObject
 instance AE.ToJSON TestMetaObject
 instance AE.FromJSON TestMetaObject
 
-{- toResource :: TestResource -> Resource TestResource -}
-{- toResource obj = -}
-  {- Resource -}
-    {- (Identifier (pack . show . myId $ obj) "TestResource") -}
-    {- obj -}
-    {- (Just $ objectLinks obj) -}
-    {- (Just $ objectMetaData obj) -}
-    {- Nothing -}
-
 toResource' :: (HasIdentifiers a) => a
             -> Maybe Links
             -> Maybe Meta
@@ -87,16 +77,6 @@ toResource' obj links meta =
     links
     meta
     Nothing
-
-objectLinks :: TestResource -> Links
-objectLinks obj =
-  toLinks [ ("self", toURL ("/me/" <> (show $ myId obj)))
-          , ("related", toURL ("/friends/" <> (show $ myId obj)))
-          ]
-
-objectMetaData :: TestResource -> Meta
-objectMetaData obj =
-   Meta . HM.fromList $ [ ("isOld", (AE.toJSON $ myAge obj > 50)) ]
 
 linksObj :: Links
 linksObj = toLinks [ ("self", toURL "/things/1")

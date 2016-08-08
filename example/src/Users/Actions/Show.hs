@@ -21,12 +21,10 @@ import Users
 userShow :: Int -> Handler (Document User)
 userShow 1 =
   let user = User 1 "Isaac" "Newton"
-      {- email = Email 42 1 "isaac@newton.com" -}
   in return $ showDocument user (showLinks 1)
 
 userShow 2 =
   let user = User 2 "Albert" "Einstein"
-      {- email = Email 88 2 "albert@einstein.com" -}
   in return $ showDocument user (showLinks 2)
 
 userShow userId = throwError (resourceNotFound userId)

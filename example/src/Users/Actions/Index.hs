@@ -26,11 +26,6 @@ usersIndex =
       , User 2 "Albert" "Einstein"
       ]
 
-    {- usersWithEmail = -}
-      {- [ (User 1 "Isaac" "Newton", Email 42 1 "isaac@newton.com") -}
-      {- , (User 2 "Albert" "Einstein", Email 88 2 "albert@einstein.com") -}
-      {- ] -}
-
 -- Builds the Links data for the 'index' action
 indexLinks :: Links
 indexLinks = JSONApi.toLinks [ ("self", selfLink) ]
