@@ -1,6 +1,3 @@
-{-# LANGUAGE OverloadedStrings  #-}
-{-# LANGUAGE TemplateHaskell    #-}
-
 module Emails
   ( Email (..)
   , mkResourceIdentifer
