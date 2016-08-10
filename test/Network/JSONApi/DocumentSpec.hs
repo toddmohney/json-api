@@ -5,9 +5,10 @@ import Data.Aeson (ToJSON)
 import qualified Data.Aeson as AE
 import qualified Data.Aeson.Lens as Lens
 import Data.ByteString.Lazy.Char8 (ByteString)
-{- import qualified Data.ByteString.Lazy.Char8 as BS -}
+import qualified Data.ByteString.Lazy.Char8 as BS
 import Data.Either (isRight)
 import Data.Maybe
+import Data.Monoid
 import Network.JSONApi.Document
 import TestHelpers
 import Test.Hspec
@@ -20,7 +21,7 @@ spec =
   describe "JSON serialization" $ do
     it "JSON encodes/decodes a singleton resource" $ do
       -- TODO: test the main resource actually is a singleton
-      let jsonApiObj = mkDocument [testObject] Nothing Nothing []
+      let jsonApiObj = mkDocument [testObject] Nothing Nothing
       let encodedJson = encodeDocumentObject jsonApiObj
       let decodedJson = decodeDocumentObject encodedJson
       {- putStrLn (BS.unpack encodedJson) -}
@@ -29,7 +30,7 @@ spec =
 
     it "JSON encodes/decodes a list of resources" $ do
       -- TODO: test the main resource actually is a list
-      let jsonApiObj = mkDocument [testObject, testObject2] Nothing Nothing []
+      let jsonApiObj = mkDocument [testObject, testObject2] Nothing Nothing
       let encodedJson = encodeDocumentObject jsonApiObj
       let decodedJson = decodeDocumentObject encodedJson
       {- putStrLn (BS.unpack encodedJson) -}
@@ -37,7 +38,7 @@ spec =
       isRight decodedJson `shouldBe` True
 
     it "contains the allowable top-level keys" $ do
-      let jsonApiObj = mkDocument [testObject] Nothing Nothing []
+      let jsonApiObj = mkDocument [testObject] Nothing Nothing
       let encodedJson = encodeDocumentObject jsonApiObj
       let dataObject = encodedJson ^? Lens.key "data"
       let linksObject = encodedJson ^? Lens.key "links"
@@ -49,7 +50,7 @@ spec =
       isJust includedObject `shouldBe` True
 
     it "allows an optional top-level links object" $ do
-      let jsonApiObj = mkDocument [testObject] (Just linksObj) Nothing []
+      let jsonApiObj = mkDocument [testObject] (Just linksObj) Nothing
       let encodedJson = encodeDocumentObject jsonApiObj
       let decodedJson = decodeDocumentObject encodedJson
       -- putStrLn (BS.unpack encodedJson)
@@ -57,7 +58,7 @@ spec =
       isRight decodedJson `shouldBe` True
 
     it "allows an optional top-level meta object" $ do
-      let jsonApiObj = mkDocument [testObject] Nothing (Just testMetaObj) []
+      let jsonApiObj = mkDocument [testObject] Nothing (Just testMetaObj)
       let encodedJson = encodeDocumentObject jsonApiObj
       let decodedJson = decodeDocumentObject encodedJson
       -- putStrLn (BS.unpack encodedJson)
@@ -65,10 +66,11 @@ spec =
       isRight decodedJson `shouldBe` True
 
     it "allows a heterogeneous list of related resources" $ do
-      let jsonApiObj = mkDocument [testObject] Nothing Nothing [AE.toJSON (toResource' testObject Nothing Nothing), AE.toJSON (toResource' otherTestObject Nothing Nothing)]
+      let includedResources = (mkIncludedResource testObject) <> (mkIncludedResource testObject2)
+      let jsonApiObj = mkCompoundDocument [testObject] Nothing Nothing includedResources
       let encodedJson = encodeDocumentObject jsonApiObj
       let decodedJson = decodeDocumentObject encodedJson
-      {- putStrLn (BS.unpack encodedJson) -}
+      putStrLn (BS.unpack encodedJson)
       {- putStrLn $ show decodedJson -}
       isRight decodedJson `shouldBe` True
 

@@ -6,8 +6,11 @@ Contains representations of the top-level JSON-API document structure.
 module Network.JSONApi.Document
 ( Document
 , ErrorDocument (..)
+, Included
 , ResourceData (..)
 , mkDocument
+, mkCompoundDocument
+, mkIncludedResource
 ) where
 
 import Control.Monad (mzero)
@@ -20,6 +23,7 @@ import Data.Aeson
   , (.:?)
   )
 import qualified Data.Aeson as AE
+import Data.Monoid
 import qualified GHC.Generics as G
 import qualified Network.JSONApi.Error as E
 import Network.JSONApi.Link as L
@@ -72,15 +76,44 @@ mkDocument :: ResourcefulEntity a =>
               [a]
            -> Maybe Links
            -> Maybe Meta
-           -> [Value]
            -> Document a
-mkDocument res links meta included =
+mkDocument res links meta =
+  Document
+    { _data = toResourceData res
+    , _links = links
+    , _meta = meta
+    , _included = []
+    }
+
+{- |
+Constructor function for the Document data type.
+
+Supports building compound documents
+<http://jsonapi.org/format/#document-compound-documents>
+-}
+mkCompoundDocument :: ResourcefulEntity a =>
+                      [a]
+                   -> Maybe Links
+                   -> Maybe Meta
+                   -> Included
+                   -> Document a
+mkCompoundDocument res links meta (Included included) =
   Document
     { _data = toResourceData res
     , _links = links
     , _meta = meta
     , _included = included
     }
+
+data Included = Included [Value]
+  deriving (Show)
+
+instance Monoid Included where
+  mempty = Included []
+  mappend (Included as) (Included bs) = Included (as <> bs)
+
+mkIncludedResource :: ResourcefulEntity a => a -> Included
+mkIncludedResource res = Included [AE.toJSON . R.toResource $ res]
 
 toResourceData :: ResourcefulEntity a => [a] -> ResourceData a
 toResourceData (r:[]) = Singleton (R.toResource r)
