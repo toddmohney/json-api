@@ -133,7 +133,7 @@ mkIncludedResource res = Included [AE.toJSON . R.toResource $ res]
 
 toResourceData :: ResourcefulEntity a => [a] -> ResourceData a
 toResourceData (r:[]) = Singleton (R.toResource r)
-toResourceData rs      = List (map R.toResource rs)
+toResourceData rs     = List (map R.toResource rs)
 
 {- |
 The 'Resource' type encapsulates the underlying 'Resource'

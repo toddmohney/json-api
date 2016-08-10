@@ -2,9 +2,8 @@ module Network.JSONApi.ResourceSpec where
 
 import qualified Data.Aeson as AE
 import qualified Data.ByteString.Lazy.Char8 as BS
-import Data.Map (Map)
-import qualified Data.Map as Map
 import Data.Maybe (isJust, fromJust)
+import Data.Monoid
 import Data.Text (Text, pack)
 import GHC.Generics (Generic)
 import Network.JSONApi
@@ -40,7 +39,7 @@ instance ResourcefulEntity TestObject where
   resourceType _ = "TestObject"
   resourceLinks _ = Just myResourceLinks
   resourceMetaData _ = Just myResourceMetaData
-  resourceRelationships _ = Just myResourceRelationships
+  resourceRelationships _ = Just myRelationshipss
 
 data Pagination = Pagination
   { currentPage :: Int
@@ -52,13 +51,20 @@ instance AE.FromJSON Pagination
 instance MetaObject Pagination where
   typeName _ = "pagination"
 
-myResourceRelationships :: Map Text Relationship
-myResourceRelationships = Map.fromList $ [ ("friends", relationship) ]
+myRelationshipss :: Relationships
+myRelationshipss =
+  mkRelationships relationship <> mkRelationships otherRelationship
 
 relationship :: Relationship
 relationship =
   fromJust $ mkRelationship
     (Just $ Identifier "42" "FriendOfTestObject")
+    (Just myResourceLinks)
+
+otherRelationship :: Relationship
+otherRelationship =
+  fromJust $ mkRelationship
+    (Just $ Identifier "49" "CousinOfTestObject")
     (Just myResourceLinks)
 
 myResourceLinks :: Links

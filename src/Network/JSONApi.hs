@@ -8,6 +8,7 @@ module Network.JSONApi
   , E.Error (..)
   , R.Relationship
   , R.Resource (..)
+  , R.Relationships
   , R.ResourcefulEntity (..)
   , R.Identifier (..)
   , L.Links
@@ -15,6 +16,7 @@ module Network.JSONApi
   , M.MetaObject (..)
   , L.mkLinks
   , R.mkRelationship
+  , R.mkRelationships
   , D.mkDocument
   , D.mkCompoundDocument
   , D.mkIncludedResource
