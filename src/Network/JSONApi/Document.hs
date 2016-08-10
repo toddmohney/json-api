@@ -29,7 +29,7 @@ import Network.JSONApi.Resource (Resource, ResourcefulEntity)
 import qualified Network.JSONApi.Resource as R
 
 {- |
-The @Document@ type represents the top-level JSON-API requirement.
+The 'Document' type represents the top-level JSON-API requirement.
 
 @data@ attribute - the resulting JSON may be either a singleton resource
 or a list of resources. See 'Resource' for the construction.
@@ -67,13 +67,13 @@ instance (FromJSON a) => FromJSON (Document a) where
     return (Document d l m i)
 
 {- |
-The @Included@ type is an abstraction used to constrain the "included"
+The 'Included' type is an abstraction used to constrain the @included@
 section of the Document to JSON serializable Resource objects while
 enabling a heterogeneous list of Resource types.
 
 No data constructors for this type are exported as we need to
-constrain the @Value@ to a heterogeneous list of Resource types.
-See @mkIncludedResource@ for creating @Included@ types.
+constrain the 'Value' to a heterogeneous list of Resource types.
+See 'mkIncludedResource' for creating 'Included' types.
 -}
 data Included = Included [Value]
   deriving (Show)
@@ -85,7 +85,7 @@ instance Monoid Included where
 {- |
 Constructor function for the Document data type.
 
-See @mkCompoundDocument@ for constructing compound Document
+See 'mkCompoundDocument' for constructing compound Document
 including 'side-loaded' resources
 -}
 mkDocument :: ResourcefulEntity a =>
@@ -103,7 +103,7 @@ mkDocument res links meta =
 
 {- |
 Constructor function for the Document data type.
-See @mkIncludedResource@ for constructing the @Included@ type.
+See 'mkIncludedResource' for constructing the 'Included' type.
 
 Supports building compound documents
 <http://jsonapi.org/format/#document-compound-documents>
@@ -136,9 +136,9 @@ toResourceData (r:[]) = Singleton (R.toResource r)
 toResourceData rs      = List (map R.toResource rs)
 
 {- |
-The @Resource@ type encapsulates the underlying 'Resource'
+The 'Resource' type encapsulates the underlying 'Resource'
 
-Included in the top-level 'Document', the @Resource@ may be either
+Included in the top-level 'Document', the 'Resource' may be either
 a singleton resource or a list.
 
 For more information see: <http://jsonapi.org/format/#document-top-level>
@@ -157,7 +157,7 @@ instance (FromJSON a) => FromJSON (ResourceData a) where
   parseJSON _             = mzero
 
 {- |
-The @ErrorDocument@ type represents the alternative form of the top-level
+The 'ErrorDocument' type represents the alternative form of the top-level
 JSON-API requirement.
 
 @error@ attribute - a descriptive object encapsulating application-specific

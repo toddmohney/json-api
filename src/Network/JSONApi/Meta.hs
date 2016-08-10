@@ -4,7 +4,7 @@ Module representing a JSON-API meta object.
 Specification: <http://jsonapi.org/format/#document-meta>
 -}
 module Network.JSONApi.Meta
-( Meta (..)
+( Meta
 , MetaObject (..)
 , mkMeta
 )where
@@ -22,15 +22,15 @@ resource-specific metadata.
 
 Example JSON:
 @
-"meta": {
-  "copyright": "Copyright 2015 Example Corp.",
-  "authors": [
-    "Andre Dawson",
-    "Kirby Puckett",
-    "Don Mattingly",
-    "Ozzie Guillen"
-  ]
-}
+  "meta": {
+    "copyright": "Copyright 2015 Example Corp.",
+    "authors": [
+      "Andre Dawson",
+      "Kirby Puckett",
+      "Don Mattingly",
+      "Ozzie Guillen"
+    ]
+  }
 @
 
 Specification: <http://jsonapi.org/format/#document-meta>
@@ -50,14 +50,14 @@ Convienience class for constructing a Meta type
 
 Example usage:
 @
-data Pagination = Pagination
-  { currentPage :: Int
-  , totalPages :: Int
-  } deriving (Show, Generic)
+  data Pagination = Pagination
+    { currentPage :: Int
+    , totalPages :: Int
+    } deriving (Show, Generic)
 
-instance ToJSON Pagination
-instance MetaObject Pagination where
-  typeName _ = "pagination"
+  instance ToJSON Pagination
+  instance MetaObject Pagination where
+    typeName _ = "pagination"
 @
 -}
 class (ToJSON a) => MetaObject a where

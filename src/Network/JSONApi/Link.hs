@@ -25,9 +25,9 @@ relevance identifiers as keys and URIs as values.
 
 Example JSON:
 @
-"links": {
-  "self": "http://example.com/posts/1"
-}
+  "links": {
+    "self": "http://example.com/posts/1"
+  }
 @
 
 Specification: <http://jsonapi.org/format/#document-links>

@@ -5,7 +5,7 @@ import Data.Aeson (ToJSON)
 import qualified Data.Aeson as AE
 import qualified Data.Aeson.Lens as Lens
 import Data.ByteString.Lazy.Char8 (ByteString)
-import qualified Data.ByteString.Lazy.Char8 as BS
+{- import qualified Data.ByteString.Lazy.Char8 as BS -}
 import Data.Either (isRight)
 import Data.Maybe
 import Data.Monoid
@@ -70,7 +70,7 @@ spec =
       let jsonApiObj = mkCompoundDocument [testObject] Nothing Nothing includedResources
       let encodedJson = encodeDocumentObject jsonApiObj
       let decodedJson = decodeDocumentObject encodedJson
-      putStrLn (BS.unpack encodedJson)
+      {- putStrLn (BS.unpack encodedJson) -}
       {- putStrLn $ show decodedJson -}
       isRight decodedJson `shouldBe` True
 

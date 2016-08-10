@@ -11,7 +11,7 @@ module Network.JSONApi
   , R.ResourcefulEntity (..)
   , R.Identifier (..)
   , L.Links
-  , M.Meta (..)
+  , M.Meta
   , M.MetaObject (..)
   , L.mkLinks
   , R.mkRelationship
