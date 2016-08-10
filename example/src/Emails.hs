@@ -15,8 +15,8 @@ import Network.URL
 import Network.JSONApi
   ( Identifier (..)
   , Links
-  , toLinks
   )
+import qualified Network.JSONApi as JSONApi
 
 -- A resource associated to a User
 data Email = Email
@@ -33,7 +33,7 @@ mkResourceIdentifer email = Identifier (pack . show . emailId $ email) "Email"
 
 -- helper function to build links for an Email resource
 mkLinks :: Email -> Links
-mkLinks email = toLinks [ ("self", selfLink) ]
+mkLinks email = JSONApi.mkLinks [ ("self", selfLink) ]
   where
     selfLink = toURL selfPath
     selfPath = "/emails/" <> (show $ emailId email)

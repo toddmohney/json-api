@@ -1,13 +1,11 @@
 {- |
 Entry-point module for this package.
-
-Contains representations of the top-level JSON-API document structure.
 -}
 module Network.JSONApi
   ( D.Document
   , D.ErrorDocument (..)
+  , D.Included
   , E.Error (..)
-  , D.ResourceData (..)
   , R.Relationship
   , R.Resource (..)
   , R.ResourcefulEntity (..)
@@ -15,9 +13,11 @@ module Network.JSONApi
   , L.Links
   , M.Meta (..)
   , M.MetaObject (..)
-  , L.toLinks
+  , L.mkLinks
   , R.mkRelationship
   , D.mkDocument
+  , D.mkCompoundDocument
+  , D.mkIncludedResource
   , M.mkMeta
   ) where
 

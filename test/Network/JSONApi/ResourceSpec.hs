@@ -8,9 +8,7 @@ import qualified Data.HashMap.Strict as HM
 import Data.Maybe (isJust, fromJust)
 import Data.Text (Text, pack)
 import qualified GHC.Generics as G
-import Network.JSONApi.Resource
-import Network.JSONApi.Link
-import Network.JSONApi.Meta
+import Network.JSONApi
 import Network.URL (URL, importURL)
 import TestHelpers (prettyEncode)
 import Test.Hspec
@@ -55,7 +53,7 @@ relationship =
 
 myResourceLinks :: Links
 myResourceLinks =
-  toLinks [ ("self", toURL "/me")
+  mkLinks [ ("self", toURL "/me")
           , ("related", toURL "/tacos/4")
           ]
 

@@ -1,17 +1,14 @@
 {- |
-Entry-point module for this package.
-
 Contains representations of the top-level JSON-API document structure.
 -}
 module Network.JSONApi.Document
-( Document
-, ErrorDocument (..)
-, Included
-, ResourceData (..)
-, mkDocument
-, mkCompoundDocument
-, mkIncludedResource
-) where
+  ( Document
+  , ErrorDocument (..)
+  , Included
+  , mkDocument
+  , mkCompoundDocument
+  , mkIncludedResource
+  ) where
 
 import Control.Monad (mzero)
 import Data.Aeson
@@ -70,7 +67,26 @@ instance (FromJSON a) => FromJSON (Document a) where
     return (Document d l m i)
 
 {- |
+The @Included@ type is an abstraction used to constrain the "included"
+section of the Document to JSON serializable Resource objects while
+enabling a heterogeneous list of Resource types.
+
+No data constructors for this type are exported as we need to
+constrain the @Value@ to a heterogeneous list of Resource types.
+See @mkIncludedResource@ for creating @Included@ types.
+-}
+data Included = Included [Value]
+  deriving (Show)
+
+instance Monoid Included where
+  mempty = Included []
+  mappend (Included as) (Included bs) = Included (as <> bs)
+
+{- |
 Constructor function for the Document data type.
+
+See @mkCompoundDocument@ for constructing compound Document
+including 'side-loaded' resources
 -}
 mkDocument :: ResourcefulEntity a =>
               [a]
@@ -87,6 +103,7 @@ mkDocument res links meta =
 
 {- |
 Constructor function for the Document data type.
+See @mkIncludedResource@ for constructing the @Included@ type.
 
 Supports building compound documents
 <http://jsonapi.org/format/#document-compound-documents>
@@ -105,13 +122,12 @@ mkCompoundDocument res links meta (Included included) =
     , _included = included
     }
 
-data Included = Included [Value]
-  deriving (Show)
+{- |
+Constructor function for the Document data type.
 
-instance Monoid Included where
-  mempty = Included []
-  mappend (Included as) (Included bs) = Included (as <> bs)
-
+Supports building compound documents
+<http://jsonapi.org/format/#document-compound-documents>
+-}
 mkIncludedResource :: ResourcefulEntity a => a -> Included
 mkIncludedResource res = Included [AE.toJSON . R.toResource $ res]
 

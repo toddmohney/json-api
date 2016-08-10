@@ -7,7 +7,7 @@ module Network.JSONApi.Link
 ( Links
 , Rel
 , Href
-, toLinks
+, mkLinks
 ) where
 
 import Data.Aeson (ToJSON, FromJSON)
@@ -41,8 +41,8 @@ type Href = Text
 {- |
 Constructor function for building Links
 -}
-toLinks :: [(Rel, URL)] -> Links
-toLinks = Links . Map.fromList . map buildLink
+mkLinks :: [(Rel, URL)] -> Links
+mkLinks = Links . Map.fromList . map buildLink
 
 buildLink :: (Rel, URL) -> (Rel, Href)
 buildLink (key, url) = (key, pack (exportURL url))

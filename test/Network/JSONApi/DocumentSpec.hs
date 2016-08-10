@@ -9,7 +9,7 @@ import qualified Data.ByteString.Lazy.Char8 as BS
 import Data.Either (isRight)
 import Data.Maybe
 import Data.Monoid
-import Network.JSONApi.Document
+import Network.JSONApi
 import TestHelpers
 import Test.Hspec
 

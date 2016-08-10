@@ -45,7 +45,7 @@ resourceNotFound resourceId = err404 { errBody = AE.encode errorDocument }
 
 -- Builds the Links data for the 'show' action
 showLinks :: Int -> Links
-showLinks userId = JSONApi.toLinks [ ("self", selfLink) ]
+showLinks userId = JSONApi.mkLinks [ ("self", selfLink) ]
   where
     selfLink = toURL ("/users/" <> (show userId))
 
@@ -56,7 +56,6 @@ showDocument user links =
     [user]
     (Just links)
     Nothing
-    []
 
 toURL :: String -> URL
 toURL = fromJust . importURL

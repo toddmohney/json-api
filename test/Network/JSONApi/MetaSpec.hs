@@ -8,7 +8,7 @@ import           Data.Maybe (isJust)
 import           Data.Monoid ((<>))
 import           Data.Text (Text)
 import           GHC.Generics (Generic)
-import           Network.JSONApi.Meta
+import           Network.JSONApi
 import           TestHelpers (prettyEncode)
 import           Test.Hspec
 

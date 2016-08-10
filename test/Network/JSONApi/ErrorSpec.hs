@@ -4,7 +4,7 @@ import qualified Data.Aeson as AE
 import qualified Data.ByteString.Lazy.Char8 as BS
 import Data.Default (def)
 import Data.Maybe
-import Network.JSONApi.Error
+import Network.JSONApi
 import Prelude hiding (id)
 import TestHelpers (prettyEncode)
 import Test.Hspec

@@ -14,8 +14,8 @@ import Network.URL
 import Network.JSONApi
   ( Links
   , ResourcefulEntity (..)
-  , toLinks
   )
+import qualified Network.JSONApi as JSONApi
 
 -- Our resource
 data User = User
@@ -35,7 +35,7 @@ instance ResourcefulEntity User where
 
 -- helper function to build links for a User resource
 userLinks :: User -> Links
-userLinks user = toLinks [ ("self", selfLink) ]
+userLinks user = JSONApi.mkLinks [ ("self", selfLink) ]
   where
     selfLink = toURL selfPath
     selfPath = "/users/" <> (show $ userId user)

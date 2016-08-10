@@ -28,7 +28,7 @@ usersIndex =
 
 -- Builds the Links data for the 'index' action
 indexLinks :: Links
-indexLinks = JSONApi.toLinks [ ("self", selfLink) ]
+indexLinks = JSONApi.mkLinks [ ("self", selfLink) ]
   where
     selfLink = toURL "/users"
 
@@ -44,7 +44,6 @@ indexDocument users links meta =
     users
     (Just links)
     (Just meta)
-    []
 
 toURL :: String -> URL
 toURL = fromJust . importURL

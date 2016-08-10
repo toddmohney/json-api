@@ -79,7 +79,7 @@ toResource' obj links meta =
     Nothing
 
 linksObj :: Links
-linksObj = toLinks [ ("self", toURL "/things/1")
+linksObj = mkLinks [ ("self", toURL "/things/1")
                    , ("related", toURL "http://some.domain.com/other/things/1")
                    ]
 
