@@ -4,9 +4,7 @@ Module representing a JSON-API resource object.
 Specification: <http://jsonapi.org/format/#document-resource-objects>
 -}
 module Network.JSONApi.Resource
-( HasIdentifier (..)
-, Identifier (..)
-, Resource (..)
+( Resource (..)
 , Relationships
 , ResourcefulEntity (..)
 , Relationship
@@ -14,6 +12,7 @@ module Network.JSONApi.Resource
 , mkRelationships
 ) where
 
+import Control.Lens.TH
 import Data.Aeson (ToJSON, FromJSON, (.=), (.:), (.:?))
 import qualified Data.Aeson as AE
 import qualified Data.Aeson.Types as AE
@@ -22,6 +21,7 @@ import qualified Data.Map as Map
 import Data.Monoid
 import Data.Text (Text)
 import GHC.Generics hiding (Meta)
+import Network.JSONApi.Identifier (HasIdentifier (..), Identifier (..))
 import Network.JSONApi.Link (Links)
 import Network.JSONApi.Meta (Meta)
 import Prelude hiding (id)
@@ -29,8 +29,7 @@ import Prelude hiding (id)
 {- |
 Type representing a JSON-API resource object.
 
-A Resource supplies standardized data and metadata about a
-resource.
+A Resource supplies standardized data and metadata about a resource.
 
 Specification: <http://jsonapi.org/format/#document-resource-objects>
 -}
@@ -137,33 +136,4 @@ mkRelationship :: Maybe Identifier -> Maybe Links -> Maybe Relationship
 mkRelationship Nothing Nothing = Nothing
 mkRelationship resId links = Just $ Relationship resId links
 
-
-{- |
-Identifiers are used to encapsulate the minimum amount of information
-to uniquely identify a resource.
-
-This object will be found at multiple levels of the JSON-API structure
-
-Specification: <http://jsonapi.org/format/#document-resource-identifier-objects>
--}
-data Identifier = Identifier
-  { _id   :: Text
-  , _type :: Text
-  , _meta :: Maybe Meta
-  } deriving (Show, Eq, Generic)
-
-instance ToJSON Identifier where
-  toJSON = AE.genericToJSON
-    AE.defaultOptions { AE.fieldLabelModifier = drop 1 }
-
-instance FromJSON Identifier where
-  parseJSON = AE.genericParseJSON
-    AE.defaultOptions { AE.fieldLabelModifier = drop 1 }
-
-
-{- |
-Typeclass indicating how to access an 'Identifier' for
-a given datatype
--}
-class HasIdentifier a where
-  identifier :: a -> Identifier
+makeLenses ''Resource

@@ -38,6 +38,7 @@ library
                , base                 >= 4.7 && < 5.0
                , containers           >= 0.5.7.1 && < 0.5.8.0
                , data-default         >= 0.5.3 && < 5.6.0
+               , lens                 >= 4.13 && < 5.0
                , lens-aeson           >= 1.0.0.5 && < 1.0.1.0
                , text                 >= 1.2.2.1 && < 1.2.3.0
                , unordered-containers >= 0.2.7.1 && < 0.2.8.0
@@ -50,11 +51,13 @@ library
     GeneralizedNewtypeDeriving
     OverloadedStrings
     RecordWildCards
+    TemplateHaskell
 
   exposed-modules:
     Network.JSONApi
     Network.JSONApi.Error
     Network.JSONApi.Document
+    Network.JSONApi.Identifier
     Network.JSONApi.Meta
     Network.JSONApi.Link
     Network.JSONApi.Resource
@@ -104,6 +107,7 @@ test-suite json-api-test
   other-modules:
     Network.JSONApi.ErrorSpec
     Network.JSONApi.DocumentSpec
+    Network.JSONApi.IdentifierSpec
     Network.JSONApi.MetaSpec
     Network.JSONApi.ResourceSpec
     TestHelpers
