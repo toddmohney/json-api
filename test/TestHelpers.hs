@@ -73,10 +73,9 @@ toResource' :: (HasIdentifiers a) => a
             -> Resource a
 toResource' obj links meta =
   Resource
-    (Identifier (pack . show . uniqueId $ obj) (typeDescriptor obj))
+    (Identifier (pack . show . uniqueId $ obj) (typeDescriptor obj) meta)
     obj
     links
-    meta
     Nothing
 
 linksObj :: Links

@@ -10,6 +10,7 @@ module Network.JSONApi
   , R.Resource (..)
   , R.Relationships
   , R.ResourcefulEntity (..)
+  , R.HasIdentifier (..)
   , R.Identifier (..)
   , L.Links
   , M.Meta

@@ -4,7 +4,8 @@ Module representing a JSON-API resource object.
 Specification: <http://jsonapi.org/format/#document-resource-objects>
 -}
 module Network.JSONApi.Resource
-( Identifier (..)
+( HasIdentifier (..)
+, Identifier (..)
 , Resource (..)
 , Relationships
 , ResourcefulEntity (..)
@@ -37,12 +38,11 @@ data Resource a = Resource
   { getIdentifier :: Identifier
   , getResource :: a
   , getLinks :: Maybe Links
-  , getMetaData :: Maybe Meta
   , getRelationships :: Maybe Relationships
   } deriving (Show, Eq, Generic)
 
 instance (ToJSON a) => ToJSON (Resource a) where
-  toJSON (Resource (Identifier resId resType) resObj linksObj metaObj rels) =
+  toJSON (Resource (Identifier resId resType metaObj) resObj linksObj rels) =
     AE.object [ "id"            .= resId
               , "type"          .= resType
               , "attributes"    .= resObj
@@ -59,7 +59,10 @@ instance (FromJSON a) => FromJSON (Resource a) where
     links <- v .:? "links"
     meta  <- v .:? "meta"
     rels  <- v .:? "relationships"
-    return $ Resource (Identifier id typ) attrs links meta rels
+    return $ Resource (Identifier id typ meta) attrs links rels
+
+instance HasIdentifier (Resource a) where
+  identifier = getIdentifier
 
 {- |
 A typeclass for decorating an entity with JSON API properties
@@ -77,10 +80,9 @@ class (ToJSON a, FromJSON a) => ResourcefulEntity a where
   toResource :: a -> Resource a
   toResource a =
     Resource
-      (Identifier (resourceIdentifier a) (resourceType a))
+      (Identifier (resourceIdentifier a) (resourceType a) (resourceMetaData a))
       a
       (resourceLinks a)
-      (resourceMetaData a)
       (resourceRelationships a)
 
 {- |
@@ -116,13 +118,14 @@ instance Monoid Relationships where
   mappend (Relationships a) (Relationships b) = Relationships (a <> b)
 
 mkRelationships :: Relationship -> Relationships
-mkRelationships relationship = Relationships $ Map.singleton (relationshipType relationship) relationship
+mkRelationships rel =
+  Relationships $ Map.singleton (relationshipType rel) rel
 
 
 relationshipType :: Relationship -> Text
 relationshipType relationship = case _data relationship of
   Nothing -> "unidentified"
-  (Just (Identifier _ typ)) -> typ
+  (Just (Identifier _ typ _)) -> typ
 
 
 {- |
@@ -146,6 +149,7 @@ Specification: <http://jsonapi.org/format/#document-resource-identifier-objects>
 data Identifier = Identifier
   { _id   :: Text
   , _type :: Text
+  , _meta :: Maybe Meta
   } deriving (Show, Eq, Generic)
 
 instance ToJSON Identifier where
@@ -155,3 +159,11 @@ instance ToJSON Identifier where
 instance FromJSON Identifier where
   parseJSON = AE.genericParseJSON
     AE.defaultOptions { AE.fieldLabelModifier = drop 1 }
+
+
+{- |
+Typeclass indicating how to access an 'Identifier' for
+a given datatype
+-}
+class HasIdentifier a where
+  identifier :: a -> Identifier
