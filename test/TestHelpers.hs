@@ -4,7 +4,6 @@ import qualified Data.Aeson as AE
 import qualified Data.Aeson.Encode.Pretty as AE
 import qualified Data.ByteString.Lazy.Char8 as BS
 import Data.Maybe (fromJust)
-import qualified Data.HashMap.Strict as HM
 import Data.Text (Text, pack)
 import GHC.Generics (Generic)
 import Network.JSONApi
@@ -65,6 +64,8 @@ data TestMetaObject = TestMetaObject
 
 instance AE.ToJSON TestMetaObject
 instance AE.FromJSON TestMetaObject
+instance MetaObject TestMetaObject where
+  typeName _ = "importantData"
 
 toResource' :: (HasIdentifiers a) => a
             -> Maybe Links
@@ -72,10 +73,9 @@ toResource' :: (HasIdentifiers a) => a
             -> Resource a
 toResource' obj links meta =
   Resource
-    (Identifier (pack . show . uniqueId $ obj) (typeDescriptor obj))
+    (Identifier (pack . show . uniqueId $ obj) (typeDescriptor obj) meta)
     obj
     links
-    meta
     Nothing
 
 linksObj :: Links
@@ -93,8 +93,7 @@ otherTestObject :: OtherTestResource
 otherTestObject = OtherTestResource 999 "Atom Smasher" 100 "Atom Smashers, Inc"
 
 testMetaObj :: Meta
-testMetaObj =
-  Meta . HM.fromList $ [ ("importantData", (AE.toJSON $ TestMetaObject 3 True)) ]
+testMetaObj = mkMeta (TestMetaObject 3 True)
 
 emptyMeta :: Maybe Meta
 emptyMeta = Nothing

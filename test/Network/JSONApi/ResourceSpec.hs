@@ -2,12 +2,10 @@ module Network.JSONApi.ResourceSpec where
 
 import qualified Data.Aeson as AE
 import qualified Data.ByteString.Lazy.Char8 as BS
-import Data.Map (Map)
-import qualified Data.Map as Map
-import qualified Data.HashMap.Strict as HM
 import Data.Maybe (isJust, fromJust)
+import Data.Monoid
 import Data.Text (Text, pack)
-import qualified GHC.Generics as G
+import GHC.Generics (Generic)
 import Network.JSONApi
 import Network.URL (URL, importURL)
 import TestHelpers (prettyEncode)
@@ -31,24 +29,42 @@ data TestObject = TestObject
   , myName :: Text
   , myAge :: Int
   , myFavoriteFood :: Text
-  } deriving (Show, G.Generic)
+  } deriving (Show, Generic)
 
 instance AE.ToJSON TestObject
 instance AE.FromJSON TestObject
+
 instance ResourcefulEntity TestObject where
   resourceIdentifier = pack . show . myId
   resourceType _ = "TestObject"
   resourceLinks _ = Just myResourceLinks
   resourceMetaData _ = Just myResourceMetaData
-  resourceRelationships _ = Just myResourceRelationships
+  resourceRelationships _ = Just myRelationshipss
 
-myResourceRelationships :: Map Text Relationship
-myResourceRelationships = Map.fromList $ [ ("friends", relationship) ]
+data Pagination = Pagination
+  { currentPage :: Int
+  , totalPages :: Int
+  } deriving (Show, Generic)
+
+instance AE.ToJSON Pagination
+instance AE.FromJSON Pagination
+instance MetaObject Pagination where
+  typeName _ = "pagination"
+
+myRelationshipss :: Relationships
+myRelationshipss =
+  mkRelationships relationship <> mkRelationships otherRelationship
 
 relationship :: Relationship
 relationship =
   fromJust $ mkRelationship
-    (Just $ Identifier "42" "FriendOfTestObject")
+    (Just $ Identifier "42" "FriendOfTestObject" Nothing)
+    (Just myResourceLinks)
+
+otherRelationship :: Relationship
+otherRelationship =
+  fromJust $ mkRelationship
+    (Just $ Identifier "49" "CousinOfTestObject" Nothing)
     (Just myResourceLinks)
 
 myResourceLinks :: Links
@@ -58,7 +74,7 @@ myResourceLinks =
           ]
 
 myResourceMetaData :: Meta
-myResourceMetaData = Meta . HM.fromList $ [ ("extraData", AE.toJSON (20 :: Int)) ]
+myResourceMetaData = mkMeta (Pagination 1 14)
 
 toURL :: String -> URL
 toURL = fromJust . importURL

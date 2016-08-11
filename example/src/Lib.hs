@@ -15,7 +15,8 @@ import Users
 import qualified Users.Controller as Controller
 
 type API = "users" :> Get '[JSON] (Document User)
-      :<|> "users" :> Capture "id" Int :> Get '[JSON] (Document User)
+      :<|> "users" :> Capture "id" Int :> "simple" :> Get '[JSON] (Document User)
+      :<|> "users" :> Capture "id" Int :> "full" :> Get '[JSON] (Document User)
 
 startApp :: IO ()
 startApp = run 8080 app
@@ -28,4 +29,5 @@ api = Proxy
 
 server :: Server API
 server = Controller.usersIndex
-    :<|> Controller.userShow
+    :<|> Controller.userShowSimple
+    :<|> Controller.userShowFull
