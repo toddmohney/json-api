@@ -30,3 +30,4 @@ import qualified Network.JSONApi.Identifier as I
 import qualified Network.JSONApi.Link as L
 import qualified Network.JSONApi.Meta as M
 import qualified Network.JSONApi.Resource as R
+
