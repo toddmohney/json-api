@@ -1,0 +1,11 @@
+---
+engines:
+  hlint:
+    enabled: true
+ratings:
+  paths:
+  - src
+  - "**.hs"
+exclude_paths:
+- test/
+- example/
