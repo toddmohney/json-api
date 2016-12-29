@@ -3,6 +3,7 @@ Entry-point module for this package.
 -}
 module Network.JSONApi
 ( D.Document
+, D.ResourceData (..)
 , D.ErrorDocument (..)
 , D.Included
 , E.Error (..)
@@ -19,7 +20,11 @@ module Network.JSONApi
 , R.mkRelationship
 , R.mkRelationships
 , D.mkDocument
+, D.mkDocument'
+, D.singleton
+, D.list
 , D.mkCompoundDocument
+, D.mkCompoundDocument'
 , D.mkIncludedResource
 , M.mkMeta
 ) where
