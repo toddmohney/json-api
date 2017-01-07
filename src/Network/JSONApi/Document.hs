@@ -3,10 +3,15 @@ Contains representations of the top-level JSON-API document structure.
 -}
 module Network.JSONApi.Document
   ( Document
+  , ResourceData (..)
   , ErrorDocument (..)
   , Included
   , mkDocument
+  , mkDocument'
+  , singleton
+  , list
   , mkCompoundDocument
+  , mkCompoundDocument'
   , mkIncludedResource
   ) where
 
@@ -93,9 +98,15 @@ mkDocument :: ResourcefulEntity a =>
            -> Maybe Links
            -> Maybe Meta
            -> Document a
-mkDocument res links meta =
+mkDocument res = mkDocument' (toResourceData res)
+
+mkDocument' :: ResourceData a
+            -> Maybe Links
+            -> Maybe Meta
+            -> Document a
+mkDocument' res links meta =
   Document
-    { _data = toResourceData res
+    { _data = res
     , _links = links
     , _meta = meta
     , _included = []
@@ -114,9 +125,16 @@ mkCompoundDocument :: ResourcefulEntity a =>
                    -> Maybe Meta
                    -> Included
                    -> Document a
-mkCompoundDocument res links meta (Included included) =
+mkCompoundDocument res = mkCompoundDocument' (toResourceData res)
+
+mkCompoundDocument' :: ResourceData a
+                    -> Maybe Links
+                    -> Maybe Meta
+                    -> Included
+                    -> Document a
+mkCompoundDocument' res links meta (Included included) =
   Document
-    { _data = toResourceData res
+    { _data = res
     , _links = links
     , _meta = meta
     , _included = included
@@ -144,8 +162,14 @@ a singleton resource or a list.
 For more information see: <http://jsonapi.org/format/#document-top-level>
 -}
 data ResourceData a = Singleton (Resource a)
-                      | List [ Resource a ]
-                      deriving (Show, Eq, G.Generic)
+                    | List [ Resource a ]
+                    deriving (Show, Eq, G.Generic)
+
+singleton :: ResourcefulEntity a => a -> ResourceData a
+singleton = Singleton . R.toResource
+
+list :: ResourcefulEntity a => [a] -> ResourceData a
+list = List . map R.toResource
 
 instance (ToJSON a) => ToJSON (ResourceData a) where
   toJSON (Singleton res) = AE.toJSON res
