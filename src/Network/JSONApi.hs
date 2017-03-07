@@ -36,3 +36,4 @@ import qualified Network.JSONApi.Link as L
 import qualified Network.JSONApi.Meta as M
 import qualified Network.JSONApi.Resource as R
 
+myFunction = 1 + 1 + (1 + 1 + 1)
