@@ -41,14 +41,14 @@ instance ResourcefulEntity TestObject where
   resourceMetaData _ = Just myResourceMetaData
   resourceRelationships _ = Just myRelationshipss
 
-data Pagination = Pagination
+data PaginationMetaObject = PaginationMetaObject
   { currentPage :: Int
   , totalPages :: Int
   } deriving (Show, Generic)
 
-instance AE.ToJSON Pagination
-instance AE.FromJSON Pagination
-instance MetaObject Pagination where
+instance AE.ToJSON PaginationMetaObject
+instance AE.FromJSON PaginationMetaObject
+instance MetaObject PaginationMetaObject where
   typeName _ = "pagination"
 
 myRelationshipss :: Relationships
@@ -74,7 +74,7 @@ myResourceLinks =
           ]
 
 myResourceMetaData :: Meta
-myResourceMetaData = mkMeta (Pagination 1 14)
+myResourceMetaData = mkMeta (PaginationMetaObject 1 14)
 
 toURL :: String -> URL
 toURL = fromJust . importURL

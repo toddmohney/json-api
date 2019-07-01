@@ -5,7 +5,6 @@ bug-reports:         https://github.com/toddmohney/json-api/issues
 license:             MIT
 license-file:        LICENSE
 author:              Todd Mohney
-maintainer:          toddmohney@gmail.com
 copyright:           2016 Todd Mohney
 category:            Network
 build-type:          Simple
@@ -61,6 +60,7 @@ library
     Network.JSONApi.Meta
     Network.JSONApi.Link
     Network.JSONApi.Resource
+    Network.JSONApi.Pagination
 
   other-modules:
 
@@ -109,6 +109,7 @@ test-suite json-api-test
     Network.JSONApi.DocumentSpec
     Network.JSONApi.IdentifierSpec
     Network.JSONApi.MetaSpec
+    Network.JSONApi.PaginationSpec
     Network.JSONApi.ResourceSpec
     TestHelpers
 
