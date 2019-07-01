@@ -2,7 +2,7 @@
 
 module Network.JSONApi.Pagination (
     Pagination (..)
-  , PageNum (..)
+  , PageIndex (..)
   , PageSize (..)
   , ResourceCount (..)
   , Strategy (..)
@@ -13,22 +13,12 @@ import Network.JSONApi.Link (Links, Rel, mkLinks)
 import Network.URL (URL, add_param)
 
 {- |
-Wrapper type for the various components of pagination being page size, page number
+Wrapper type for the various components of pagination being page size, page index
 and the number of resources in total.
 -}
 data Pagination = Pagination {
-                      getPaginationPageSize :: PageSize
-                    , getPaginationPageNum :: PageNum
-                    , getPaginationResourceCount :: ResourceCount
-                  }
-                  | PageStrategyPagination {
-                      getPaginationPageSize :: PageSize
-                    , getPaginationPageNum :: PageNum
-                    , getPaginationResourceCount :: ResourceCount
-                  }
-                  | OffsetStrategyPagination {
-                      getPaginationOffset :: Offset
-                    , getPaginationLimit :: Limit
+                      getPaginationPageIndex :: PageIndex
+                    , getPaginationPageSize :: PageSize
                     , getPaginationResourceCount :: ResourceCount
                   }
 
@@ -39,16 +29,8 @@ newtype PageSize = PageSize {
   getPageSize :: Word
 } deriving Show
 
-newtype PageNum = PageNum {
-  getPageNum :: Word
-} deriving Show
-
-newtype Offset = Offset {
-  getOffset :: Word
-} deriving Show
-
-newtype Limit = Limit {
-  getLimit :: Word
+newtype PageIndex = PageIndex {
+  getPageIndex :: Word
 } deriving Show
 
 newtype ResourceCount = ResourceCount {
@@ -70,36 +52,36 @@ mkPaginationLinks :: Strategy -> URL -> Pagination -> Links
 mkPaginationLinks strategy baseUrl page =
   mkLinks (baseLinks ++ nextLinks ++ prevLinks)
     where
-      pgNum      = getPageNum $ getPaginationPageNum page
+      pgIndex    = getPageIndex $ getPaginationPageIndex page
       pgSize     = getPageSize $ getPaginationPageSize page
       baseLinks  = [mkPaginationLink strategy "first" baseUrl (firstPageIndex strategy) pgSize
                   , mkPaginationLink strategy "last" baseUrl (lastPageIndex strategy page) pgSize]
-      nextLinks  = [mkPaginationLink strategy "next" baseUrl (pgNum + 1) pgSize | shouldGenNextLink strategy page]
-      prevLinks  = [mkPaginationLink strategy "prev" baseUrl (pgNum - 1) pgSize | shouldGenPrevLink strategy page]
+      nextLinks  = [mkPaginationLink strategy "next" baseUrl (pgIndex + 1) pgSize | shouldGenNextLink strategy page]
+      prevLinks  = [mkPaginationLink strategy "prev" baseUrl (pgIndex - 1) pgSize | shouldGenPrevLink strategy page]
 
 {- |
 If we are at the last page then we do not generate a next link. This function tells us whether to
 generate a next link based on the page strategy.
 -}
 shouldGenNextLink :: Strategy -> Pagination -> Bool
-shouldGenNextLink PageStrategy (Pagination pageSize pageNum resourceCount) =
-  getPageNum pageNum < numberOfPagesInPageList (Pagination pageSize pageNum resourceCount)
-shouldGenNextLink OffsetStrategy (Pagination pageSize pageNum resourceCount) =
-  getPageNum pageNum < numberOfPagesInPageList (Pagination pageSize pageNum resourceCount) - 1
+shouldGenNextLink PageStrategy pagination =
+  (getPageIndex . getPaginationPageIndex) pagination < numberOfPagesInPageList pagination
+shouldGenNextLink OffsetStrategy pagination =
+  (getPageIndex . getPaginationPageIndex) pagination < numberOfPagesInPageList pagination - 1
 
 {- |
 If we on the first page then we do not generate a prev link. This function tells us whether we can generate
 a prev link.
 -}
 shouldGenPrevLink :: Strategy -> Pagination -> Bool
-shouldGenPrevLink strategy (Pagination _ pageNum _) =
-  getPageNum pageNum > firstPageIndex strategy
+shouldGenPrevLink strategy pagination =
+  (getPageIndex . getPaginationPageIndex) pagination > firstPageIndex strategy
 
 {- |
 This function calculates the number of pages in the list.
 -}
 numberOfPagesInPageList :: Pagination -> Word
-numberOfPagesInPageList (Pagination pageSize _ resourceCount) =
+numberOfPagesInPageList (Pagination _ pageSize resourceCount) =
   if resCount `mod` pgSize == 0
   then resCount `quot` pgSize
   else (resCount `quot` pgSize) + 1

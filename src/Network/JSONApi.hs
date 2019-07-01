@@ -18,7 +18,7 @@ module Network.JSONApi
 , M.MetaObject (..)
 , L.mkLinks
 , P.Pagination (..)
-, P.PageNum (..)
+, P.PageIndex (..)
 , P.PageSize (..)
 , P.ResourceCount (..)
 , P.Strategy (..)
