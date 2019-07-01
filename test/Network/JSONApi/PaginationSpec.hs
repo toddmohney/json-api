@@ -16,7 +16,7 @@ spec =
   describe "Pagination" $ do
     it "should return mandatory keys" $ do
       let p = Pagination (PageIndex 2) (PageSize 10) (ResourceCount 30)
-      let results = mkPaginationLinks PageStrategy (fromJust $ importURL "http://localhost") p
+      let results = mkPaginationLinks PageStrategy (fromJust $ importURL "/users") p
       case results of
         Links lm -> do
           let links = toList lm
@@ -24,45 +24,45 @@ spec =
 
     it "should return proper hrefs for paging strategy" $ do
       let p = Pagination (PageIndex 2) (PageSize 10) (ResourceCount 30)
-      let results = mkPaginationLinks PageStrategy (fromJust $ importURL "http://localhost") p
+      let results = mkPaginationLinks PageStrategy (fromJust $ importURL "/users") p
       case results of
         Links lm -> do
           let links = toList lm
-          links `shouldBe` [("first", "http://localhost/?page%5bsize%5d=10&page%5bnumber%5d=1"),
-                            ("last", "http://localhost/?page%5bsize%5d=10&page%5bnumber%5d=3"),
-                            ("next", "http://localhost/?page%5bsize%5d=10&page%5bnumber%5d=3"),
-                            ("prev", "http://localhost/?page%5bsize%5d=10&page%5bnumber%5d=1")]
+          links `shouldBe` [("first", "/users?page%5bsize%5d=10&page%5bnumber%5d=1"),
+                            ("last", "/users?page%5bsize%5d=10&page%5bnumber%5d=3"),
+                            ("next", "/users?page%5bsize%5d=10&page%5bnumber%5d=3"),
+                            ("prev", "/users?page%5bsize%5d=10&page%5bnumber%5d=1")]
 
     it "should return proper hrefs for offset strategy" $ do
       let p = Pagination (PageIndex 1) (PageSize 10) (ResourceCount 30)
-      let results = mkPaginationLinks OffsetStrategy (fromJust $ importURL "http://localhost") p
+      let results = mkPaginationLinks OffsetStrategy (fromJust $ importURL "/users") p
       case results of
         Links lm -> do
           let links = toList lm
-          links `shouldBe` [("first", "http://localhost/?page%5blimit%5d=10&page%5boffset%5d=0"),
-                            ("last", "http://localhost/?page%5blimit%5d=10&page%5boffset%5d=2"),
-                            ("next", "http://localhost/?page%5blimit%5d=10&page%5boffset%5d=2"),
-                            ("prev", "http://localhost/?page%5blimit%5d=10&page%5boffset%5d=0")]
+          links `shouldBe` [("first", "/users?page%5blimit%5d=10&page%5boffset%5d=0"),
+                            ("last", "/users?page%5blimit%5d=10&page%5boffset%5d=2"),
+                            ("next", "/users?page%5blimit%5d=10&page%5boffset%5d=2"),
+                            ("prev", "/users?page%5blimit%5d=10&page%5boffset%5d=0")]
 
     it "should support the page strategy" $ do
       let p = Pagination (PageIndex 0) (PageSize 10) (ResourceCount 20)
-      let results = mkPaginationLinks PageStrategy (fromJust $ importURL "http://localhost") p
+      let results = mkPaginationLinks PageStrategy (fromJust $ importURL "/users") p
       case results of
         Links lm -> do
           let links = toList lm
-          (snd . head) links `shouldBe` "http://localhost/?page%5bsize%5d=10&page%5bnumber%5d=1"
+          (snd . head) links `shouldBe` "/users?page%5bsize%5d=10&page%5bnumber%5d=1"
 
     it "should support the offset strategy" $ do
       let p = Pagination (PageIndex 0) (PageSize 10) (ResourceCount 20)
-      let results = mkPaginationLinks OffsetStrategy (fromJust $ importURL "http://localhost") p
+      let results = mkPaginationLinks OffsetStrategy (fromJust $ importURL "/users") p
       case results of
         Links lm -> do
           let links = toList lm
-          (snd . head) links `shouldBe` "http://localhost/?page%5blimit%5d=10&page%5boffset%5d=0"
+          (snd . head) links `shouldBe` "/users?page%5blimit%5d=10&page%5boffset%5d=0"
 
     it "should omit prev when we are on the first page of a PageStrategy" $ do
       let p = Pagination (PageIndex 1) (PageSize 10) (ResourceCount 20)
-      let results = mkPaginationLinks PageStrategy (fromJust $ importURL "http://localhost") p
+      let results = mkPaginationLinks PageStrategy (fromJust $ importURL "/users") p
       case results of
         Links lm -> do
           let links = toList lm
@@ -70,7 +70,7 @@ spec =
 
     it "should omit next when we are on the last page of a PageStrategy" $ do
       let p = Pagination (PageIndex 2) (PageSize 10) (ResourceCount 20)
-      let results = mkPaginationLinks PageStrategy (fromJust $ importURL "http://localhost") p
+      let results = mkPaginationLinks PageStrategy (fromJust $ importURL "/users") p
       case results of
         Links lm -> do
           let links = toList lm
@@ -78,7 +78,7 @@ spec =
 
     it "should omit prev when we are on the first page of a OffsetStrategy" $ do
       let p = Pagination (PageIndex 0) (PageSize 10) (ResourceCount 20)
-      let results = mkPaginationLinks OffsetStrategy (fromJust $ importURL "http://localhost") p
+      let results = mkPaginationLinks OffsetStrategy (fromJust $ importURL "/users") p
       case results of
         Links lm -> do
           let links = toList lm
@@ -86,7 +86,7 @@ spec =
 
     it "should omit next when we are on the last page of a OffsetStrategy" $ do
       let p = Pagination (PageIndex 1) (PageSize 10) (ResourceCount 20)
-      let results = mkPaginationLinks OffsetStrategy (fromJust $ importURL "http://localhost") p
+      let results = mkPaginationLinks OffsetStrategy (fromJust $ importURL "/users") p
       case results of
         Links lm -> do
           let links = toList lm
