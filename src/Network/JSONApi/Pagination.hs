@@ -44,7 +44,7 @@ are commonly used.
 data Strategy = PageStrategy | OffsetStrategy
 
 {- |
-Helper function to beuild relative links for a collection of resources of type ResourceEntity.
+Helper function to build relative links for a collection of resources of type ResourceEntity.
 
 This helper function assumes that the first page is always page 0.
 -}

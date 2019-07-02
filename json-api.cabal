@@ -1,15 +1,15 @@
 name:                json-api
-version:             0.1.1.1
+version:             0.1.2.0
 homepage:            https://github.com/toddmohney/json-api
 bug-reports:         https://github.com/toddmohney/json-api/issues
 license:             MIT
 license-file:        LICENSE
 author:              Todd Mohney
+maintainer:          Todd Mohney <toddmohney@gmail.com>
 copyright:           2016 Todd Mohney
 category:            Network
 build-type:          Simple
 cabal-version:       >=1.10
-maintainer:          Todd Mohney <toddmohney@gmail.com>
 stability:           experimental
 tested-with:         GHC == 7.10.3
 synopsis:            Utilities for generating JSON-API payloads
