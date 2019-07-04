@@ -4,7 +4,7 @@ Module representing a JSON-API link object.
 Specification: <http://jsonapi.org/format/#document-links>
 -}
 module Network.JSONApi.Link
-( Links
+( Links (..)
 , Rel
 , Href
 , mkLinks
