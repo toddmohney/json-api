@@ -180,7 +180,7 @@ The key function in the code example is `mkPaginationLinks` which has the follow
 mkPaginationLinks :: Strategy -> URL -> Pagination -> Links
 ```
 
-`Strategy` is a sum type that represents the different paging strategies as laid out in the [JSON-API pagination specification](https://jsonapi.org/format/#fetching-pagination). At the time of writing this README, the library only supports 2 paging strategies `OffsetStrategy` and `PageStrategy`. `Offset` is a 0 index based approach unlike `Page`, i.e. `page[offset]` 0 is the same as `page[number]` 1.
+`Strategy` is a sum type that represents the different paging strategies as laid out in the [JSON-API pagination specification](https://jsonapi.org/format/#fetching-pagination). At the time of writing this README, the library only supports 2 paging strategies Offset and Page. Offset is a 0 index based approach unlike Page, i.e. `page[offset]` 0 is the same as `page[number]` 1.
 
 The `URL` type is used to build the links that appear in the JSON payload. The `Pagination` type contains the requisite information for the `mkPaginationLinks` function to generate the paging links.
 
