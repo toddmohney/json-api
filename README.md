@@ -186,7 +186,7 @@ The `URL` type is used to build the links that appear in the JSON payload. The `
 
 So let's break this example down. To get started we need to create a `Pagination` record. The first attribute of the record is `PageIndex`. This attribute informs the caller that the page we are looking at is the first in the entire collection (`PageIndex` is either a 0 based index or 1 based index depending on the `Strategy`). So in our example as we are using `PageStrategy`, `PageIndex 1` implies we are after the first page. The second attribute of the record is `PageSize`. This atrribute tells the caller how many items can appear in the list at most. So in our example seeing there are only 2 users, a `PageSize` of 1 would mean that in total we have 2 pages. The third attribute is `ResourceCount`. This attribute is required by the function `mkPaginationLinks` to figure out which links to generate.
 
-The links object in the JSON payload can have 4 attributes `next`, `prev`, 'first` and `last`. This library only generates valid links. For example if the request is for the first page of a list, then the `prev` link is not present.
+The links object in the JSON payload can have 4 attributes `next`, `prev`, `first` and `last`. This library only generates valid links. For example if the request is for the first page of a list, then the `prev` link is not present.
 
 #### Example Project
 
