@@ -29,7 +29,7 @@ default-extensions:
 ghc-options:
 - -Wall
 - -Wcompat
-- -Werror
+# - -Werror
 - -Widentities
 - -Wincomplete-record-updates
 - -Wincomplete-uni-patterns

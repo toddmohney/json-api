@@ -1,10 +1,10 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.31.1.
+-- This file has been generated from package.yaml by hpack version 0.31.2.
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 3bd06f9e7446324c270519ea6d879b658d004ce523535d5e02dba59200e671b7
+-- hash: 85cd43545d985dbf21e9ce90c112c8efc0c8553f194f84544f71d465a6a3a101
 
 name:           json-api
 version:        0.1.3.0
@@ -51,7 +51,7 @@ library
   hs-source-dirs:
       src
   default-extensions: DeriveGeneric GeneralizedNewtypeDeriving OverloadedStrings RecordWildCards TemplateHaskell
-  ghc-options: -Wall -Wcompat -Werror -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -fhide-source-paths -fno-warn-warnings-deprecations -freverse-errors -fwarn-unused-binds -fwarn-unused-imports -fwarn-unused-matches -fwarn-unused-imports
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -fhide-source-paths -fno-warn-warnings-deprecations -freverse-errors -fwarn-unused-binds -fwarn-unused-imports -fwarn-unused-matches -fwarn-unused-imports
   build-depends:
       aeson
     , base >=4.7 && <5.0
@@ -79,7 +79,7 @@ test-suite json-api-test
   hs-source-dirs:
       test
   default-extensions: DeriveGeneric GeneralizedNewtypeDeriving OverloadedStrings RecordWildCards
-  ghc-options: -Wall -Wcompat -Werror -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -fhide-source-paths -fno-warn-warnings-deprecations -freverse-errors -fwarn-unused-binds -fwarn-unused-imports -fwarn-unused-matches
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -fhide-source-paths -fno-warn-warnings-deprecations -freverse-errors -fwarn-unused-binds -fwarn-unused-imports -fwarn-unused-matches
   build-depends:
       aeson
     , aeson-pretty
