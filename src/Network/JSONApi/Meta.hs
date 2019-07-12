@@ -41,8 +41,10 @@ data Meta = Meta Object
 instance ToJSON Meta
 instance FromJSON Meta
 
+instance Semigroup Meta where
+  (<>) (Meta a) (Meta b) = Meta $ HM.union a b
+
 instance Monoid Meta where
-  mappend (Meta a) (Meta b) = Meta $ HM.union a b
   mempty = Meta $ HM.empty
 
 {- |
