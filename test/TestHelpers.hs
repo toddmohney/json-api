@@ -13,7 +13,10 @@ prettyEncode :: AE.ToJSON a => a -> BS.ByteString
 prettyEncode = AE.encodePretty' prettyConfig
 
 prettyConfig :: AE.Config
-prettyConfig = AE.Config { AE.confIndent = 2, AE.confCompare = mempty }
+prettyConfig = AE.defConfig
+    { AE.confIndent = AE.Spaces 2
+    , AE.confCompare = mempty
+    }
 
 class HasIdentifiers a where
   uniqueId :: a -> Int
