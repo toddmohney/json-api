@@ -61,6 +61,7 @@ library
     Network.JSONApi.Link
     Network.JSONApi.Resource
     Network.JSONApi.Pagination
+    Network.JSONApi.Source
 
   other-modules:
 
@@ -111,6 +112,7 @@ test-suite json-api-test
     Network.JSONApi.MetaSpec
     Network.JSONApi.PaginationSpec
     Network.JSONApi.ResourceSpec
+    Network.JSONApi.SourceSpec
     TestHelpers
 
   type: exitcode-stdio-1.0

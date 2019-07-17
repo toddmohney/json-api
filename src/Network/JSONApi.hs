@@ -22,6 +22,7 @@ module Network.JSONApi
 , P.PageSize (..)
 , P.ResourceCount (..)
 , P.Strategy (..)
+, S.Source (..)
 , P.mkPaginationLinks
 , R.mkRelationship
 , R.mkRelationships
@@ -42,4 +43,5 @@ import qualified Network.JSONApi.Link as L
 import qualified Network.JSONApi.Meta as M
 import qualified Network.JSONApi.Pagination as P
 import qualified Network.JSONApi.Resource as R
+import qualified Network.JSONApi.Source as S
 

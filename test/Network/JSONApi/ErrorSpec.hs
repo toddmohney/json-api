@@ -23,6 +23,7 @@ spec = do
             , code   = Nothing
             , title  = Nothing
             , detail = Nothing
+            , source = Nothing
             , meta   = Nothing
             }
       in (def::Error Int) `shouldBe` expectedDefault
