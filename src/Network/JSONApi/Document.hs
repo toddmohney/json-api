@@ -25,7 +25,6 @@ import Data.Aeson
   , (.:?)
   )
 import qualified Data.Aeson as AE
-import Data.Monoid
 import qualified GHC.Generics as G
 import qualified Network.JSONApi.Error as E
 import Network.JSONApi.Link as L
@@ -83,9 +82,11 @@ See 'mkIncludedResource' for creating 'Included' types.
 data Included = Included [Value]
   deriving (Show)
 
+instance Semigroup Included where
+  (<>) (Included as) (Included bs) = Included (as <> bs)
+
 instance Monoid Included where
   mempty = Included []
-  mappend (Included as) (Included bs) = Included (as <> bs)
 
 {- |
 Constructor function for the Document data type.

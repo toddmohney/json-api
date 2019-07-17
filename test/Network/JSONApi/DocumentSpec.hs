@@ -5,10 +5,9 @@ import Data.Aeson (ToJSON)
 import qualified Data.Aeson as AE
 import qualified Data.Aeson.Lens as Lens
 import Data.ByteString.Lazy.Char8 (ByteString)
-{- import qualified Data.ByteString.Lazy.Char8 as BS -}
+import qualified Data.ByteString.Lazy.Char8 as BS
 import Data.Either (isRight)
 import Data.Maybe
-import Data.Monoid
 import Network.JSONApi
 import TestHelpers
 import Test.Hspec
@@ -24,8 +23,8 @@ spec =
       let jsonApiObj = mkDocument [testObject] Nothing Nothing
       let encodedJson = encodeDocumentObject jsonApiObj
       let decodedJson = decodeDocumentObject encodedJson
-      {- putStrLn (BS.unpack encodedJson) -}
-      {- putStrLn (show decodedJson) -}
+      putStrLn (BS.unpack encodedJson)
+      putStrLn (show decodedJson)
       isRight decodedJson `shouldBe` True
 
     it "JSON encodes/decodes a list of resources" $ do

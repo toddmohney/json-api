@@ -26,7 +26,7 @@ $(deriveJSON defaultOptions ''Email)
 
 -- helper function to build an Identifier for an Email resource
 mkResourceIdentifer :: Email -> Identifier
-mkResourceIdentifer email = Identifier (pack . show . emailId $ email) "Email"
+mkResourceIdentifer email = Identifier (pack . show . emailId $ email) "Email" Nothing
 
 -- helper function to build links for an Email resource
 mkLinks :: Email -> Links

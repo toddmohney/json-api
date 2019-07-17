@@ -1,5 +1,5 @@
 name:                example
-version:             0.1.0.3
+version:             0.1.0.4
 synopsis:            Initial project template from stack
 description:         Please see README.md
 homepage:            https://github.com/toddmohney/example#readme
@@ -28,15 +28,15 @@ library
     Users.Actions.Show
 
   build-depends: base           >= 4.7 && < 5
-               , aeson          >= 0.11.2.0 && < 0.11.3.0
-               , containers     >= 0.5.7.1 && < 0.5.8.0
-               , data-default   >= 0.5.3 && < 5.6.0
+               , aeson
+               , containers
+               , data-default
                , json-api
-               , servant-server >= 0.7.1 && < 0.8.0
-               , text           >= 1.2.2.1 && < 1.2.3.0
-               , url            >= 2.1.3 && < 2.2.0
-               , unordered-containers >= 0.2.7.1 && < 0.2.8.0
-               , wai            >= 3.2.1.1 && < 3.2.2.0
+               , servant-server
+               , text
+               , url
+               , unordered-containers
+               , wai
                , warp
 
   default-language:    Haskell2010

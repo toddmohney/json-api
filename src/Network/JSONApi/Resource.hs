@@ -15,7 +15,6 @@ module Network.JSONApi.Resource
 import Control.Lens.TH
 import Data.Aeson (ToJSON, FromJSON, (.=), (.:), (.:?))
 import qualified Data.Aeson as AE
-import qualified Data.Aeson.Types as AE
 import Data.Map (Map)
 import qualified Data.Map as Map
 import Data.Monoid
@@ -112,9 +111,11 @@ data Relationships = Relationships (Map Text Relationship)
 instance ToJSON Relationships
 instance FromJSON Relationships
 
+instance Semigroup Relationships where
+  (<>) (Relationships a) (Relationships b) = Relationships (a <> b)
+
 instance Monoid Relationships where
   mempty = Relationships Map.empty
-  mappend (Relationships a) (Relationships b) = Relationships (a <> b)
 
 mkRelationships :: Relationship -> Relationships
 mkRelationships rel =
