@@ -3,7 +3,6 @@ module Network.JSONApi.ResourceSpec where
 import qualified Data.Aeson as AE
 import qualified Data.ByteString.Lazy.Char8 as BS
 import Data.Maybe (isJust, fromJust)
-import Data.Monoid
 import Data.Text (Text, pack)
 import GHC.Generics (Generic)
 import Network.JSONApi

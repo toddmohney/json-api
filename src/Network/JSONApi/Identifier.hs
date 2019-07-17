@@ -14,7 +14,6 @@ module Network.JSONApi.Identifier
 import Control.Lens.TH
 import Data.Aeson (ToJSON, FromJSON, (.=), (.:), (.:?))
 import qualified Data.Aeson as AE
-import qualified Data.Aeson.Types as AE
 import Data.Text (Text)
 import Network.JSONApi.Meta (Meta)
 import Prelude hiding (id)
