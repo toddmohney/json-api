@@ -16,6 +16,7 @@ import Data.Text
 import qualified GHC.Generics as G
 import Network.JSONApi.Link (Links)
 import Network.JSONApi.Meta
+import Network.JSONApi.Source (Source)
 import Prelude hiding (id)
 
 {- |
@@ -31,6 +32,7 @@ data Error a =
         , code   :: Maybe Text
         , title  :: Maybe Text
         , detail :: Maybe Text
+        , source :: Maybe Source
         , meta   :: Maybe Meta
         }
   deriving (Show, Eq, G.Generic)
@@ -46,5 +48,6 @@ instance Default (Error a) where
     , code   = Nothing
     , title  = Nothing
     , detail = Nothing
+    , source = Nothing
     , meta   = Nothing
     }

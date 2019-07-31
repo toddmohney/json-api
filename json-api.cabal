@@ -38,14 +38,16 @@ source-repository head
 
 library
   exposed-modules:
-      Network.JSONApi
-      Network.JSONApi.Error
-      Network.JSONApi.Document
-      Network.JSONApi.Identifier
-      Network.JSONApi.Meta
-      Network.JSONApi.Link
-      Network.JSONApi.Resource
-      Network.JSONApi.Pagination
+    Network.JSONApi
+    Network.JSONApi.Error
+    Network.JSONApi.Document
+    Network.JSONApi.Identifier
+    Network.JSONApi.Meta
+    Network.JSONApi.Link
+    Network.JSONApi.Resource
+    Network.JSONApi.Pagination
+    Network.JSONApi.Source
+
   other-modules:
       Paths_json_api
   hs-source-dirs:
@@ -74,6 +76,7 @@ test-suite json-api-test
       Network.JSONApi.MetaSpec
       Network.JSONApi.PaginationSpec
       Network.JSONApi.ResourceSpec
+      Network.JSONApi.SourceSpec
       TestHelpers
       Paths_json_api
   hs-source-dirs:
