@@ -4,10 +4,10 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 85cd43545d985dbf21e9ce90c112c8efc0c8553f194f84544f71d465a6a3a101
+-- hash: 8976c29f6aaf0752e3accb80f6d7f3ac432f94e1d8df9092d2f0cb9beaad86d5
 
 name:           json-api
-version:        0.1.3.0
+version:        0.1.4.0
 synopsis:       Utilities for generating JSON-API payloads
 description:    Provides utilities for deriving JSON payloads conformant to the json-api specification
 category:       Network
@@ -38,16 +38,15 @@ source-repository head
 
 library
   exposed-modules:
-    Network.JSONApi
-    Network.JSONApi.Error
-    Network.JSONApi.Document
-    Network.JSONApi.Identifier
-    Network.JSONApi.Meta
-    Network.JSONApi.Link
-    Network.JSONApi.Resource
-    Network.JSONApi.Pagination
-    Network.JSONApi.Source
-
+      Network.JSONApi
+      Network.JSONApi.Error
+      Network.JSONApi.Document
+      Network.JSONApi.Identifier
+      Network.JSONApi.Meta
+      Network.JSONApi.Link
+      Network.JSONApi.Resource
+      Network.JSONApi.Pagination
+      Network.JSONApi.Source
   other-modules:
       Paths_json_api
   hs-source-dirs:
