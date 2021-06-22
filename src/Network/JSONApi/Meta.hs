@@ -13,6 +13,7 @@ import Data.Aeson (ToJSON, FromJSON, Object, toJSON)
 import Data.HashMap.Strict as HM
 import Data.Text (Text)
 import qualified GHC.Generics as G
+import Control.DeepSeq (NFData)
 
 {- |
 Type representing a JSON-API meta object.
@@ -38,6 +39,7 @@ Specification: <http://jsonapi.org/format/#document-meta>
 data Meta = Meta Object
   deriving (Show, Eq, G.Generic)
 
+instance NFData Meta
 instance ToJSON Meta
 instance FromJSON Meta
 

@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 0e90747171e3e465a2db698390e798117af1897f7ca610cfc6c485041c819c26
+-- hash: 6aa624502a73291732e0bbd403b6d9691e79387c2c37978d21327402feb9da01
 
 name:           json-api
 version:        0.1.4.0
@@ -59,6 +59,7 @@ library
     , base >=4.7 && <5.0
     , containers
     , data-default
+    , deepseq
     , lens
     , lens-aeson
     , text
@@ -90,6 +91,7 @@ test-suite json-api-test
     , bytestring
     , containers
     , data-default
+    , deepseq
     , hspec
     , json-api
     , lens

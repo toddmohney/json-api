@@ -18,6 +18,7 @@ import Network.JSONApi.Link (Links)
 import Network.JSONApi.Meta
 import Network.JSONApi.Source (Source)
 import Prelude hiding (id)
+import Control.DeepSeq (NFData)
 
 {- |
 Type for providing application-specific detail to unsuccessful API
@@ -37,6 +38,7 @@ data Error a =
         }
   deriving (Show, Eq, G.Generic)
 
+instance NFData a => NFData (Error a)
 instance ToJSON a   => ToJSON (Error a)
 instance FromJSON a => FromJSON (Error a)
 

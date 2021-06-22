@@ -16,6 +16,7 @@ import qualified Data.Map as Map
 import Data.Text (Text, pack)
 import qualified GHC.Generics as G
 import Network.URL (URL, exportURL)
+import Control.DeepSeq (NFData)
 
 {- |
 Type representing a JSON-API link object.
@@ -34,6 +35,8 @@ Specification: <http://jsonapi.org/format/#document-links>
 -}
 newtype Links = Links (Map Rel Href)
   deriving (Show, Eq, Ord, ToJSON, FromJSON, G.Generic)
+
+instance NFData Links
 
 type Rel = Text
 type Href = Text
