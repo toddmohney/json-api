@@ -2,7 +2,7 @@
 Contains representations of the top-level JSON-API document structure.
 -}
 module Network.JSONApi.Document
-  ( Document
+  ( Document (..)
   , ResourceData (..)
   , ErrorDocument (..)
   , Included

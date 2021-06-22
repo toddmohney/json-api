@@ -2,7 +2,7 @@
 Entry-point module for this package.
 -}
 module Network.JSONApi
-( D.Document
+( D.Document (..)
 , D.ResourceData (..)
 , D.ErrorDocument (..)
 , D.Included
