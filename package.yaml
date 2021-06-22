@@ -78,5 +78,8 @@ tests:
     - bytestring
     - hspec
     - json-api
+    verbatim:
+      build-tool-depends:
+        hspec-discover:hspec-discover
 stability: experimental
 tested-with: ghc ==7.10.3
