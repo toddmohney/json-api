@@ -147,7 +147,7 @@ Constructor function for the Document data type.
 Supports building compound documents
 <http://jsonapi.org/format/#document-compound-documents>
 -}
-mkIncludedResource :: ResourcefulEntity a => a -> Included
+mkIncludedResource :: (ResourcefulEntity a, ToJSON a) => a -> Included
 mkIncludedResource res = Included [AE.toJSON . R.toResource $ res]
 
 toResourceData :: ResourcefulEntity a => [a] -> ResourceData a
