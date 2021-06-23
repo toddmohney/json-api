@@ -19,8 +19,7 @@ spec :: Spec
 spec =
   describe "JSON serialization" $ do
     it "JSON encodes/decodes a singleton resource" $ do
-      -- TODO: test the main resource actually is a singleton
-      let jsonApiObj = mkDocument [testObject] Nothing Nothing
+      let jsonApiObj = mkDocument testObject Nothing Nothing
       let encodedJson = encodeDocumentObject jsonApiObj
       let decodedJson = decodeDocumentObject encodedJson
       putStrLn (BS.unpack encodedJson)
@@ -28,8 +27,7 @@ spec =
       isRight decodedJson `shouldBe` True
 
     it "JSON encodes/decodes a list of resources" $ do
-      -- TODO: test the main resource actually is a list
-      let jsonApiObj = mkDocument [testObject, testObject2] Nothing Nothing
+      let jsonApiObj = mkDocuments [testObject, testObject2] Nothing Nothing
       let encodedJson = encodeDocumentObject jsonApiObj
       let decodedJson = decodeDocumentObject encodedJson
       {- putStrLn (BS.unpack encodedJson) -}
@@ -37,7 +35,7 @@ spec =
       isRight decodedJson `shouldBe` True
 
     it "contains the allowable top-level keys" $ do
-      let jsonApiObj = mkDocument [testObject] Nothing Nothing
+      let jsonApiObj = mkDocument testObject Nothing Nothing
       let encodedJson = encodeDocumentObject jsonApiObj
       let dataObject = encodedJson ^? Lens.key "data"
       let linksObject = encodedJson ^? Lens.key "links"
@@ -49,7 +47,7 @@ spec =
       isJust includedObject `shouldBe` True
 
     it "allows an optional top-level links object" $ do
-      let jsonApiObj = mkDocument [testObject] (Just linksObj) Nothing
+      let jsonApiObj = mkDocument testObject (Just linksObj) Nothing
       let encodedJson = encodeDocumentObject jsonApiObj
       let decodedJson = decodeDocumentObject encodedJson
       -- putStrLn (BS.unpack encodedJson)
@@ -57,7 +55,7 @@ spec =
       isRight decodedJson `shouldBe` True
 
     it "allows an optional top-level meta object" $ do
-      let jsonApiObj = mkDocument [testObject] Nothing (Just testMetaObj)
+      let jsonApiObj = mkDocument testObject Nothing (Just testMetaObj)
       let encodedJson = encodeDocumentObject jsonApiObj
       let decodedJson = decodeDocumentObject encodedJson
       -- putStrLn (BS.unpack encodedJson)
@@ -66,7 +64,7 @@ spec =
 
     it "allows a heterogeneous list of related resources" $ do
       let includedResources = (mkIncludedResource testObject) <> (mkIncludedResource testObject2)
-      let jsonApiObj = mkCompoundDocument [testObject] Nothing Nothing includedResources
+      let jsonApiObj = mkCompoundDocument testObject Nothing Nothing includedResources
       let encodedJson = encodeDocumentObject jsonApiObj
       let decodedJson = decodeDocumentObject encodedJson
       {- putStrLn (BS.unpack encodedJson) -}
