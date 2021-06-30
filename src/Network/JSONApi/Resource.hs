@@ -24,6 +24,7 @@ import Network.JSONApi.Identifier (HasIdentifier (..), Identifier (..))
 import Network.JSONApi.Link (Links)
 import Network.JSONApi.Meta (Meta)
 import Prelude hiding (id)
+import Control.DeepSeq (NFData)
 
 {- |
 Type representing a JSON-API resource object.
@@ -38,6 +39,8 @@ data Resource a = Resource
   , getLinks :: Maybe Links
   , getRelationships :: Maybe Relationships
   } deriving (Show, Eq, Generic)
+
+instance NFData a => NFData (Resource a)
 
 instance (ToJSON a) => ToJSON (Resource a) where
   toJSON (Resource (Identifier resId resType metaObj) resObj linksObj rels) =
@@ -96,6 +99,8 @@ data Relationship = Relationship
   , _links :: Maybe Links
   } deriving (Show, Eq, Generic)
 
+instance NFData Relationship
+
 instance ToJSON Relationship where
   toJSON = AE.genericToJSON
     AE.defaultOptions { AE.fieldLabelModifier = drop 1 }
@@ -108,6 +113,7 @@ instance FromJSON Relationship where
 data Relationships = Relationships (Map Text Relationship)
   deriving (Show, Eq, Generic)
 
+instance NFData Relationships
 instance ToJSON Relationships
 instance FromJSON Relationships
 

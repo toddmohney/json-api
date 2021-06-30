@@ -20,6 +20,7 @@ module Network.JSONApi.Document
   , mkSimpleDocument'
   ) where
 
+import Control.DeepSeq (NFData)
 import Control.Monad (mzero)
 import Data.Aeson
   ( ToJSON
@@ -51,6 +52,8 @@ data Document a = Document
   , _meta  ::  Maybe Meta
   , _included :: [Value]
   } deriving (Show, Eq, G.Generic)
+
+instance NFData a => NFData (Document a)
 
 instance (ToJSON a)
       => ToJSON (Document a) where
@@ -85,7 +88,9 @@ constrain the 'Value' to a heterogeneous list of Resource types.
 See 'mkIncludedResource' for creating 'Included' types.
 -}
 data Included = Included [Value]
-  deriving (Show)
+  deriving (G.Generic, Show)
+
+instance NFData Included
 
 instance Semigroup Included where
   (<>) (Included as) (Included bs) = Included (as <> bs)
@@ -220,6 +225,8 @@ singleton = Singleton . R.toResource
 list :: ResourcefulEntity a => [a] -> ResourceData a
 list = List . map R.toResource
 
+instance NFData a => NFData (ResourceData a)
+
 instance (ToJSON a) => ToJSON (ResourceData a) where
   toJSON (Singleton res) = AE.toJSON res
   toJSON (List res)      = AE.toJSON res
@@ -243,6 +250,8 @@ data ErrorDocument a = ErrorDocument
   , _errorLinks :: Maybe Links
   , _errorMeta  :: Maybe Meta
   } deriving (Show, Eq, G.Generic)
+
+instance NFData a => NFData (ErrorDocument a)
 
 instance (ToJSON a) => ToJSON (ErrorDocument a) where
   toJSON (ErrorDocument err links meta) =

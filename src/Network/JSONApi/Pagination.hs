@@ -13,6 +13,8 @@ import Data.Aeson (ToJSON (toJSON), (.=), object)
 import Network.JSONApi.Link (Links, Rel, mkLinks)
 import Network.JSONApi.Meta (MetaObject (typeName))
 import Network.URL (URL, add_param)
+import qualified GHC.Generics as G
+import Control.DeepSeq (NFData)
 
 {- |
 Wrapper type for the various components of pagination being page size, page index
@@ -22,7 +24,9 @@ data Pagination = Pagination {
                       getPaginationPageIndex :: PageIndex
                     , getPaginationPageSize :: PageSize
                     , getPaginationResourceCount :: ResourceCount
-                  }
+                  } deriving G.Generic
+
+instance NFData Pagination
 
 
 instance ToJSON Pagination where
@@ -45,15 +49,15 @@ We can specify limits on the number of rows we would like back from the database
 -}
 newtype PageSize = PageSize {
   getPageSize :: Int
-} deriving Show
+} deriving (Show, NFData)
 
 newtype PageIndex = PageIndex {
   getPageIndex :: Int
-} deriving Show
+} deriving (Show, NFData)
 
 newtype ResourceCount = ResourceCount {
   getResourceCount :: Int
-} deriving Show
+} deriving (Show, NFData)
 
 {- |
 Pagination strategies are commonly implemented by the server of which Page and Offset

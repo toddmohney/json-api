@@ -12,6 +12,7 @@ import Data.Aeson (ToJSON, FromJSON)
 import Data.Default (Default, def)
 import Data.Text (Text)
 import qualified GHC.Generics as G
+import Control.DeepSeq (NFData)
 
 data Source =
   Source { pointer :: Maybe Text
@@ -19,6 +20,7 @@ data Source =
          }
   deriving (Show, Eq, G.Generic)
 
+instance NFData Source
 instance ToJSON Source
 instance FromJSON Source
 

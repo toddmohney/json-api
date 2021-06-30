@@ -1,3 +1,5 @@
+{-# LANGUAGE DeriveGeneric #-}
+
 {- |
 Module representing a JSON-API resource object.
 
@@ -17,6 +19,8 @@ import qualified Data.Aeson as AE
 import Data.Text (Text)
 import Network.JSONApi.Meta (Meta)
 import Prelude hiding (id)
+import Control.DeepSeq (NFData)
+import qualified GHC.Generics as G
 
 {- |
 Identifiers are used to encapsulate the minimum amount of information
@@ -30,7 +34,7 @@ data Identifier = Identifier
   { _ident :: Text
   , _datatype :: Text
   , _metadata :: Maybe Meta
-  } deriving (Show, Eq)
+  } deriving (Show, Eq, G.Generic)
 
 instance ToJSON Identifier where
   toJSON (Identifier resId resType resMetaData) =
@@ -45,6 +49,8 @@ instance FromJSON Identifier where
     typ   <- v .: "type"
     meta  <- v .:? "meta"
     return $ Identifier id typ meta
+
+instance NFData Identifier
 
 
 {- |

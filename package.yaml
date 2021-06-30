@@ -46,6 +46,7 @@ dependencies:
 - base >=4.7 && <5.0
 - containers
 - data-default
+- deepseq
 - lens
 - lens-aeson
 - text
