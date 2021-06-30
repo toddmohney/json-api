@@ -44,15 +44,15 @@ instance MetaObject Pagination where
 We can specify limits on the number of rows we would like back from the database
 -}
 newtype PageSize = PageSize {
-  getPageSize :: Word
+  getPageSize :: Int
 } deriving Show
 
 newtype PageIndex = PageIndex {
-  getPageIndex :: Word
+  getPageIndex :: Int
 } deriving Show
 
 newtype ResourceCount = ResourceCount {
-  getResourceCount :: Word
+  getResourceCount :: Int
 } deriving Show
 
 {- |
@@ -98,7 +98,7 @@ shouldGenPrevLink strategy pagination =
 {- |
 This function calculates the number of pages in the list.
 -}
-numberOfPagesInPageList :: Pagination -> Word
+numberOfPagesInPageList :: Pagination -> Int
 numberOfPagesInPageList (Pagination _ pageSize resourceCount) =
   if resCount `mod` pgSize == 0
   then resCount `quot` pgSize
@@ -110,7 +110,7 @@ numberOfPagesInPageList (Pagination _ pageSize resourceCount) =
 {- |
 Helper function used to generate a single pagination link.
 -}
-mkPaginationLink :: Strategy -> Rel -> URL -> Word -> Word -> (Rel, URL)
+mkPaginationLink :: Strategy -> Rel -> URL -> Int -> Int -> (Rel, URL)
 mkPaginationLink strategy key baseUrl pageNo pageSize =
   (key, link)
     where
@@ -121,11 +121,11 @@ mkPaginationLink strategy key baseUrl pageNo pageSize =
 In the page strategy page numbering starts at 1, where as in the case of offset the numbering
 starts at 0.
 -}
-firstPageIndex :: Strategy -> Word
+firstPageIndex :: Strategy -> Int
 firstPageIndex PageStrategy = 1
 firstPageIndex OffsetStrategy = 0
 
-lastPageIndex :: Strategy -> Pagination -> Word
+lastPageIndex :: Strategy -> Pagination -> Int
 lastPageIndex PageStrategy page = numberOfPagesInPageList page
 lastPageIndex OffsetStrategy page = numberOfPagesInPageList page - 1
 
