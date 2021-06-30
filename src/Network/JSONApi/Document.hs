@@ -7,12 +7,17 @@ module Network.JSONApi.Document
   , ErrorDocument (..)
   , Included
   , mkDocument
+  , mkDocuments
   , mkDocument'
   , singleton
   , list
   , mkCompoundDocument
+  , mkCompoundDocuments
   , mkCompoundDocument'
   , mkIncludedResource
+  , mkSimpleDocument
+  , mkSimpleDocuments
+  , mkSimpleDocument'
   ) where
 
 import Control.DeepSeq (NFData)
@@ -100,11 +105,18 @@ See 'mkCompoundDocument' for constructing compound Document
 including 'side-loaded' resources
 -}
 mkDocument :: ResourcefulEntity a =>
-              [a]
+              a
            -> Maybe Links
            -> Maybe Meta
            -> Document a
 mkDocument res = mkDocument' (toResourceData res)
+
+mkDocuments :: ResourcefulEntity a =>
+              [a]
+           -> Maybe Links
+           -> Maybe Meta
+           -> Document a
+mkDocuments res = mkDocument' (toResourceDataMany res)
 
 mkDocument' :: ResourceData a
             -> Maybe Links
@@ -119,6 +131,26 @@ mkDocument' res links meta =
     }
 
 {- |
+A function for a single resourceful entity and document which do not
+require links or Meta data.
+-}
+mkSimpleDocument :: ResourcefulEntity a => a -> Document a
+mkSimpleDocument res = mkDocument res Nothing Nothing
+
+{- |
+A function for a multiple resourceful entities and document which do not
+require links or Meta data.
+-}
+mkSimpleDocuments :: ResourcefulEntity a => [a] -> Document a
+mkSimpleDocuments res = mkDocuments res Nothing Nothing
+
+{- |
+A function for document which do not require links or Meta data.
+-}
+mkSimpleDocument' :: ResourceData a -> Document a
+mkSimpleDocument' res = mkDocument' res Nothing Nothing
+
+{- |
 Constructor function for the Document data type.
 See 'mkIncludedResource' for constructing the 'Included' type.
 
@@ -126,12 +158,26 @@ Supports building compound documents
 <http://jsonapi.org/format/#document-compound-documents>
 -}
 mkCompoundDocument :: ResourcefulEntity a =>
-                      [a]
+                      a
                    -> Maybe Links
                    -> Maybe Meta
                    -> Included
                    -> Document a
 mkCompoundDocument res = mkCompoundDocument' (toResourceData res)
+
+{- |
+Constructor function for the Document data type.
+See 'mkIncludedResource' for constructing the 'Included' type.
+Supports building compound documents
+<http://jsonapi.org/format/#document-compound-documents>
+-}
+mkCompoundDocuments :: ResourcefulEntity a =>
+                      [a]
+                   -> Maybe Links
+                   -> Maybe Meta
+                   -> Included
+                   -> Document a
+mkCompoundDocuments res = mkCompoundDocument' (toResourceDataMany res)
 
 mkCompoundDocument' :: ResourceData a
                     -> Maybe Links
@@ -155,9 +201,11 @@ Supports building compound documents
 mkIncludedResource :: (ResourcefulEntity a, ToJSON a) => a -> Included
 mkIncludedResource res = Included [AE.toJSON . R.toResource $ res]
 
-toResourceData :: ResourcefulEntity a => [a] -> ResourceData a
-toResourceData (r:[]) = Singleton (R.toResource r)
-toResourceData rs     = List (map R.toResource rs)
+toResourceData :: ResourcefulEntity a => a -> ResourceData a
+toResourceData r = Singleton (R.toResource r)
+
+toResourceDataMany :: ResourcefulEntity a => [a] -> ResourceData a
+toResourceDataMany rs  = List (map R.toResource rs)
 
 {- |
 The 'Resource' type encapsulates the underlying 'Resource'

@@ -141,7 +141,7 @@ to the [JSON-API pagination specification](https://jsonapi.org/format/#fetching-
 let paginate = Pagination (PageIndex 1) (PageSize 1) (ResourceCount $ toEnum (length usrs))
 let resourceLink = (fromJust . importURL) "/users"
 let paginationLinks = mkPaginationLinks PageStrategy resourceLink paginate
-let doc = mkDocument [head usrs] (Just paginationLinks) Nothing
+let doc = mkDocuments [head usrs] (Just paginationLinks) Nothing
 ```
 
 When delivered as a response from a web server, for example, we get a payload

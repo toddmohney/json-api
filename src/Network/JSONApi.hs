@@ -27,7 +27,11 @@ module Network.JSONApi
 , R.mkRelationship
 , R.mkRelationships
 , D.mkDocument
+, D.mkDocuments
 , D.mkDocument'
+, D.mkSimpleDocument
+, D.mkSimpleDocuments
+, D.mkSimpleDocument'
 , D.singleton
 , D.list
 , D.mkCompoundDocument
